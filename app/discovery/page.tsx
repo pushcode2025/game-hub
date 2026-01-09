@@ -8,98 +8,98 @@ import { Badge } from '@/components/gaming/Badge';
 import { GlowText } from '@/components/gaming/GlowText';
 
 const popularGames = [
-  { name: 'Valorant', icon: '🎯', color: 'from-red-500 to-pink-500', players: 2500 },
-  { name: 'League of Legends', icon: '⚔️', color: 'from-blue-500 to-cyan-500', players: 3200 },
-  { name: 'Apex Legends', icon: '🎮', color: 'from-orange-500 to-red-500', players: 1800 },
+  { name: 'فالورانت', icon: '🎯', color: 'from-red-500 to-pink-500', players: 2500 },
+  { name: 'ليج أوف ليجندز', icon: '⚔️', color: 'from-blue-500 to-cyan-500', players: 3200 },
+  { name: 'أبيكس ليجندز', icon: '🎮', color: 'from-orange-500 to-red-500', players: 1800 },
   { name: 'CS:GO', icon: '🔫', color: 'from-yellow-500 to-orange-500', players: 2100 },
-  { name: 'Fortnite', icon: '🌟', color: 'from-purple-500 to-pink-500', players: 2800 },
-  { name: 'Overwatch 2', icon: '🛡️', color: 'from-orange-400 to-yellow-500', players: 1500 },
-  { name: 'Rocket League', icon: '🚗', color: 'from-blue-400 to-purple-500', players: 1200 },
-  { name: 'Minecraft', icon: '🟫', color: 'from-green-500 to-emerald-600', players: 3500 },
+  { name: 'فورتنايت', icon: '🌟', color: 'from-purple-500 to-pink-500', players: 2800 },
+  { name: 'أوفرواتش 2', icon: '🛡️', color: 'from-orange-400 to-yellow-500', players: 1500 },
+  { name: 'روكيت ليج', icon: '🚗', color: 'from-blue-400 to-purple-500', players: 1200 },
+  { name: 'ماينكرافت', icon: '🟫', color: 'from-green-500 to-emerald-600', players: 3500 },
 ];
 
 const platforms = [
-  { name: 'PC', icon: '💻', color: 'from-blue-500 to-cyan-500' },
-  { name: 'PlayStation', icon: '🎮', color: 'from-blue-600 to-indigo-600' },
-  { name: 'Xbox', icon: '🎯', color: 'from-green-500 to-emerald-500' },
-  { name: 'Nintendo Switch', icon: '🕹️', color: 'from-red-500 to-pink-500' },
-  { name: 'Mobile', icon: '📱', color: 'from-purple-500 to-pink-500' },
+  { name: 'الحاسوب', icon: '💻', color: 'from-blue-500 to-cyan-500' },
+  { name: 'بلايستيشن', icon: '🎮', color: 'from-blue-600 to-indigo-600' },
+  { name: 'إكس بوكس', icon: '🎯', color: 'from-green-500 to-emerald-500' },
+  { name: 'نينتندو سويتش', icon: '🕹️', color: 'from-red-500 to-pink-500' },
+  { name: 'الجوال', icon: '📱', color: 'from-purple-500 to-pink-500' },
 ];
 
 const activityTypes = [
-  { name: 'Ranked', icon: Trophy, color: 'text-yellow-400', bg: 'from-yellow-500/20 to-orange-500/20' },
-  { name: 'Casual', icon: Gamepad2, color: 'text-cyan-400', bg: 'from-cyan-500/20 to-blue-500/20' },
-  { name: 'Co-op', icon: Users, color: 'text-green-400', bg: 'from-green-500/20 to-emerald-500/20' },
-  { name: 'Tournament', icon: Target, color: 'text-pink-400', bg: 'from-pink-500/20 to-rose-500/20' },
+  { name: 'تصنيف', icon: Trophy, color: 'text-yellow-400', bg: 'from-yellow-500/20 to-orange-500/20' },
+  { name: 'عادي', icon: Gamepad2, color: 'text-cyan-400', bg: 'from-cyan-500/20 to-blue-500/20' },
+  { name: 'تعاوني', icon: Users, color: 'text-green-400', bg: 'from-green-500/20 to-emerald-500/20' },
+  { name: 'بطولة', icon: Target, color: 'text-pink-400', bg: 'from-pink-500/20 to-rose-500/20' },
 ];
 
-const teamSizes = ['1v1', '2v2', '3v3', '5v5', 'Squad', 'Any'];
+const teamSizes = ['1ضد1', '2ضد2', '3ضد3', '5ضد5', 'فريق', 'أي'];
 
 const mockPosts = [
   {
     id: 1,
-    player: { name: 'ShadowHunter', avatar: '🦊', level: 85, rank: 'Diamond II' },
-    game: 'Valorant',
-    platform: 'PC',
-    activityType: 'Ranked',
-    teamSize: '5v5',
-    description: 'Looking for serious teammates to push to Immortal. Must have good aim and comms.',
+    player: { name: 'صائد الظلال', avatar: '🦊', level: 85, rank: 'ماسي II' },
+    game: 'فالورانت',
+    platform: 'الحاسوب',
+    activityType: 'تصنيف',
+    teamSize: '5ضد5',
+    description: 'أبحث عن زملاء جادين للوصول إلى رتبة خالد. يجب أن يكون لديك تصويب جيد وتواصل ممتاز.',
     voiceRequired: true,
-    playTime: 'Now',
-    lookingFor: ['Good Communication', 'High Skill', 'Positive Attitude'],
-    timePosted: '5 min ago'
+    playTime: 'الآن',
+    lookingFor: ['تواصل جيد', 'مهارة عالية', 'موقف إيجابي'],
+    timePosted: 'منذ 5 دقائق'
   },
   {
     id: 2,
-    player: { name: 'MysticGamer', avatar: '🐉', level: 62, rank: 'Platinum III' },
-    game: 'League of Legends',
-    platform: 'PC',
-    activityType: 'Casual',
-    teamSize: 'Any',
-    description: 'Chill ARAM games, just want to have fun and make friends!',
+    player: { name: 'اللاعب الغامض', avatar: '🐉', level: 62, rank: 'بلاتيني III' },
+    game: 'ليج أوف ليجندز',
+    platform: 'الحاسوب',
+    activityType: 'عادي',
+    teamSize: 'أي',
+    description: 'ألعاب ARAM هادئة، فقط أريد الاستمتاع وتكوين صداقات!',
     voiceRequired: false,
-    playTime: 'Evening',
-    lookingFor: ['Friendly', 'Casual Players'],
-    timePosted: '12 min ago'
+    playTime: 'المساء',
+    lookingFor: ['ودود', 'لاعبين عاديين'],
+    timePosted: 'منذ 12 دقيقة'
   },
   {
     id: 3,
-    player: { name: 'StormBreaker', avatar: '⚡', level: 94, rank: 'Master' },
-    game: 'Apex Legends',
-    platform: 'PlayStation',
-    activityType: 'Ranked',
-    teamSize: '3v3',
-    description: 'Need 2 for ranked grind. Pushing to Predator. Let\'s get it!',
+    player: { name: 'كاسر العواصف', avatar: '⚡', level: 94, rank: 'ماستر' },
+    game: 'أبيكس ليجندز',
+    platform: 'بلايستيشن',
+    activityType: 'تصنيف',
+    teamSize: '3ضد3',
+    description: 'أحتاج 2 للعب التصنيف. نهدف إلى المفترس. لنحقق ذلك!',
     voiceRequired: true,
-    playTime: 'Now',
-    lookingFor: ['Experienced', 'Mic Required', 'Competitive'],
-    timePosted: '20 min ago'
+    playTime: 'الآن',
+    lookingFor: ['خبرة', 'ميكروفون مطلوب', 'تنافسي'],
+    timePosted: 'منذ 20 دقيقة'
   },
   {
     id: 4,
-    player: { name: 'LunarKnight', avatar: '🌙', level: 71, rank: 'Gold I' },
-    game: 'Fortnite',
-    platform: 'Xbox',
-    activityType: 'Co-op',
-    teamSize: 'Squad',
-    description: 'Squad fill for some chill BR games. No toxicity please!',
+    player: { name: 'الفارس القمري', avatar: '🌙', level: 71, rank: 'ذهبي I' },
+    game: 'فورتنايت',
+    platform: 'إكس بوكس',
+    activityType: 'تعاوني',
+    teamSize: 'فريق',
+    description: 'ملء الفريق لبعض ألعاب BR الهادئة. لا سلبية من فضلك!',
     voiceRequired: false,
-    playTime: 'Afternoon',
-    lookingFor: ['Friendly', 'Team Player'],
-    timePosted: '35 min ago'
+    playTime: 'بعد الظهر',
+    lookingFor: ['ودود', 'لاعب فريق'],
+    timePosted: 'منذ 35 دقيقة'
   },
   {
     id: 5,
-    player: { name: 'PhoenixRising', avatar: '🔥', level: 88, rank: 'Champion' },
-    game: 'Rocket League',
-    platform: 'PC',
-    activityType: 'Tournament',
-    teamSize: '3v3',
-    description: 'Looking for tournament teammates. Need to be Grand Champ or higher.',
+    player: { name: 'طائر الفينيق', avatar: '🔥', level: 88, rank: 'بطل' },
+    game: 'روكيت ليج',
+    platform: 'الحاسوب',
+    activityType: 'بطولة',
+    teamSize: '3ضد3',
+    description: 'أبحث عن زملاء للبطولة. يجب أن تكون جراند شامب أو أعلى.',
     voiceRequired: true,
-    playTime: 'Weekend',
-    lookingFor: ['High Skill', 'Tournament Experience', 'Dedicated'],
-    timePosted: '1 hour ago'
+    playTime: 'عطلة نهاية الأسبوع',
+    lookingFor: ['مهارة عالية', 'خبرة بطولة', 'ملتزم'],
+    timePosted: 'منذ ساعة'
   },
 ];
 
@@ -145,14 +145,14 @@ export default function PlayerDiscoveryPage() {
             className="text-center mb-8"
           >
             <Badge variant="success" glow className="mb-6 inline-flex">
-              <Users className="w-4 h-4 mr-2" />
-              {mockPosts.length}+ Players Online
+              <Users className="w-4 h-4 ml-2" />
+              {mockPosts.length}+ لاعب متصل
             </Badge>
             <h1 className="text-6xl md:text-7xl font-black mb-4">
-              Find Your <GlowText color="blue">Squad</GlowText>
+              ابحث عن <GlowText color="blue">فريقك</GlowText>
             </h1>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Connect with gamers who match your playstyle and skill level
+              تواصل مع اللاعبين الذين يطابقون أسلوب لعبك ومستوى مهارتك
             </p>
           </motion.div>
 
@@ -163,20 +163,20 @@ export default function PlayerDiscoveryPage() {
             className="max-w-4xl mx-auto"
           >
             <div className="relative">
-              <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-slate-400" />
+              <Search className="absolute right-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search by game, player, or tag..."
+                placeholder="ابحث عن لعبة، لاعب، أو وسم..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-900/50 backdrop-blur-xl border-2 border-slate-700 rounded-2xl pl-16 pr-6 py-5 text-lg focus:outline-none focus:border-cyan-500 transition-all"
+                className="w-full bg-slate-900/50 backdrop-blur-xl border-2 border-slate-700 rounded-2xl pr-16 pl-6 py-5 text-lg focus:outline-none focus:border-cyan-500 transition-all text-right"
               />
               {searchQuery && (
                 <motion.button
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-6 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                  className="absolute left-6 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </motion.button>
@@ -196,7 +196,7 @@ export default function PlayerDiscoveryPage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-3xl font-bold flex items-center gap-3">
               <Gamepad2 className="w-8 h-8 text-cyan-400" />
-              Select Game
+              اختر اللعبة
             </h2>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -205,7 +205,7 @@ export default function PlayerDiscoveryPage() {
               className="flex items-center gap-2 px-6 py-3 bg-slate-800/50 backdrop-blur-xl rounded-xl border border-slate-700 hover:border-cyan-500 transition-all"
             >
               <Filter className="w-5 h-5" />
-              {showFilters ? 'Hide Filters' : 'Show Filters'}
+              {showFilters ? 'إخفاء الفلاتر' : 'إظهار الفلاتر'}
             </motion.button>
           </div>
 
@@ -236,7 +236,7 @@ export default function PlayerDiscoveryPage() {
                   <div className="text-4xl mb-3 relative">{game.icon}</div>
                   <h3 className="text-sm font-bold mb-2 relative">{game.name}</h3>
                   <Badge variant="info" className="text-xs">
-                    <Users className="w-3 h-3 mr-1" />
+                    <Users className="w-3 h-3 ml-1" />
                     {game.players}
                   </Badge>
                 </GamingCard>
@@ -259,13 +259,13 @@ export default function PlayerDiscoveryPage() {
                   <div>
                     <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
                       <Globe className="w-6 h-6 text-purple-400" />
-                      Platform
+                      المنصة
                     </h3>
                     <div className="flex flex-wrap gap-3">
                       {platforms.map((platform, index) => (
                         <motion.button
                           key={platform.name}
-                          initial={{ opacity: 0, x: -20 }}
+                          initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.05 }}
                           whileHover={{ scale: 1.05 }}
@@ -287,7 +287,7 @@ export default function PlayerDiscoveryPage() {
                   <div>
                     <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
                       <Target className="w-6 h-6 text-orange-400" />
-                      Activity Type
+                      نوع النشاط
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       {activityTypes.map((activity, index) => (
@@ -315,7 +315,7 @@ export default function PlayerDiscoveryPage() {
                   <div>
                     <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
                       <Users className="w-6 h-6 text-green-400" />
-                      Team Size
+                      حجم الفريق
                     </h3>
                     <div className="flex flex-wrap gap-3">
                       {teamSizes.map((size, index) => (
@@ -355,7 +355,7 @@ export default function PlayerDiscoveryPage() {
                       ) : (
                         <MicOff className="w-6 h-6 text-slate-400" />
                       )}
-                      <span className="text-xl font-bold">Voice Chat Required</span>
+                      <span className="text-xl font-bold">مطلوب دردشة صوتية</span>
                     </motion.button>
                   </div>
 
@@ -366,7 +366,7 @@ export default function PlayerDiscoveryPage() {
                       onClick={clearFilters}
                       className="px-8 py-3 bg-slate-700/50 hover:bg-slate-600/50 rounded-xl font-semibold transition-all"
                     >
-                      Clear All Filters
+                      مسح جميع الفلاتر
                     </motion.button>
                   </div>
                 </div>
@@ -378,11 +378,11 @@ export default function PlayerDiscoveryPage() {
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-3xl font-bold flex items-center gap-3">
             <Users className="w-8 h-8 text-cyan-400" />
-            Available Players
+            اللاعبون المتاحون
           </h2>
           <Badge variant="success" className="text-lg px-6 py-2">
-            <Zap className="w-5 h-5 mr-2" />
-            {mockPosts.length} Active Posts
+            <Zap className="w-5 h-5 ml-2" />
+            {mockPosts.length} منشور نشط
           </Badge>
         </div>
 
@@ -402,64 +402,64 @@ export default function PlayerDiscoveryPage() {
 
                 <div className="relative">
                   <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center text-3xl">
-                        {post.player.avatar}
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold mb-1">{post.player.name}</h3>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="info" className="text-xs">
-                            Lvl {post.player.level}
-                          </Badge>
-                          <Badge variant="warning" className="text-xs">
-                            <Trophy className="w-3 h-3 mr-1" />
-                            {post.player.rank}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
                     <div className="text-right">
                       <Badge variant="success" className="mb-2">
-                        <Clock className="w-3 h-3 mr-1" />
+                        <Clock className="w-3 h-3 ml-1" />
                         {post.playTime}
                       </Badge>
                       <p className="text-xs text-slate-500">{post.timePosted}</p>
                     </div>
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <h3 className="text-2xl font-bold mb-1 text-right">{post.player.name}</h3>
+                        <div className="flex items-center gap-2 justify-end">
+                          <Badge variant="info" className="text-xs">
+                            مستوى {post.player.level}
+                          </Badge>
+                          <Badge variant="warning" className="text-xs">
+                            <Trophy className="w-3 h-3 ml-1" />
+                            {post.player.rank}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center text-3xl">
+                        {post.player.avatar}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4 justify-end">
                     <Badge variant="info">
-                      <Gamepad2 className="w-3 h-3 mr-1" />
+                      <Gamepad2 className="w-3 h-3 ml-1" />
                       {post.game}
                     </Badge>
                     <Badge variant="info">
-                      <Globe className="w-3 h-3 mr-1" />
+                      <Globe className="w-3 h-3 ml-1" />
                       {post.platform}
                     </Badge>
                     <Badge variant="warning">{post.activityType}</Badge>
                     <Badge variant="success">
-                      <Users className="w-3 h-3 mr-1" />
+                      <Users className="w-3 h-3 ml-1" />
                       {post.teamSize}
                     </Badge>
                     {post.voiceRequired ? (
                       <Badge variant="info">
-                        <Mic className="w-3 h-3 mr-1" />
-                        Voice
+                        <Mic className="w-3 h-3 ml-1" />
+                        صوتي
                       </Badge>
                     ) : (
                       <Badge>
-                        <MicOff className="w-3 h-3 mr-1" />
-                        Optional
+                        <MicOff className="w-3 h-3 ml-1" />
+                        اختياري
                       </Badge>
                     )}
                   </div>
 
-                  <p className="text-slate-300 mb-4 leading-relaxed">{post.description}</p>
+                  <p className="text-slate-300 mb-4 leading-relaxed text-right">{post.description}</p>
 
                   <div className="mb-6">
-                    <p className="text-sm text-slate-400 mb-2">Looking for:</p>
-                    <div className="flex flex-wrap gap-2">
+                    <p className="text-sm text-slate-400 mb-2 text-right">يبحث عن:</p>
+                    <div className="flex flex-wrap gap-2 justify-end">
                       {post.lookingFor.map((tag) => (
                         <span
                           key={tag}
@@ -472,15 +472,15 @@ export default function PlayerDiscoveryPage() {
                   </div>
 
                   <div className="flex gap-3">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
-                      <GamingButton variant="accent" className="w-full" glow>
-                        <Users className="w-4 h-4 mr-2" />
-                        Join Squad
-                      </GamingButton>
-                    </motion.div>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <GamingButton variant="ghost">
                         <MessageCircle className="w-4 h-4" />
+                      </GamingButton>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
+                      <GamingButton variant="accent" className="w-full" glow>
+                        <Users className="w-4 h-4 ml-2" />
+                        انضم للفريق
                       </GamingButton>
                     </motion.div>
                   </div>
@@ -497,7 +497,7 @@ export default function PlayerDiscoveryPage() {
           className="mt-12 text-center"
         >
           <GamingButton variant="primary" size="lg">
-            Load More Players
+            تحميل المزيد من اللاعبين
           </GamingButton>
         </motion.div>
       </div>
@@ -506,7 +506,7 @@ export default function PlayerDiscoveryPage() {
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        className="fixed bottom-8 right-8 z-50"
+        className="fixed bottom-8 left-8 z-50"
       >
         <motion.div
           whileHover={{ scale: 1.1 }}

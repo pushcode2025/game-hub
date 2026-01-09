@@ -80,3 +80,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  [dir="rtl"] {
+    direction: rtl;
+  }
+
+  [dir="rtl"] .gradient-text {
+    background: linear-gradient(to left, #60a5fa, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

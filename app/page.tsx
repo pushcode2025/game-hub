@@ -13,32 +13,32 @@ import { mockGames, getTrendingGames } from '@/lib/mockData';
 const features = [
   {
     icon: Users,
-    title: 'Find Players',
-    description: 'Connect with gamers worldwide',
+    title: 'اعثر على لاعبين',
+    description: 'تواصل مع اللاعبين حول العالم',
     color: 'from-cyan-500 to-blue-500',
     iconColor: 'text-cyan-400',
     href: '/discovery'
   },
   {
     icon: Gamepad2,
-    title: 'Join Teams',
-    description: 'Form competitive squads',
+    title: 'انضم للفرق',
+    description: 'كوّن فرق تنافسية قوية',
     color: 'from-purple-500 to-pink-500',
     iconColor: 'text-purple-400',
     href: '/teams'
   },
   {
     icon: MessageSquare,
-    title: 'Community',
-    description: 'Engage in discussions',
+    title: 'المجتمع',
+    description: 'شارك في النقاشات والحوارات',
     color: 'from-green-500 to-emerald-500',
     iconColor: 'text-green-400',
     href: '/forums'
   },
   {
     icon: Trophy,
-    title: 'Compete',
-    description: 'Climb the leaderboards',
+    title: 'تنافس',
+    description: 'تسلق قوائم المتصدرين',
     color: 'from-yellow-500 to-orange-500',
     iconColor: 'text-yellow-400',
     href: '/leaderboard'
@@ -46,10 +46,10 @@ const features = [
 ];
 
 const stats = [
-  { value: '50M+', label: 'Active Players', icon: Users, color: 'text-cyan-400' },
-  { value: '10K+', label: 'Teams & Clans', icon: Shield, color: 'text-purple-400' },
-  { value: '500K+', label: 'Daily Matches', icon: Swords, color: 'text-green-400' },
-  { value: '1M+', label: 'Media Uploads', icon: Image, color: 'text-pink-400' },
+  { value: '+50 مليون', label: 'لاعب نشط', icon: Users, color: 'text-cyan-400' },
+  { value: '+10 آلاف', label: 'فريق وعشيرة', icon: Shield, color: 'text-purple-400' },
+  { value: '+500 ألف', label: 'مباراة يومية', icon: Swords, color: 'text-green-400' },
+  { value: '+1 مليون', label: 'محتوى مرفوع', icon: Image, color: 'text-pink-400' },
 ];
 
 export default function Home() {
@@ -69,7 +69,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
+    <div className="min-h-screen bg-slate-950 text-white">
       <motion.div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -100,8 +100,8 @@ export default function Home() {
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <Badge variant="info" glow className="mb-8 inline-flex">
-                <Sparkles className="w-4 h-4 mr-2" />
-                Join 50M+ Gamers Worldwide
+                <Sparkles className="w-4 h-4 ml-2" />
+                انضم إلى +50 مليون لاعب حول العالم
               </Badge>
             </motion.div>
 
@@ -111,9 +111,9 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              Your Ultimate{' '}
+              مركزك المثالي{' '}
               <span className="relative inline-block">
-                <GlowText color="blue">Gaming</GlowText>
+                <GlowText color="blue">للألعاب</GlowText>
                 <motion.div
                   className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg blur-xl opacity-30"
                   animate={{
@@ -125,8 +125,7 @@ export default function Home() {
                     ease: "easeInOut"
                   }}
                 />
-              </span>{' '}
-              Hub
+              </span>
             </motion.h1>
 
             <motion.p
@@ -135,7 +134,7 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              Connect with players, dominate leaderboards, and build your gaming legacy
+              تواصل مع اللاعبين، وتصدر قوائم الترتيب، وابنِ إرثك في عالم الألعاب
             </motion.p>
 
             <motion.div
@@ -150,8 +149,8 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="accent" size="lg" glow>
-                    <Users className="w-5 h-5 mr-2" />
-                    Find Players Now
+                    <Users className="w-5 h-5 ml-2" />
+                    ابحث عن لاعبين الآن
                   </GamingButton>
                 </motion.div>
               </Link>
@@ -161,8 +160,8 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="ghost" size="lg">
-                    <Trophy className="w-5 h-5 mr-2" />
-                    View Leaderboard
+                    <Trophy className="w-5 h-5 ml-2" />
+                    عرض قائمة المتصدرين
                   </GamingButton>
                 </motion.div>
               </Link>
@@ -225,15 +224,15 @@ export default function Home() {
           <div className="flex justify-between items-center mb-12">
             <motion.h2
               className="text-5xl font-black"
-              initial={{ x: -50, opacity: 0 }}
+              initial={{ x: 50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <GlowText color="blue">Trending</GlowText> Games
+              الألعاب <GlowText color="blue">الرائجة</GlowText>
             </motion.h2>
             <motion.div
-              initial={{ x: 50, opacity: 0 }}
+              initial={{ x: -50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
@@ -244,8 +243,8 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="ghost">
-                    View All
-                    <TrendingUp className="w-4 h-4 ml-2" />
+                    عرض الكل
+                    <TrendingUp className="w-4 h-4 mr-2" />
                   </GamingButton>
                 </motion.div>
               </Link>
@@ -296,16 +295,16 @@ export default function Home() {
               >
                 <Zap className="w-16 h-16 text-yellow-400 mb-6" />
               </motion.div>
-              <h3 className="text-3xl font-black mb-4">Complete Daily Quests</h3>
-              <p className="text-slate-300 mb-8 text-lg">Earn XP and unlock exclusive rewards by completing daily and weekly challenges.</p>
+              <h3 className="text-3xl font-black mb-4">أكمل المهام اليومية</h3>
+              <p className="text-slate-300 mb-8 text-lg">اكسب نقاط الخبرة وافتح المكافآت الحصرية من خلال إكمال التحديات اليومية والأسبوعية.</p>
               <Link href="/quests">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="primary" glow>
-                    <Target className="w-4 h-4 mr-2" />
-                    View Quests
+                    <Target className="w-4 h-4 ml-2" />
+                    عرض المهام
                   </GamingButton>
                 </motion.div>
               </Link>
@@ -328,16 +327,16 @@ export default function Home() {
               >
                 <Trophy className="w-16 h-16 text-blue-400 mb-6" />
               </motion.div>
-              <h3 className="text-3xl font-black mb-4">Climb the Leaderboard</h3>
-              <p className="text-slate-300 mb-8 text-lg">Compete with players worldwide and earn your place among the top gamers.</p>
+              <h3 className="text-3xl font-black mb-4">تسلق قائمة المتصدرين</h3>
+              <p className="text-slate-300 mb-8 text-lg">تنافس مع اللاعبين حول العالم واكسب مكانك بين أفضل اللاعبين.</p>
               <Link href="/leaderboard">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="primary" glow>
-                    <TrendingUp className="w-4 h-4 mr-2" />
-                    View Rankings
+                    <TrendingUp className="w-4 h-4 ml-2" />
+                    عرض الترتيب
                   </GamingButton>
                 </motion.div>
               </Link>
@@ -377,16 +376,16 @@ export default function Home() {
             >
               <Star className="w-20 h-20 text-yellow-400 mx-auto mb-6" />
             </motion.div>
-            <h3 className="text-4xl font-black mb-6">Become a Creator</h3>
-            <p className="text-slate-300 mb-8 max-w-2xl mx-auto text-lg">Share your gaming content, build your audience, and earn recognition in the gaming community.</p>
+            <h3 className="text-4xl font-black mb-6">كن صانع محتوى</h3>
+            <p className="text-slate-300 mb-8 max-w-2xl mx-auto text-lg">شارك محتوى الألعاب الخاص بك، وبناء جمهورك، واكسب التقدير في مجتمع الألعاب.</p>
             <Link href="/creators">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <GamingButton variant="accent" size="lg" glow>
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Join Creator Program
+                  <Sparkles className="w-5 h-5 ml-2" />
+                  انضم لبرنامج صناع المحتوى
                 </GamingButton>
               </motion.div>
             </Link>
@@ -439,10 +438,10 @@ export default function Home() {
         >
           <div className="flex flex-wrap justify-center gap-8 mb-8">
             {[
-              { href: '/news', label: 'News' },
-              { href: '/reviews/create', label: 'Reviews' },
-              { href: '/translations', label: 'Translations', icon: Globe },
-              { href: '/creators', label: 'Creators' },
+              { href: '/news', label: 'الأخبار' },
+              { href: '/reviews/create', label: 'المراجعات' },
+              { href: '/translations', label: 'الترجمات', icon: Globe },
+              { href: '/creators', label: 'صناع المحتوى' },
             ].map((link) => (
               <Link key={link.href} href={link.href}>
                 <motion.div
@@ -456,7 +455,7 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          <p className="text-center text-slate-500">2024 Gaming Hub. All rights reserved.</p>
+          <p className="text-center text-slate-500">2024 مركز الألعاب. جميع الحقوق محفوظة.</p>
         </motion.div>
       </footer>
     </div>
