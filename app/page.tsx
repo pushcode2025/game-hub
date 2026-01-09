@@ -143,25 +143,25 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
             >
-              <Link href="/discovery">
+              <Link href="/auth">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="accent" size="lg" glow>
-                    <Users className="w-5 h-5 ml-2" />
-                    ابحث عن لاعبين الآن
+                    <Shield className="w-5 h-5 ml-2" />
+                    تسجيل الدخول / إنشاء حساب
                   </GamingButton>
                 </motion.div>
               </Link>
-              <Link href="/leaderboard">
+              <Link href="/discovery">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <GamingButton variant="ghost" size="lg">
-                    <Trophy className="w-5 h-5 ml-2" />
-                    عرض قائمة المتصدرين
+                    <Users className="w-5 h-5 ml-2" />
+                    ابحث عن لاعبين الآن
                   </GamingButton>
                 </motion.div>
               </Link>

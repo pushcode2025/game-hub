@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, User, Eye, EyeOff, Chrome, Facebook, MessageCircle } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Chrome, Facebook, MessageCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -20,8 +21,19 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-black">
+    <div className="min-h-screen relative overflow-hidden bg-black" dir="rtl">
       <AnimatedBackground />
+
+      <Link href="/">
+        <motion.button
+          whileHover={{ scale: 1.05, x: 5 }}
+          whileTap={{ scale: 0.95 }}
+          className="fixed top-8 right-8 z-20 flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-900/80 backdrop-blur-xl border border-gray-800/50 text-gray-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all"
+        >
+          <ArrowRight className="w-5 h-5" />
+          <span className="font-semibold">العودة للرئيسية</span>
+        </motion.button>
+      </Link>
 
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <motion.div
@@ -45,11 +57,11 @@ export default function AuthPage() {
                 >
                   <h1 className="text-4xl font-bold mb-2">
                     <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-pulse">
-                      {isLogin ? 'Welcome Back' : 'Join Us'}
+                      {isLogin ? 'أهلاً بعودتك' : 'انضم إلينا'}
                     </span>
                   </h1>
                   <p className="text-gray-400">
-                    {isLogin ? 'Enter your credentials to continue' : 'Create your gaming account'}
+                    {isLogin ? 'أدخل بياناتك للمتابعة' : 'أنشئ حساب الألعاب الخاص بك'}
                   </p>
                 </motion.div>
 
@@ -64,7 +76,7 @@ export default function AuthPage() {
                         : 'bg-gray-800/50 text-gray-400 hover:bg-gray-800'
                     }`}
                   >
-                    Login
+                    تسجيل الدخول
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -76,7 +88,7 @@ export default function AuthPage() {
                         : 'bg-gray-800/50 text-gray-400 hover:bg-gray-800'
                     }`}
                   >
-                    Register
+                    إنشاء حساب
                   </motion.button>
                 </div>
 
@@ -93,7 +105,7 @@ export default function AuthPage() {
                         <InputField
                           icon={<User className="w-5 h-5" />}
                           type="text"
-                          placeholder="Username"
+                          placeholder="اسم المستخدم"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
                         />
@@ -104,7 +116,7 @@ export default function AuthPage() {
                   <InputField
                     icon={<Mail className="w-5 h-5" />}
                     type="email"
-                    placeholder="Email"
+                    placeholder="البريد الإلكتروني"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -112,7 +124,7 @@ export default function AuthPage() {
                   <InputField
                     icon={<Lock className="w-5 h-5" />}
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Password"
+                    placeholder="كلمة المرور"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     rightIcon={
@@ -138,7 +150,7 @@ export default function AuthPage() {
                         <InputField
                           icon={<Lock className="w-5 h-5" />}
                           type={showPassword ? 'text' : 'password'}
-                          placeholder="Confirm Password"
+                          placeholder="تأكيد كلمة المرور"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                         />
@@ -152,7 +164,7 @@ export default function AuthPage() {
                         type="button"
                         className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
                       >
-                        Forgot password?
+                        نسيت كلمة المرور؟
                       </button>
                     </div>
                   )}
@@ -164,7 +176,7 @@ export default function AuthPage() {
                     className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-shadow relative overflow-hidden group"
                   >
                     <span className="relative z-10">
-                      {isLogin ? 'Login' : 'Create Account'}
+                      {isLogin ? 'تسجيل الدخول' : 'إنشاء الحساب'}
                     </span>
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"
@@ -181,7 +193,7 @@ export default function AuthPage() {
                       <div className="w-full border-t border-gray-800"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-4 bg-gray-900/80 text-gray-400">Or continue with</span>
+                      <span className="px-4 bg-gray-900/80 text-gray-400">أو تابع باستخدام</span>
                     </div>
                   </div>
 
@@ -231,7 +243,7 @@ function InputField({
     >
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity blur" />
       <div className="relative flex items-center bg-gray-800/50 rounded-xl border border-gray-700/50 group-hover:border-cyan-500/50 transition-all">
-        <div className="pl-4 text-gray-400 group-hover:text-cyan-400 transition-colors">
+        <div className="pr-4 text-gray-400 group-hover:text-cyan-400 transition-colors">
           {icon}
         </div>
         <input
@@ -242,7 +254,7 @@ function InputField({
           className="flex-1 bg-transparent px-4 py-4 text-white placeholder-gray-500 focus:outline-none"
         />
         {rightIcon && (
-          <div className="pr-4">
+          <div className="pl-4">
             {rightIcon}
           </div>
         )}
@@ -266,6 +278,7 @@ function SocialButton({
       whileTap={{ scale: 0.95 }}
       type="button"
       className="relative p-4 rounded-xl bg-gray-800/50 border border-gray-700/50 hover:border-gray-600 transition-all group overflow-hidden"
+      title={label}
     >
       <motion.div
         className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-20 transition-opacity`}
