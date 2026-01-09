@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { Users, Trophy, Gamepad2, MessageSquare, Image, Star, TrendingUp, Zap, Globe, Sparkles, Target, Shield, Swords } from 'lucide-react';
+import { Users, Trophy, Gamepad2, MessageSquare, Image, Star, TrendingUp, Zap, Globe, Sparkles, Target, Shield, Swords, Newspaper, Edit3 } from 'lucide-react';
 import { GameCard } from '@/components/gaming/GameCard';
 import { GamingButton } from '@/components/gaming/GamingButton';
 import { GamingCard } from '@/components/gaming/GamingCard';
@@ -20,20 +20,20 @@ const features = [
     href: '/discovery'
   },
   {
-    icon: Gamepad2,
-    title: 'انضم للفرق',
-    description: 'كوّن فرق تنافسية قوية',
+    icon: Edit3,
+    title: 'مراجعات الألعاب',
+    description: 'تقييمات شاملة لأحدث الألعاب',
     color: 'from-purple-500 to-pink-500',
     iconColor: 'text-purple-400',
-    href: '/teams'
+    href: '/reviews'
   },
   {
-    icon: MessageSquare,
-    title: 'المجتمع',
-    description: 'شارك في النقاشات والحوارات',
-    color: 'from-green-500 to-emerald-500',
-    iconColor: 'text-green-400',
-    href: '/forums'
+    icon: Newspaper,
+    title: 'أخبار الألعاب',
+    description: 'آخر الأخبار والمستجدات',
+    color: 'from-orange-500 to-red-500',
+    iconColor: 'text-orange-400',
+    href: '/news'
   },
   {
     icon: Trophy,
@@ -438,8 +438,8 @@ export default function Home() {
         >
           <div className="flex flex-wrap justify-center gap-8 mb-8">
             {[
-              { href: '/news', label: 'الأخبار' },
-              { href: '/reviews/create', label: 'المراجعات' },
+              { href: '/news', label: 'الأخبار', icon: Newspaper },
+              { href: '/reviews', label: 'المراجعات', icon: Edit3 },
               { href: '/translations', label: 'الترجمات', icon: Globe },
               { href: '/creators', label: 'صناع المحتوى' },
             ].map((link) => (
