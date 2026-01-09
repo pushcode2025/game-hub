@@ -1,9 +1,8 @@
 'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { Users, Trophy, Gamepad2, MessageSquare, Image, Star, TrendingUp, Zap, Globe } from 'lucide-react';
-import { PageContainer } from '@/components/layout/PageContainer';
+import { Users, Trophy, Gamepad2, MessageSquare, Image, Star, TrendingUp, Zap, Globe, Sparkles, Target, Shield, Swords } from 'lucide-react';
 import { GameCard } from '@/components/gaming/GameCard';
 import { GamingButton } from '@/components/gaming/GamingButton';
 import { GamingCard } from '@/components/gaming/GamingCard';
@@ -11,157 +10,454 @@ import { Badge } from '@/components/gaming/Badge';
 import { GlowText } from '@/components/gaming/GlowText';
 import { mockGames, getTrendingGames } from '@/lib/mockData';
 
+const features = [
+  {
+    icon: Users,
+    title: 'Find Players',
+    description: 'Connect with gamers worldwide',
+    color: 'from-cyan-500 to-blue-500',
+    iconColor: 'text-cyan-400',
+    href: '/discovery'
+  },
+  {
+    icon: Gamepad2,
+    title: 'Join Teams',
+    description: 'Form competitive squads',
+    color: 'from-purple-500 to-pink-500',
+    iconColor: 'text-purple-400',
+    href: '/teams'
+  },
+  {
+    icon: MessageSquare,
+    title: 'Community',
+    description: 'Engage in discussions',
+    color: 'from-green-500 to-emerald-500',
+    iconColor: 'text-green-400',
+    href: '/forums'
+  },
+  {
+    icon: Trophy,
+    title: 'Compete',
+    description: 'Climb the leaderboards',
+    color: 'from-yellow-500 to-orange-500',
+    iconColor: 'text-yellow-400',
+    href: '/leaderboard'
+  },
+];
+
+const stats = [
+  { value: '50M+', label: 'Active Players', icon: Users, color: 'text-cyan-400' },
+  { value: '10K+', label: 'Teams & Clans', icon: Shield, color: 'text-purple-400' },
+  { value: '500K+', label: 'Daily Matches', icon: Swords, color: 'text-green-400' },
+  { value: '1M+', label: 'Media Uploads', icon: Image, color: 'text-pink-400' },
+];
+
 export default function Home() {
   const trendingGames = getTrendingGames();
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900 py-20 px-6">
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress')] opacity-10 bg-cover bg-center" />
-        <div className="relative max-w-7xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <Badge variant="info" glow className="mb-6">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Join 50M+ Gamers Worldwide
-            </Badge>
-            <h1 className="text-6xl md:text-7xl font-bold mb-6">
-              Your Ultimate <GlowText color="blue">Gaming</GlowText> Hub
-            </h1>
-            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
-              Connect with players, join teams, share content, compete in tournaments, and build your gaming legacy.
-            </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/matchmaking/create">
-                <GamingButton variant="accent" size="lg" glow>
-                  <Users className="w-5 h-5 mr-2" />
-                  Find Players
-                </GamingButton>
+    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
+      <motion.div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.08), transparent 40%)`
+        }}
+      />
+
+      <motion.div
+        className="relative overflow-hidden"
+        style={{ opacity, scale }}
+      >
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900" />
+          <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress')] opacity-5 bg-cover bg-center" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 py-32">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <Badge variant="info" glow className="mb-8 inline-flex">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Join 50M+ Gamers Worldwide
+              </Badge>
+            </motion.div>
+
+            <motion.h1
+              className="text-7xl md:text-8xl font-black mb-8 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              Your Ultimate{' '}
+              <span className="relative inline-block">
+                <GlowText color="blue">Gaming</GlowText>
+                <motion.div
+                  className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg blur-xl opacity-30"
+                  animate={{
+                    opacity: [0.3, 0.5, 0.3],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              </span>{' '}
+              Hub
+            </motion.h1>
+
+            <motion.p
+              className="text-xl md:text-2xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            >
+              Connect with players, dominate leaderboards, and build your gaming legacy
+            </motion.p>
+
+            <motion.div
+              className="flex gap-6 justify-center flex-wrap"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+            >
+              <Link href="/discovery">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <GamingButton variant="accent" size="lg" glow>
+                    <Users className="w-5 h-5 mr-2" />
+                    Find Players Now
+                  </GamingButton>
+                </motion.div>
               </Link>
               <Link href="/leaderboard">
-                <GamingButton variant="ghost" size="lg">
-                  <Trophy className="w-5 h-5 mr-2" />
-                  View Leaderboard
-                </GamingButton>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <GamingButton variant="ghost" size="lg">
+                    <Trophy className="w-5 h-5 mr-2" />
+                    View Leaderboard
+                  </GamingButton>
+                </motion.div>
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <Link href="/teams">
-            <GamingCard hover glow className="p-6 text-center cursor-pointer">
-              <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Teams & Clans</h3>
-              <p className="text-sm text-slate-400">Join or create competitive teams</p>
-            </GamingCard>
-          </Link>
-          <Link href="/matchmaking/create">
-            <GamingCard hover glow className="p-6 text-center cursor-pointer">
-              <Gamepad2 className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Matchmaking</h3>
-              <p className="text-sm text-slate-400">Find players for your next game</p>
-            </GamingCard>
-          </Link>
-          <Link href="/forums">
-            <GamingCard hover glow className="p-6 text-center cursor-pointer">
-              <MessageSquare className="w-12 h-12 text-green-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Forums</h3>
-              <p className="text-sm text-slate-400">Discuss strategies and tips</p>
-            </GamingCard>
-          </Link>
-          <Link href="/gallery">
-            <GamingCard hover glow className="p-6 text-center cursor-pointer">
-              <Image className="w-12 h-12 text-pink-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">Media Gallery</h3>
-              <p className="text-sm text-slate-400">Share your best moments</p>
-            </GamingCard>
-          </Link>
-        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent" />
+      </motion.div>
 
-        <div className="mb-16">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-4xl font-bold gradient-text">Trending Games</h2>
-            <Link href="/games">
-              <GamingButton variant="ghost">View All</GamingButton>
-            </Link>
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, staggerChildren: 0.1 }}
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
+            >
+              <Link href={feature.href}>
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  <GamingCard hover glow className="p-8 text-center cursor-pointer h-full relative overflow-hidden group">
+                    <motion.div
+                      className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                    />
+                    <motion.div
+                      className="relative"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    >
+                      <feature.icon className={`w-14 h-14 ${feature.iconColor} mx-auto mb-4`} />
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-3 relative">{feature.title}</h3>
+                    <p className="text-sm text-slate-400 relative">{feature.description}</p>
+                  </GamingCard>
+                </motion.div>
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          className="mb-24"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="flex justify-between items-center mb-12">
+            <motion.h2
+              className="text-5xl font-black"
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <GlowText color="blue">Trending</GlowText> Games
+            </motion.h2>
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Link href="/games">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <GamingButton variant="ghost">
+                    View All
+                    <TrendingUp className="w-4 h-4 ml-2" />
+                  </GamingButton>
+                </motion.div>
+              </Link>
+            </motion.div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {trendingGames.map((game) => (
-              <GameCard key={game.id} title={game.title} coverImage={game.coverImage} rating={game.rating} playerCount={game.playerCount} trending={game.trending} />
+            {trendingGames.map((game, index) => (
+              <motion.div
+                key={game.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                whileHover={{ y: -10 }}
+              >
+                <GameCard
+                  title={game.title}
+                  coverImage={game.coverImage}
+                  rating={game.rating}
+                  playerCount={game.playerCount}
+                  trending={game.trending}
+                />
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
-          <GamingCard gradient className="p-8">
-            <Zap className="w-12 h-12 text-yellow-400 mb-4" />
-            <h3 className="text-2xl font-bold mb-4">Complete Daily Quests</h3>
-            <p className="text-slate-300 mb-6">Earn XP and unlock exclusive rewards by completing daily and weekly challenges.</p>
-            <Link href="/quests">
-              <GamingButton variant="primary" glow>
-                View Quests
-              </GamingButton>
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-24"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.02, y: -5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            <GamingCard gradient className="p-10 h-full relative overflow-hidden group">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <motion.div
+                initial={{ scale: 0.8, rotate: -10 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
+                <Zap className="w-16 h-16 text-yellow-400 mb-6" />
+              </motion.div>
+              <h3 className="text-3xl font-black mb-4">Complete Daily Quests</h3>
+              <p className="text-slate-300 mb-8 text-lg">Earn XP and unlock exclusive rewards by completing daily and weekly challenges.</p>
+              <Link href="/quests">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <GamingButton variant="primary" glow>
+                    <Target className="w-4 h-4 mr-2" />
+                    View Quests
+                  </GamingButton>
+                </motion.div>
+              </Link>
+            </GamingCard>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.02, y: -5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            <GamingCard gradient className="p-10 h-full relative overflow-hidden group">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <motion.div
+                initial={{ scale: 0.8, rotate: 10 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
+                <Trophy className="w-16 h-16 text-blue-400 mb-6" />
+              </motion.div>
+              <h3 className="text-3xl font-black mb-4">Climb the Leaderboard</h3>
+              <p className="text-slate-300 mb-8 text-lg">Compete with players worldwide and earn your place among the top gamers.</p>
+              <Link href="/leaderboard">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <GamingButton variant="primary" glow>
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    View Rankings
+                  </GamingButton>
+                </motion.div>
+              </Link>
+            </GamingCard>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          whileHover={{ scale: 1.01 }}
+        >
+          <GamingCard className="p-12 text-center bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 border-blue-500/30 relative overflow-hidden">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5"
+              animate={{
+                x: ['-100%', '100%'],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            <motion.div
+              animate={{
+                rotate: [0, 360],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <Star className="w-20 h-20 text-yellow-400 mx-auto mb-6" />
+            </motion.div>
+            <h3 className="text-4xl font-black mb-6">Become a Creator</h3>
+            <p className="text-slate-300 mb-8 max-w-2xl mx-auto text-lg">Share your gaming content, build your audience, and earn recognition in the gaming community.</p>
+            <Link href="/creators">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <GamingButton variant="accent" size="lg" glow>
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Join Creator Program
+                </GamingButton>
+              </motion.div>
             </Link>
           </GamingCard>
+        </motion.div>
 
-          <GamingCard gradient className="p-8">
-            <Trophy className="w-12 h-12 text-blue-400 mb-4" />
-            <h3 className="text-2xl font-bold mb-4">Climb the Leaderboard</h3>
-            <p className="text-slate-300 mb-6">Compete with players worldwide and earn your place among the top gamers.</p>
-            <Link href="/leaderboard">
-              <GamingButton variant="primary" glow>
-                View Rankings
-              </GamingButton>
-            </Link>
-          </GamingCard>
-        </div>
-
-        <GamingCard className="p-8 text-center bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-blue-500/30">
-          <Star className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
-          <h3 className="text-3xl font-bold mb-4">Become a Creator</h3>
-          <p className="text-slate-300 mb-6 max-w-2xl mx-auto">Share your gaming content, build your audience, and earn recognition in the gaming community.</p>
-          <Link href="/creators">
-            <GamingButton variant="accent" size="lg" glow>
-              Join Creator Program
-            </GamingButton>
-          </Link>
-        </GamingCard>
-
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-4xl font-bold text-blue-400 mb-2">50M+</div>
-            <div className="text-slate-400">Active Players</div>
-          </div>
-          <div>
-            <div className="text-4xl font-bold text-purple-400 mb-2">10K+</div>
-            <div className="text-slate-400">Teams & Clans</div>
-          </div>
-          <div>
-            <div className="text-4xl font-bold text-green-400 mb-2">500K+</div>
-            <div className="text-slate-400">Daily Matches</div>
-          </div>
-          <div>
-            <div className="text-4xl font-bold text-pink-400 mb-2">1M+</div>
-            <div className="text-slate-400">Media Uploads</div>
-          </div>
-        </div>
+        <motion.div
+          className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              className="text-center relative group"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
+              whileHover={{ scale: 1.1, y: -5 }}
+            >
+              <motion.div
+                className={`absolute inset-0 ${stat.color} blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500`}
+              />
+              <stat.icon className={`w-12 h-12 ${stat.color} mx-auto mb-4`} />
+              <motion.div
+                className={`text-5xl font-black ${stat.color} mb-2`}
+                initial={{ scale: 0.5 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 + 0.2, type: "spring", stiffness: 200 }}
+              >
+                {stat.value}
+              </motion.div>
+              <div className="text-slate-400 font-medium">{stat.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
 
-      <footer className="bg-slate-900 border-t border-slate-800 py-8 px-6 mt-16">
-        <div className="max-w-7xl mx-auto text-center text-slate-400">
-          <div className="flex justify-center gap-6 mb-4">
-            <Link href="/news" className="hover:text-white transition-colors">News</Link>
-            <Link href="/reviews/create" className="hover:text-white transition-colors">Reviews</Link>
-            <Link href="/translations" className="hover:text-white transition-colors">
-              <Globe className="w-4 h-4 inline mr-1" />
-              Translations
-            </Link>
-            <Link href="/creators" className="hover:text-white transition-colors">Creators</Link>
+      <footer className="relative bg-slate-900/50 backdrop-blur-xl border-t border-slate-800/50 py-12 px-6 mt-24">
+        <motion.div
+          className="max-w-7xl mx-auto"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="flex flex-wrap justify-center gap-8 mb-8">
+            {[
+              { href: '/news', label: 'News' },
+              { href: '/reviews/create', label: 'Reviews' },
+              { href: '/translations', label: 'Translations', icon: Globe },
+              { href: '/creators', label: 'Creators' },
+            ].map((link) => (
+              <Link key={link.href} href={link.href}>
+                <motion.div
+                  className="text-slate-400 hover:text-white transition-colors flex items-center gap-2"
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {link.icon && <link.icon className="w-4 h-4" />}
+                  {link.label}
+                </motion.div>
+              </Link>
+            ))}
           </div>
-          <p>2024 Gaming Hub. All rights reserved.</p>
-        </div>
+          <p className="text-center text-slate-500">2024 Gaming Hub. All rights reserved.</p>
+        </motion.div>
       </footer>
     </div>
   );
