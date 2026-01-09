@@ -1,0 +1,189 @@
+// ===============================
+// Prisma Schema - Gaming Hub Core
+// ===============================
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+   engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+
+}
+
+// ===============================
+// Core Tables
+// ===============================
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  name      String
+  avatar    String?
+  createdAt DateTime @default(now())
+
+  news      News[]
+  reviews   Review[]
+
+  @@map("users")
+}
+
+model Game {
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  description   String?
+  coverImage    String?
+  releaseDate   DateTime?
+  developer     String?
+  publisher     String?
+  createdAt     DateTime @default(now())
+
+  platforms     GamePlatform[]
+  news          News[]
+  reviews       Review[]
+
+  @@map("games")
+}
+
+model Platform {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+
+  games     GamePlatform[]
+  reviews   ReviewPlatform[]
+
+  @@map("platforms")
+}
+
+model GamePlatform {
+  id          String   @id @default(uuid())
+  gameId      String
+  platformId  String
+
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  platform    Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, platformId])
+  @@map("game_platforms")
+}
+
+// ===============================
+// Taxonomy
+// ===============================
+
+model Genre {
+  id      String @id @default(uuid())
+  name    String
+  slug    String @unique
+
+  reviews ReviewGenre[]
+
+  @@map("genres")
+}
+
+model Tag {
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
+
+  news NewsTag[]
+
+  @@map("tags")
+}
+
+// ===============================
+// Content
+// ===============================
+
+model News {
+  id            String   @id @default(uuid())
+  title         String
+  slug          String   @unique
+  excerpt       String
+  contentPath   String
+  contentType   String
+  category      String
+  isFeatured    Boolean  @default(false)
+  published     Boolean  @default(true)
+  viewsCount    Int      @default(0)
+  likesCount    Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  authorId      String
+  author        User     @relation(fields: [authorId], references: [id])
+
+  gameId        String?
+  game          Game?    @relation(fields: [gameId], references: [id])
+
+  tags          NewsTag[]
+
+  @@map("news")
+}
+
+model Review {
+  id            String   @id @default(uuid())
+  title         String
+  slug          String   @unique
+  excerpt       String
+  contentPath   String
+  contentType   String
+  rating        Float
+  published     Boolean  @default(true)
+  viewsCount    Int      @default(0)
+  likesCount    Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  authorId      String
+  author        User     @relation(fields: [authorId], references: [id])
+
+  gameId        String
+  game          Game     @relation(fields: [gameId], references: [id])
+
+  genres        ReviewGenre[]
+  platforms     ReviewPlatform[]
+
+  @@map("reviews")
+}
+
+// ===============================
+// Pivot Tables
+// ===============================
+
+model NewsTag {
+  newsId String
+  tagId  String
+
+  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([newsId, tagId])
+  @@map("news_tags")
+}
+
+model ReviewGenre {
+  reviewId String
+  genreId  String
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  genre  Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([reviewId, genreId])
+  @@map("review_genres")
+}
+
+model ReviewPlatform {
+  reviewId   String
+  platformId String
+
+  review   Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@id([reviewId, platformId])
+  @@map("review_platforms")
+}
