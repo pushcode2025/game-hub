@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Heart, MessageCircle, Share2, Play, Image as ImageIcon, Video, TrendingUp, Eye, Bookmark, ArrowRight, X, ThumbsUp, Smile, Flame, Award } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Play, Image as ImageIcon, Video, TrendingUp, Eye, Bookmark, ArrowRight, X, ThumbsUp, Smile, Flame, Award, Send, ChevronLeft, ChevronRight } from 'lucide-react';
 import { GamingButton } from '@/components/gaming/GamingButton';
 import { GamingCard } from '@/components/gaming/GamingCard';
 import { Badge } from '@/components/gaming/Badge';
@@ -136,11 +136,21 @@ const reactions = [
   { icon: Smile, label: 'مضحك', color: 'text-green-400' }
 ];
 
+const mockComments = [
+  { id: 1, author: 'عمر الجيمر', comment: 'لقطة رائعة! كيف حصلت عليها؟', time: 'منذ ساعة', avatar: 'ع' },
+  { id: 2, author: 'سارة اللاعبة', comment: 'أفضل محتوى شفته اليوم', time: 'منذ ساعتين', avatar: 'س' },
+  { id: 3, author: 'أحمد البطل', comment: 'ممتاز! هل يمكنك مشاركة الإعدادات؟', time: 'منذ 3 ساعات', avatar: 'أ' },
+  { id: 4, author: 'ليلى المغامرة', comment: 'يستاهل كل الاحترام', time: 'منذ 4 ساعات', avatar: 'ل' },
+  { id: 5, author: 'خالد البطل', comment: 'واو! هذا مذهل', time: 'منذ 5 ساعات', avatar: 'خ' }
+];
+
 export default function MediaGallery() {
   const [selectedItem, setSelectedItem] = useState<typeof galleryItems[0] | null>(null);
   const [filter, setFilter] = useState<'all' | 'image' | 'video'>('all');
   const [liked, setLiked] = useState<Set<number>>(new Set());
   const [bookmarked, setBookmarked] = useState<Set<number>>(new Set());
+  const [commentText, setCommentText] = useState('');
+  const [selectedReaction, setSelectedReaction] = useState<number | null>(null);
 
   const filteredItems = galleryItems.filter(item =>
     filter === 'all' || item.type === filter
@@ -170,6 +180,25 @@ export default function MediaGallery() {
       }
       return newSet;
     });
+  };
+
+  const getCurrentItemIndex = () => {
+    if (!selectedItem) return -1;
+    return filteredItems.findIndex(item => item.id === selectedItem.id);
+  };
+
+  const navigateToNext = () => {
+    const currentIndex = getCurrentItemIndex();
+    if (currentIndex < filteredItems.length - 1) {
+      setSelectedItem(filteredItems[currentIndex + 1]);
+    }
+  };
+
+  const navigateToPrevious = () => {
+    const currentIndex = getCurrentItemIndex();
+    if (currentIndex > 0) {
+      setSelectedItem(filteredItems[currentIndex - 1]);
+    }
   };
 
   return (
@@ -239,379 +268,497 @@ export default function MediaGallery() {
           </div>
         </motion.div>
 
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="flex flex-col lg:flex-row min-h-screen">
           <motion.div
-            className="mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            className={`${selectedItem ? 'lg:w-1/2' : 'w-full'} transition-all duration-500 px-6 py-16`}
+            animate={{
+              width: selectedItem ? '50%' : '100%',
+            }}
           >
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-4xl font-black">
-                المحتوى <GlowText color="pink">الرائج</GlowText>
-              </h2>
-              <TrendingUp className="w-8 h-8 text-pink-400 animate-pulse" />
-            </div>
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                className="mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-4xl font-black">
+                    المحتوى <GlowText color="pink">الرائج</GlowText>
+                  </h2>
+                  <TrendingUp className="w-8 h-8 text-pink-400 animate-pulse" />
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {trendingItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -10 }}
-                  onClick={() => setSelectedItem(item)}
-                >
-                  <GamingCard hover glow className="overflow-hidden group cursor-pointer">
-                    <div className="relative h-72 overflow-hidden">
-                      <img
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+                <div className={`grid grid-cols-1 ${selectedItem ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-6 transition-all duration-500`}>
+                  {trendingItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1, duration: 0.5 }}
+                      whileHover={{ y: -10, scale: 1.02 }}
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <GamingCard hover glow className="overflow-hidden group cursor-pointer">
+                        <div className="relative h-72 overflow-hidden">
+                          <motion.img
+                            src={item.thumbnail}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 0.5 }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
 
-                      {item.type === 'video' && (
-                        <motion.div
-                          className="absolute inset-0 flex items-center justify-center"
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Play className="w-8 h-8 text-white mr-1" fill="white" />
+                          {item.type === 'video' && (
+                            <motion.div
+                              className="absolute inset-0 flex items-center justify-center"
+                              whileHover={{ scale: 1.1 }}
+                            >
+                              <motion.div
+                                className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                                whileHover={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
+                              >
+                                <Play className="w-8 h-8 text-white mr-1" fill="white" />
+                              </motion.div>
+                            </motion.div>
+                          )}
+
+                          <div className="absolute top-4 right-4">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: index * 0.1 + 0.3 }}
+                            >
+                              <Badge variant="danger" glow>
+                                <TrendingUp className="w-3 h-3 ml-1" />
+                                رائج
+                              </Badge>
+                            </motion.div>
                           </div>
-                        </motion.div>
-                      )}
 
-                      <div className="absolute top-4 right-4">
-                        <Badge variant="danger" glow>
-                          <TrendingUp className="w-3 h-3 ml-1" />
-                          رائج
-                        </Badge>
-                      </div>
-
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <div className="flex items-center gap-4 text-white text-sm">
-                          <div className="flex items-center gap-1">
-                            <Heart className="w-4 h-4" />
-                            <span>{item.likes.toLocaleString('ar-SA')}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Eye className="w-4 h-4" />
-                            <span>{item.views.toLocaleString('ar-SA')}</span>
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="flex items-center gap-4 text-white text-sm">
+                              <motion.div
+                                className="flex items-center gap-1"
+                                whileHover={{ scale: 1.1 }}
+                              >
+                                <Heart className="w-4 h-4" />
+                                <span>{item.likes.toLocaleString('ar-SA')}</span>
+                              </motion.div>
+                              <motion.div
+                                className="flex items-center gap-1"
+                                whileHover={{ scale: 1.1 }}
+                              >
+                                <Eye className="w-4 h-4" />
+                                <span>{item.views.toLocaleString('ar-SA')}</span>
+                              </motion.div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="p-5 bg-gradient-to-br from-slate-900/95 to-slate-800/95">
-                      <h3 className="text-xl font-bold mb-2 text-white group-hover:text-pink-400 transition-colors line-clamp-2">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-center justify-between text-sm text-slate-400">
-                        <span>{item.author}</span>
-                        <span>{item.game}</span>
-                      </div>
-                    </div>
-                  </GamingCard>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-4xl font-black">
-                جميع <GlowText color="blue">الوسائط</GlowText>
-              </h2>
-
-              <div className="flex gap-3">
-                {[
-                  { value: 'all', label: 'الكل', icon: ImageIcon },
-                  { value: 'image', label: 'صور', icon: ImageIcon },
-                  { value: 'video', label: 'فيديوهات', icon: Video }
-                ].map(({ value, label, icon: Icon }) => (
-                  <motion.button
-                    key={value}
-                    onClick={() => setFilter(value as typeof filter)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`px-6 py-3 rounded-lg font-bold transition-all ${
-                      filter === value
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
-                        : 'bg-slate-900/50 text-slate-400 hover:text-white border border-slate-800'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 inline ml-2" />
-                    {label}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.4 }}
-                  whileHover={{ y: -8 }}
-                  onClick={() => setSelectedItem(item)}
-                >
-                  <GamingCard hover className="overflow-hidden group cursor-pointer">
-                    <div className="relative h-64 overflow-hidden">
-                      <img
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent" />
-
-                      {item.type === 'video' && (
-                        <motion.div
-                          className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Play className="w-7 h-7 text-white mr-1" fill="white" />
+                        <div className="p-5 bg-gradient-to-br from-slate-900/95 to-slate-800/95">
+                          <h3 className="text-xl font-bold mb-2 text-white group-hover:text-pink-400 transition-colors line-clamp-2">
+                            {item.title}
+                          </h3>
+                          <div className="flex items-center justify-between text-sm text-slate-400">
+                            <span>{item.author}</span>
+                            <span>{item.game}</span>
                           </div>
-                        </motion.div>
-                      )}
+                        </div>
+                      </GamingCard>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
 
-                      <div className="absolute top-3 right-3 flex gap-2">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleBookmark(item.id);
-                          }}
-                          className={`p-2 rounded-lg backdrop-blur-sm transition-colors ${
-                            bookmarked.has(item.id)
-                              ? 'bg-yellow-500/30 text-yellow-400'
-                              : 'bg-black/30 text-white hover:bg-black/50'
-                          }`}
-                        >
-                          <Bookmark className="w-4 h-4" fill={bookmarked.has(item.id) ? 'currentColor' : 'none'} />
-                        </motion.button>
-                      </div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+                  <h2 className="text-4xl font-black">
+                    جميع <GlowText color="blue">الوسائط</GlowText>
+                  </h2>
 
-                      <div className="absolute bottom-3 left-3 right-3">
-                        <div className="flex items-center justify-between text-white text-sm">
-                          <div className="flex items-center gap-3">
-                            <motion.button
+                  <div className="flex gap-3">
+                    {[
+                      { value: 'all', label: 'الكل', icon: ImageIcon },
+                      { value: 'image', label: 'صور', icon: ImageIcon },
+                      { value: 'video', label: 'فيديوهات', icon: Video }
+                    ].map(({ value, label, icon: Icon }) => (
+                      <motion.button
+                        key={value}
+                        onClick={() => setFilter(value as typeof filter)}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`px-6 py-3 rounded-lg font-bold transition-all ${
+                          filter === value
+                            ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                            : 'bg-slate-900/50 text-slate-400 hover:text-white border border-slate-800'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 inline ml-2" />
+                        {label}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={`grid grid-cols-1 ${selectedItem ? 'md:grid-cols-1 lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} gap-6 transition-all duration-500`}>
+                  {filteredItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05, duration: 0.4 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <GamingCard hover className="overflow-hidden group cursor-pointer">
+                        <div className="relative h-64 overflow-hidden">
+                          <motion.img
+                            src={item.thumbnail}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 0.5 }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent" />
+
+                          {item.type === 'video' && (
+                            <motion.div
+                              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                               whileHover={{ scale: 1.1 }}
+                            >
+                              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                <Play className="w-7 h-7 text-white mr-1" fill="white" />
+                              </div>
+                            </motion.div>
+                          )}
+
+                          <div className="absolute top-3 right-3 flex gap-2">
+                            <motion.button
+                              whileHover={{ scale: 1.1, rotate: 5 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                toggleLike(item.id);
+                                toggleBookmark(item.id);
                               }}
-                              className="flex items-center gap-1"
+                              className={`p-2 rounded-lg backdrop-blur-sm transition-colors ${
+                                bookmarked.has(item.id)
+                                  ? 'bg-yellow-500/30 text-yellow-400'
+                                  : 'bg-black/30 text-white hover:bg-black/50'
+                              }`}
                             >
-                              <Heart
-                                className={`w-4 h-4 transition-colors ${
-                                  liked.has(item.id) ? 'text-red-400' : ''
-                                }`}
-                                fill={liked.has(item.id) ? 'currentColor' : 'none'}
-                              />
-                              <span>{(item.likes + (liked.has(item.id) ? 1 : 0)).toLocaleString('ar-SA')}</span>
+                              <Bookmark className="w-4 h-4" fill={bookmarked.has(item.id) ? 'currentColor' : 'none'} />
                             </motion.button>
-                            <div className="flex items-center gap-1">
-                              <MessageCircle className="w-4 h-4" />
-                              <span>{item.comments.toLocaleString('ar-SA')}</span>
+                          </div>
+
+                          <div className="absolute bottom-3 left-3 right-3">
+                            <div className="flex items-center justify-between text-white text-sm">
+                              <div className="flex items-center gap-3">
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleLike(item.id);
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <Heart
+                                    className={`w-4 h-4 transition-colors ${
+                                      liked.has(item.id) ? 'text-red-400' : ''
+                                    }`}
+                                    fill={liked.has(item.id) ? 'currentColor' : 'none'}
+                                  />
+                                  <span>{(item.likes + (liked.has(item.id) ? 1 : 0)).toLocaleString('ar-SA')}</span>
+                                </motion.button>
+                                <motion.div
+                                  className="flex items-center gap-1"
+                                  whileHover={{ scale: 1.1 }}
+                                >
+                                  <MessageCircle className="w-4 h-4" />
+                                  <span>{item.comments.toLocaleString('ar-SA')}</span>
+                                </motion.div>
+                              </div>
+                              <motion.div
+                                className="flex items-center gap-1"
+                                whileHover={{ scale: 1.1 }}
+                              >
+                                <Eye className="w-4 h-4" />
+                                <span>{item.views.toLocaleString('ar-SA')}</span>
+                              </motion.div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <Eye className="w-4 h-4" />
-                            <span>{item.views.toLocaleString('ar-SA')}</span>
+                        </div>
+
+                        <div className="p-4">
+                          <h3 className="text-lg font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors line-clamp-2">
+                            {item.title}
+                          </h3>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-400">{item.author}</span>
+                            <Badge variant="info" className="text-xs">{item.game}</Badge>
                           </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4">
-                      <h3 className="text-lg font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors line-clamp-2">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">{item.author}</span>
-                        <Badge variant="info" className="text-xs">{item.game}</Badge>
-                      </div>
-                    </div>
-                  </GamingCard>
-                </motion.div>
-              ))}
+                      </GamingCard>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </motion.div>
-        </div>
-      </div>
 
-      <AnimatePresence>
-        {selectedItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-6"
-            onClick={() => setSelectedItem(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 50 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 50 }}
-              className="max-w-5xl w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <GamingCard className="overflow-hidden">
-                <div className="relative">
+          <AnimatePresence mode="wait">
+            {selectedItem && (
+              <motion.div
+                initial={{ x: '100%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '100%', opacity: 0 }}
+                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                className="fixed lg:sticky top-0 right-0 w-full lg:w-1/2 h-screen bg-slate-900/95 backdrop-blur-xl border-r border-slate-800 overflow-y-auto z-40"
+              >
+                <div className="relative h-full">
                   <motion.button
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setSelectedItem(null)}
-                    className="absolute top-4 left-4 z-10 p-2 rounded-lg bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 transition-colors"
+                    className="absolute top-4 left-4 z-50 p-3 rounded-xl bg-slate-800/80 backdrop-blur-sm text-white hover:bg-slate-700 transition-all shadow-lg"
                   >
                     <X className="w-6 h-6" />
                   </motion.button>
 
-                  <div className="relative h-96 overflow-hidden bg-slate-900">
-                    <img
+                  {getCurrentItemIndex() > 0 && (
+                    <motion.button
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      whileHover={{ scale: 1.1, x: -5 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={navigateToPrevious}
+                      className="absolute top-1/2 left-4 z-50 p-3 rounded-full bg-slate-800/80 backdrop-blur-sm text-white hover:bg-slate-700 transition-all shadow-lg"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </motion.button>
+                  )}
+
+                  {getCurrentItemIndex() < filteredItems.length - 1 && (
+                    <motion.button
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      whileHover={{ scale: 1.1, x: 5 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={navigateToNext}
+                      className="absolute top-1/2 right-4 z-50 p-3 rounded-full bg-slate-800/80 backdrop-blur-sm text-white hover:bg-slate-700 transition-all shadow-lg"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </motion.button>
+                  )}
+
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="relative h-[50vh] lg:h-[60vh] overflow-hidden bg-slate-950"
+                  >
+                    <motion.img
+                      key={selectedItem.id}
+                      initial={{ scale: 1.1, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.5 }}
                       src={selectedItem.url}
                       alt={selectedItem.title}
                       className="w-full h-full object-contain"
                     />
                     {selectedItem.type === 'video' && (
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <motion.div
+                        className="absolute inset-0 flex items-center justify-center"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.3, type: 'spring' }}
+                      >
                         <motion.div
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center cursor-pointer"
+                          className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center cursor-pointer shadow-2xl"
                         >
                           <Play className="w-10 h-10 text-white mr-1" fill="white" />
                         </motion.div>
-                      </div>
+                      </motion.div>
                     )}
-                  </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent pointer-events-none" />
+                  </motion.div>
 
-                  <div className="p-8">
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="flex-1">
-                        <h2 className="text-3xl font-black mb-2">{selectedItem.title}</h2>
-                        <div className="flex items-center gap-4 text-slate-400">
-                          <span>{selectedItem.author}</span>
-                          <span>•</span>
-                          <Badge variant="info">{selectedItem.game}</Badge>
+                  <div className="p-6 lg:p-8 space-y-6">
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h2 className="text-3xl lg:text-4xl font-black mb-3 leading-tight">
+                            {selectedItem.title}
+                          </h2>
+                          <div className="flex items-center gap-4 text-slate-400">
+                            <span className="text-lg">{selectedItem.author}</span>
+                            <span>•</span>
+                            <Badge variant="info">{selectedItem.game}</Badge>
+                          </div>
                         </div>
-                      </div>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-3 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
-                      >
-                        <Share2 className="w-5 h-5" />
-                      </motion.button>
-                    </div>
-
-                    <div className="flex items-center gap-2 mb-6">
-                      {reactions.map(({ icon: Icon, label, color }, index) => (
                         <motion.button
-                          key={label}
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: index * 0.05 }}
-                          whileHover={{ scale: 1.1, y: -3 }}
+                          whileHover={{ scale: 1.1, rotate: 10 }}
                           whileTap={{ scale: 0.9 }}
-                          className="p-3 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors group"
+                          className="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all shadow-lg"
                         >
-                          <Icon className={`w-5 h-5 ${color} group-hover:scale-110 transition-transform`} />
+                          <Share2 className="w-5 h-5" />
                         </motion.button>
-                      ))}
-                    </div>
+                      </div>
 
-                    <div className="grid grid-cols-3 gap-4 mb-6">
-                      <div className="p-4 rounded-lg bg-slate-800/50 text-center">
-                        <div className="flex items-center justify-center gap-2 text-red-400 mb-1">
-                          <Heart className="w-5 h-5" />
-                          <span className="text-2xl font-bold">{selectedItem.likes.toLocaleString('ar-SA')}</span>
-                        </div>
-                        <p className="text-slate-400 text-sm">إعجاب</p>
-                      </div>
-                      <div className="p-4 rounded-lg bg-slate-800/50 text-center">
-                        <div className="flex items-center justify-center gap-2 text-cyan-400 mb-1">
-                          <MessageCircle className="w-5 h-5" />
-                          <span className="text-2xl font-bold">{selectedItem.comments.toLocaleString('ar-SA')}</span>
-                        </div>
-                        <p className="text-slate-400 text-sm">تعليق</p>
-                      </div>
-                      <div className="p-4 rounded-lg bg-slate-800/50 text-center">
-                        <div className="flex items-center justify-center gap-2 text-green-400 mb-1">
-                          <Eye className="w-5 h-5" />
-                          <span className="text-2xl font-bold">{selectedItem.views.toLocaleString('ar-SA')}</span>
-                        </div>
-                        <p className="text-slate-400 text-sm">مشاهدة</p>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-slate-800 pt-6">
-                      <h3 className="text-xl font-bold mb-4">التعليقات</h3>
-                      <div className="space-y-4">
-                        {[
-                          { author: 'عمر الجيمر', comment: 'لقطة رائعة! كيف حصلت عليها؟', time: 'منذ ساعة' },
-                          { author: 'سارة اللاعبة', comment: 'أفضل محتوى شفته اليوم 🔥', time: 'منذ ساعتين' },
-                          { author: 'أحمد البطل', comment: 'ممتاز! هل يمكنك مشاركة الإعدادات؟', time: 'منذ 3 ساعات' }
-                        ].map((comment, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="flex gap-3 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors"
+                      <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
+                        {reactions.map(({ icon: Icon, label, color }, index) => (
+                          <motion.button
+                            key={label}
+                            initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            transition={{ delay: index * 0.05 + 0.3, type: 'spring' }}
+                            whileHover={{ scale: 1.15, y: -5, rotate: 10 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => setSelectedReaction(selectedReaction === index ? null : index)}
+                            className={`p-3 rounded-xl transition-all group ${
+                              selectedReaction === index
+                                ? 'bg-gradient-to-br from-slate-700 to-slate-800 shadow-lg'
+                                : 'bg-slate-800 hover:bg-slate-700'
+                            }`}
                           >
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-sm font-bold">
-                              {comment.author[0]}
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="font-bold text-sm">{comment.author}</span>
-                                <span className="text-slate-500 text-xs">{comment.time}</span>
-                              </div>
-                              <p className="text-slate-300 text-sm">{comment.comment}</p>
-                            </div>
-                          </motion.div>
+                            <Icon className={`w-5 h-5 ${color} group-hover:scale-110 transition-transform`} />
+                          </motion.button>
                         ))}
                       </div>
 
-                      <div className="mt-4 flex gap-3">
-                        <input
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.35 }}
+                        className="grid grid-cols-3 gap-4 mb-6"
+                      >
+                        {[
+                          { icon: Heart, value: selectedItem.likes, label: 'إعجاب', color: 'red' },
+                          { icon: MessageCircle, value: selectedItem.comments, label: 'تعليق', color: 'cyan' },
+                          { icon: Eye, value: selectedItem.views, label: 'مشاهدة', color: 'green' }
+                        ].map(({ icon: Icon, value, label, color }, index) => (
+                          <motion.div
+                            key={label}
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ delay: index * 0.1 + 0.4, type: 'spring' }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="p-4 rounded-xl bg-slate-800/50 text-center cursor-pointer hover:bg-slate-800 transition-all"
+                          >
+                            <div className={`flex items-center justify-center gap-2 text-${color}-400 mb-1`}>
+                              <Icon className="w-5 h-5" />
+                              <span className="text-2xl font-bold">{value.toLocaleString('ar-SA')}</span>
+                            </div>
+                            <p className="text-slate-400 text-sm">{label}</p>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="border-t border-slate-800 pt-6"
+                    >
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-2xl font-black flex items-center gap-2">
+                          <MessageCircle className="w-6 h-6 text-cyan-400" />
+                          التعليقات
+                        </h3>
+                        <Badge variant="info">{mockComments.length}</Badge>
+                      </div>
+
+                      <motion.div
+                        className="flex gap-3 mb-6"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.6 }}
+                      >
+                        <motion.input
                           type="text"
+                          value={commentText}
+                          onChange={(e) => setCommentText(e.target.value)}
                           placeholder="اكتب تعليقك..."
-                          className="flex-1 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+                          className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl px-5 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                          whileFocus={{ scale: 1.02 }}
                         />
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
+                          className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all"
                         >
-                          <GamingButton variant="primary" glow>
-                            إرسال
-                          </GamingButton>
+                          <Send className="w-5 h-5" />
                         </motion.button>
+                      </motion.div>
+
+                      <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                        {mockComments.map((comment, index) => (
+                          <motion.div
+                            key={comment.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 + 0.7 }}
+                            whileHover={{ x: 5, scale: 1.01 }}
+                            className="flex gap-3 p-4 rounded-xl bg-slate-800/30 hover:bg-slate-800/50 transition-all cursor-pointer"
+                          >
+                            <motion.div
+                              className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-lg font-bold flex-shrink-0 shadow-lg"
+                              whileHover={{ scale: 1.1, rotate: 5 }}
+                            >
+                              {comment.avatar}
+                            </motion.div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <span className="font-bold text-sm">{comment.author}</span>
+                                <span className="text-slate-500 text-xs">{comment.time}</span>
+                              </div>
+                              <p className="text-slate-300 text-sm leading-relaxed">{comment.comment}</p>
+                              <div className="flex items-center gap-4 mt-2">
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  className="text-xs text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-1"
+                                >
+                                  <Heart className="w-3 h-3" />
+                                  إعجاب
+                                </motion.button>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  className="text-xs text-slate-400 hover:text-cyan-400 transition-colors"
+                                >
+                                  رد
+                                </motion.button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
-              </GamingCard>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }
