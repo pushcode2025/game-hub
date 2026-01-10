@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { Users, Trophy, Gamepad2, MessageSquare, Image, Star, TrendingUp, Zap, Globe, Sparkles, Target, Shield, Swords, Newspaper, Edit3 } from 'lucide-react';
+import { Users, Trophy, Gamepad2, MessageSquare, Image, Star, TrendingUp, Zap, Globe, Sparkles, Target, Shield, Swords, Newspaper, Edit3, Languages } from 'lucide-react';
 import { GameCard } from '@/components/gaming/GameCard';
 import { GamingButton } from '@/components/gaming/GamingButton';
 import { GamingCard } from '@/components/gaming/GamingCard';
@@ -20,11 +20,27 @@ const features = [
     href: '/discovery'
   },
   {
+    icon: Languages,
+    title: 'مركز التعريب',
+    description: 'ألعاب معربة بالكامل للعربية',
+    color: 'from-blue-500 to-cyan-500',
+    iconColor: 'text-blue-400',
+    href: '/localization'
+  },
+  {
+    icon: Image,
+    title: 'معرض الوسائط',
+    description: 'صور وفيديوهات من المجتمع',
+    color: 'from-pink-500 to-rose-500',
+    iconColor: 'text-pink-400',
+    href: '/gallery'
+  },
+  {
     icon: Edit3,
     title: 'مراجعات الألعاب',
     description: 'تقييمات شاملة لأحدث الألعاب',
-    color: 'from-purple-500 to-pink-500',
-    iconColor: 'text-purple-400',
+    color: 'from-violet-500 to-fuchsia-500',
+    iconColor: 'text-violet-400',
     href: '/reviews'
   },
   {
@@ -174,7 +190,7 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-6 py-20">
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -440,6 +456,8 @@ export default function Home() {
             {[
               { href: '/news', label: 'الأخبار', icon: Newspaper },
               { href: '/reviews', label: 'المراجعات', icon: Edit3 },
+              { href: '/localization', label: 'مركز التعريب', icon: Languages },
+              { href: '/gallery', label: 'معرض الوسائط', icon: Image },
               { href: '/translations', label: 'الترجمات', icon: Globe },
               { href: '/creators', label: 'صناع المحتوى' },
             ].map((link) => (
