@@ -2,22 +2,138 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, User, Eye, EyeOff, Chrome, Facebook, MessageCircle, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Chrome, Facebook, MessageCircle, ArrowRight, Loader2, AlertCircle, CheckCircle2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+type ValidationError = {
+  field: string;
+  message: string;
+};
 
 export default function AuthPage() {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  const [apiError, setApiError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = (): boolean => {
+    const errors: ValidationError[] = [];
+
+    if (!isLogin) {
+      // Username validation
+      if (!username.trim()) {
+        errors.push({ field: 'username', message: 'اسم المستخدم مطلوب' });
+      } else if (username.length < 3) {
+        errors.push({ field: 'username', message: 'اسم المستخدم يجب أن يكون 3 أحرف على الأقل' });
+      } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        errors.push({ field: 'username', message: 'اسم المستخدم يجب أن يحتوي على أحرف وأرقام فقط' });
+      }
+    }
+
+    // Email validation
+    if (!email.trim()) {
+      errors.push({ field: 'email', message: 'البريد الإلكتروني مطلوب' });
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.push({ field: 'email', message: 'البريد الإلكتروني غير صالح' });
+    }
+
+    // Password validation
+    if (!password) {
+      errors.push({ field: 'password', message: 'كلمة المرور مطلوبة' });
+    } else if (password.length < 6) {
+      errors.push({ field: 'password', message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' });
+    } else if (!isLogin && !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      errors.push({ field: 'password', message: 'كلمة المرور يجب أن تحتوي على أحرف كبيرة وصغيرة وأرقام' });
+    }
+
+    // Confirm password validation (for registration)
+    if (!isLogin) {
+      if (!confirmPassword) {
+        errors.push({ field: 'confirmPassword', message: 'تأكيد كلمة المرور مطلوب' });
+      } else if (password !== confirmPassword) {
+        errors.push({ field: 'confirmPassword', message: 'كلمات المرور غير متطابقة' });
+      }
+    }
+
+    setValidationErrors(errors);
+    return errors.length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(isLogin ? 'Login' : 'Register', { email, password, username });
+    
+    // Clear previous messages
+    setApiError('');
+    setSuccess('');
+    setValidationErrors([]);
+
+    // Client-side validation
+    const isValid = validateForm();
+    
+    if (!isValid) {
+      console.log('Validation failed:', validationErrors);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        // Login
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'حدث خطأ أثناء تسجيل الدخول');
+        }
+
+        setSuccess(data.message);
+        setTimeout(() => {
+          router.push('/');
+        }, 1500);
+      } else {
+        // Register
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, email, password, confirmPassword }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'حدث خطأ أثناء إنشاء الحساب');
+        }
+
+        setSuccess(data.message);
+        setTimeout(() => {
+          router.push('/');
+        }, 1500);
+      }
+    } catch (err: any) {
+      setApiError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,6 +150,8 @@ export default function AuthPage() {
           <span className="font-semibold">العودة للرئيسية</span>
         </motion.button>
       </Link>
+
+
 
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <motion.div
@@ -65,11 +183,152 @@ export default function AuthPage() {
                   </p>
                 </motion.div>
 
+                {/* Validation Errors Alert */}
+                <AnimatePresence>
+                  {validationErrors.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, y: -20 }}
+                      animate={{ opacity: 1, height: 'auto', y: 0 }}
+                      exit={{ opacity: 0, height: 0, y: -20 }}
+                      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                      className="mb-6 overflow-hidden"
+                    >
+                      <div className="relative bg-gradient-to-br from-red-500/10 via-red-600/10 to-pink-500/10 backdrop-blur-sm border-2 border-red-500/50 rounded-2xl shadow-lg overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-pink-500/20 animate-pulse" />
+                        
+                        <div className="relative p-5">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <motion.div
+                                animate={{ rotate: [0, 10, -10, 0] }}
+                                transition={{ duration: 0.5, repeat: 2 }}
+                                className="p-2 bg-red-500/20 rounded-full"
+                              >
+                                <AlertCircle className="w-5 h-5 text-red-400" />
+                              </motion.div>
+                              <h3 className="text-lg font-bold text-red-400">تنبيه!</h3>
+                            </div>
+                            <button
+                              onClick={() => setValidationErrors([])}
+                              className="p-1 hover:bg-red-500/20 rounded-lg transition-colors"
+                            >
+                              <X className="w-4 h-4 text-red-400" />
+                            </button>
+                          </div>
+
+                          <div className="space-y-2">
+                            {validationErrors.map((error, index) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="flex items-center gap-2 text-red-300 bg-red-500/10 p-2.5 rounded-lg border border-red-500/30"
+                              >
+                                <div className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0" />
+                                <span className="text-sm font-medium">{error.message}</span>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* API Error Alert */}
+                <AnimatePresence>
+                  {apiError && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, y: -20 }}
+                      animate={{ opacity: 1, height: 'auto', y: 0 }}
+                      exit={{ opacity: 0, height: 0, y: -20 }}
+                      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                      className="mb-6 overflow-hidden"
+                    >
+                      <div className="relative bg-gradient-to-br from-orange-500/10 via-red-600/10 to-red-500/10 backdrop-blur-sm border-2 border-orange-500/50 rounded-2xl shadow-lg overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 animate-pulse" />
+                        
+                        <div className="relative p-5">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-3">
+                              <motion.div
+                                animate={{ rotate: [0, 10, -10, 0] }}
+                                transition={{ duration: 0.5, repeat: 2 }}
+                                className="p-2 bg-orange-500/20 rounded-full"
+                              >
+                                <AlertCircle className="w-5 h-5 text-orange-400" />
+                              </motion.div>
+                              <div>
+                                <h3 className="text-base font-bold text-orange-400 mb-1">خطأ</h3>
+                                <p className="text-sm text-orange-300">{apiError}</p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => setApiError('')}
+                              className="p-1 hover:bg-orange-500/20 rounded-lg transition-colors"
+                            >
+                              <X className="w-4 h-4 text-orange-400" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Success Alert */}
+                <AnimatePresence>
+                  {success && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, y: -20 }}
+                      animate={{ opacity: 1, height: 'auto', y: 0 }}
+                      exit={{ opacity: 0, height: 0, y: -20 }}
+                      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                      className="mb-6 overflow-hidden"
+                    >
+                      <div className="relative bg-gradient-to-br from-green-500/10 via-emerald-600/10 to-teal-500/10 backdrop-blur-sm border-2 border-green-500/50 rounded-2xl shadow-lg overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-teal-500/20 animate-pulse" />
+                        
+                        <div className="relative p-5">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-3">
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ type: 'spring', damping: 10 }}
+                                className="p-2 bg-green-500/20 rounded-full"
+                              >
+                                <CheckCircle2 className="w-5 h-5 text-green-400" />
+                              </motion.div>
+                              <div>
+                                <h3 className="text-base font-bold text-green-400 mb-1">نجح!</h3>
+                                <p className="text-sm text-green-300">{success}</p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => setSuccess('')}
+                              className="p-1 hover:bg-green-500/20 rounded-lg transition-colors"
+                            >
+                              <X className="w-4 h-4 text-green-400" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <div className="flex gap-2 mb-6">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setIsLogin(true)}
+                    onClick={() => {
+                      setIsLogin(true);
+                      setApiError('');
+                      setSuccess('');
+                      setValidationErrors([]);
+                    }}
                     className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
                       isLogin
                         ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/50'
@@ -81,7 +340,12 @@ export default function AuthPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setIsLogin(false)}
+                    onClick={() => {
+                      setIsLogin(false);
+                      setApiError('');
+                      setSuccess('');
+                      setValidationErrors([]);
+                    }}
                     className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
                       !isLogin
                         ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50'
@@ -170,20 +434,24 @@ export default function AuthPage() {
                   )}
 
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: loading ? 1 : 1.02 }}
+                    whileTap={{ scale: loading ? 1 : 0.98 }}
                     type="submit"
-                    className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-shadow relative overflow-hidden group"
+                    disabled={loading}
+                    className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-shadow relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <span className="relative z-10">
-                      {isLogin ? 'تسجيل الدخول' : 'إنشاء الحساب'}
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      {loading && <Loader2 className="w-5 h-5 animate-spin" />}
+                      {loading ? 'جاري المعالجة...' : (isLogin ? 'تسجيل الدخول' : 'إنشاء الحساب')}
                     </span>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"
-                      initial={{ x: '100%' }}
-                      whileHover={{ x: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
+                    {!loading && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"
+                        initial={{ x: '100%' }}
+                        whileHover={{ x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
                   </motion.button>
                 </form>
 
@@ -227,7 +495,7 @@ function InputField({
   placeholder,
   value,
   onChange,
-  rightIcon
+  rightIcon,
 }: {
   icon: React.ReactNode;
   type: string;
@@ -291,14 +559,6 @@ function SocialButton({
 }
 
 function AnimatedBackground() {
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 });
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    }
-  }, []);
-
   return (
     <div className="absolute inset-0">
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
@@ -344,39 +604,30 @@ function AnimatedBackground() {
       />
 
       <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => {
-          const randomX1 = Math.random() * dimensions.width;
-          const randomY1 = Math.random() * dimensions.height;
-          const randomX2 = Math.random() * dimensions.width;
-          const randomY2 = Math.random() * dimensions.height;
-          const randomDuration = Math.random() * 10 + 10;
-          const randomScale = Math.random() * 0.5 + 0.5;
-
-          return (
-            <motion.div
-              key={i}
-              initial={{
-                x: randomX1,
-                y: randomY1,
-                scale: randomScale,
-              }}
-              animate={{
-                y: [null, randomY2],
-                x: [null, randomX2],
-              }}
-              transition={{
-                duration: randomDuration,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "linear",
-              }}
-              className="absolute w-1 h-1 bg-cyan-400/50 rounded-full"
-              style={{
-                boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)',
-              }}
-            />
-          );
-        })}
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-cyan-400/50 rounded-full"
+            style={{
+              left: `${(i * 13.7) % 100}%`,
+              top: `${(i * 17.3) % 100}%`,
+              boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)',
+            }}
+            animate={{
+              y: [0, -30, 0],
+              x: [0, 20, 0],
+              scale: [1, 1.5, 1],
+              opacity: [0.3, 0.8, 0.3],
+            }}
+            transition={{
+              duration: 5 + (i % 10),
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+              delay: i * 0.1,
+            }}
+          />
+        ))}
       </div>
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]" />

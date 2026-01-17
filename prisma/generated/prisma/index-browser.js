@@ -123,8 +123,11 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
+  email: 'email',
+  password: 'password',
   name: 'name',
   avatar: 'avatar',
+  bio: 'bio',
   createdAt: 'createdAt'
 };
 
@@ -152,6 +155,57 @@ exports.Prisma.GamePlatformScalarFieldEnum = {
   id: 'id',
   gameId: 'gameId',
   platformId: 'platformId'
+};
+
+exports.Prisma.MediaItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  type: 'type',
+  url: 'url',
+  thumbnail: 'thumbnail',
+  fileSize: 'fileSize',
+  width: 'width',
+  height: 'height',
+  duration: 'duration',
+  viewsCount: 'viewsCount',
+  likesCount: 'likesCount',
+  commentsCount: 'commentsCount',
+  isFeatured: 'isFeatured',
+  isTrending: 'isTrending',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  authorId: 'authorId',
+  gameId: 'gameId'
+};
+
+exports.Prisma.MediaLikeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  userId: 'userId',
+  mediaItemId: 'mediaItemId'
+};
+
+exports.Prisma.MediaCommentScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  mediaItemId: 'mediaItemId',
+  parentId: 'parentId'
+};
+
+exports.Prisma.MediaTagItemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug'
+};
+
+exports.Prisma.MediaTagScalarFieldEnum = {
+  mediaItemId: 'mediaItemId',
+  tagId: 'tagId'
 };
 
 exports.Prisma.GenreScalarFieldEnum = {
@@ -227,8 +281,11 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   id: 'id',
   username: 'username',
+  email: 'email',
+  password: 'password',
   name: 'name',
-  avatar: 'avatar'
+  avatar: 'avatar',
+  bio: 'bio'
 };
 
 exports.Prisma.GameOrderByRelevanceFieldEnum = {
@@ -252,6 +309,41 @@ exports.Prisma.GamePlatformOrderByRelevanceFieldEnum = {
   id: 'id',
   gameId: 'gameId',
   platformId: 'platformId'
+};
+
+exports.Prisma.MediaItemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  url: 'url',
+  thumbnail: 'thumbnail',
+  authorId: 'authorId',
+  gameId: 'gameId'
+};
+
+exports.Prisma.MediaLikeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaItemId: 'mediaItemId'
+};
+
+exports.Prisma.MediaCommentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  content: 'content',
+  userId: 'userId',
+  mediaItemId: 'mediaItemId',
+  parentId: 'parentId'
+};
+
+exports.Prisma.MediaTagItemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug'
+};
+
+exports.Prisma.MediaTagOrderByRelevanceFieldEnum = {
+  mediaItemId: 'mediaItemId',
+  tagId: 'tagId'
 };
 
 exports.Prisma.GenreOrderByRelevanceFieldEnum = {
@@ -303,13 +395,21 @@ exports.Prisma.ReviewPlatformOrderByRelevanceFieldEnum = {
   reviewId: 'reviewId',
   platformId: 'platformId'
 };
-
+exports.MediaType = exports.$Enums.MediaType = {
+  image: 'image',
+  video: 'video'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Game: 'Game',
   Platform: 'Platform',
   GamePlatform: 'GamePlatform',
+  MediaItem: 'MediaItem',
+  MediaLike: 'MediaLike',
+  MediaComment: 'MediaComment',
+  MediaTagItem: 'MediaTagItem',
+  MediaTag: 'MediaTag',
   Genre: 'Genre',
   Tag: 'Tag',
   News: 'News',

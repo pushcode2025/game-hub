@@ -9,6 +9,7 @@ import { GamingCard } from '@/components/gaming/GamingCard';
 import { Badge } from '@/components/gaming/Badge';
 import { GlowText } from '@/components/gaming/GlowText';
 import { mockGames, getTrendingGames } from '@/lib/mockData';
+import HeroAuthSection from '@/components/ui/hero-section';
 
 const features = [
   {
@@ -152,36 +153,7 @@ export default function Home() {
             >
               تواصل مع اللاعبين، وتصدر قوائم الترتيب، وابنِ إرثك في عالم الألعاب
             </motion.p>
-
-            <motion.div
-              className="flex gap-6 justify-center flex-wrap"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.6 }}
-            >
-              <Link href="/auth">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <GamingButton variant="accent" size="lg" glow>
-                    <Shield className="w-5 h-5 ml-2" />
-                    تسجيل الدخول / إنشاء حساب
-                  </GamingButton>
-                </motion.div>
-              </Link>
-              <Link href="/discovery">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <GamingButton variant="ghost" size="lg">
-                    <Users className="w-5 h-5 ml-2" />
-                    ابحث عن لاعبين الآن
-                  </GamingButton>
-                </motion.div>
-              </Link>
-            </motion.div>
+            <HeroAuthSection />
           </motion.div>
         </div>
 
