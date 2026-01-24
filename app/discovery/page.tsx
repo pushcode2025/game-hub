@@ -1,7 +1,7 @@
 'use client';
 import React, { useState,useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Filter, Gamepad2, Users, Clock, Mic, MicOff, Trophy, Target, Zap, Globe, MessageCircle, Shield, Star, Swords } from 'lucide-react';
+import { Search, X, Filter, Gamepad2, Users, Clock, Mic, MicOff, Trophy, Target, Zap, Globe, MessageCircle, Shield, Star, Swords, Plus, Send, Sparkles } from 'lucide-react';
 import { GamingCard } from '@/components/gaming/GamingCard';
 import { GamingButton } from '@/components/gaming/GamingButton';
 import { Badge } from '@/components/gaming/Badge';
@@ -104,7 +104,7 @@ const teamSizes = ['1ضد1', '2ضد2', '3ضد3', '5ضد5', 'فريق', 'أي'];
 // ];
 
 export default function PlayerDiscoveryPage() {
-  
+
 const [playRequests, setPlayRequests] = useState<any[]>([])
 const [loading, setLoading] = useState(true)
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
@@ -114,6 +114,17 @@ const [loading, setLoading] = useState(true)
   const [voiceOnly, setVoiceOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [games, setGames] = useState<any[]>([]);
+  const [formData, setFormData] = useState({
+    gameId: '',
+    title: '',
+    description: '',
+    playersNeeded: 4
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 useEffect(() => {
   const load = async () => {
     setLoading(true)
@@ -125,6 +136,44 @@ useEffect(() => {
 
   load()
 }, [])
+
+useEffect(() => {
+  const loadGames = async () => {
+    const res = await fetch('/api/games');
+    const data = await res.json();
+    setGames(data);
+  };
+  loadGames();
+}, []);
+
+const handleCreateRequest = async () => {
+  if (!formData.gameId || !formData.title || !formData.description) {
+    return;
+  }
+
+  setIsSubmitting(true);
+  try {
+    const res = await fetch('/api/play-requests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData,
+        userId: '1'
+      })
+    });
+
+    if (res.ok) {
+      const newRequest = await res.json();
+      setPlayRequests([newRequest, ...playRequests]);
+      setFormData({ gameId: '', title: '', description: '', playersNeeded: 4 });
+      setShowCreateForm(false);
+    }
+  } catch (error) {
+    console.error('Error creating request:', error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const togglePlatform = (platform: string) => {
     setSelectedPlatforms(prev =>
@@ -201,6 +250,270 @@ useEffect(() => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <AnimatePresence mode="wait">
+            {!showCreateForm ? (
+              <motion.div
+                key="cta"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
+                className="relative"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 rounded-3xl blur-2xl opacity-30"
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    opacity: [0.3, 0.5, 0.3],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowCreateForm(true)}
+                  className="relative w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 rounded-3xl p-8 overflow-hidden group"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100"
+                    transition={{ duration: 0.5 }}
+                  />
+
+                  <div className="relative flex items-center justify-between">
+                    <div className="flex items-center gap-6">
+                      <motion.div
+                        whileHover={{ rotate: 180, scale: 1.2 }}
+                        transition={{ duration: 0.5 }}
+                        className="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center"
+                      >
+                        <Plus className="w-10 h-10 text-white" strokeWidth={3} />
+                      </motion.div>
+                      <div className="text-right">
+                        <h3 className="text-3xl font-black text-white mb-2 flex items-center gap-3 justify-end">
+                          <Sparkles className="w-8 h-8" />
+                          أنشئ طلب لعب جديد
+                        </h3>
+                        <p className="text-cyan-50 text-lg">
+                          ابحث عن زملاء اللعب المثاليين لجلستك القادمة
+                        </p>
+                      </div>
+                    </div>
+
+                    <motion.div
+                      animate={{
+                        x: [0, 10, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Zap className="w-12 h-12 text-yellow-300" fill="currentColor" />
+                    </motion.div>
+                  </div>
+                </motion.button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="overflow-hidden"
+              >
+                <GamingCard className="p-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-2 border-cyan-500/30 relative overflow-hidden">
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-500/10"
+                    animate={{
+                      opacity: [0.1, 0.2, 0.1],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                    }}
+                  />
+
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-8">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowCreateForm(false)}
+                        className="px-6 py-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-xl flex items-center gap-2 transition-all border border-slate-700"
+                      >
+                        <X className="w-5 h-5" />
+                        إلغاء
+                      </motion.button>
+
+                      <div className="text-right">
+                        <h2 className="text-4xl font-black flex items-center gap-3 justify-end">
+                          <Sparkles className="w-8 h-8 text-cyan-400" />
+                          <GlowText color="blue">طلب لعب جديد</GlowText>
+                        </h2>
+                        <p className="text-slate-400 mt-2">املأ التفاصيل لإنشاء طلبك</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="space-y-3"
+                      >
+                        <label className="text-lg font-bold text-right block flex items-center gap-2 justify-end">
+                          <span className="text-cyan-400">*</span>
+                          اللعبة
+                          <Gamepad2 className="w-5 h-5 text-cyan-400" />
+                        </label>
+                        <select
+                          value={formData.gameId}
+                          onChange={(e) => setFormData({ ...formData, gameId: e.target.value })}
+                          className="w-full bg-slate-800/80 border-2 border-slate-700 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-cyan-500 transition-all text-right"
+                        >
+                          <option value="">اختر اللعبة</option>
+                          {games.map((game) => (
+                            <option key={game.id} value={game.id}>
+                              {game.name}
+                            </option>
+                          ))}
+                        </select>
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="space-y-3"
+                      >
+                        <label className="text-lg font-bold text-right block flex items-center gap-2 justify-end">
+                          <span className="text-cyan-400">*</span>
+                          عدد اللاعبين المطلوبين
+                          <Users className="w-5 h-5 text-cyan-400" />
+                        </label>
+                        <div className="flex gap-3">
+                          {[2, 3, 4, 5, 6].map((num) => (
+                            <motion.button
+                              key={num}
+                              whileHover={{ scale: 1.1, y: -3 }}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => setFormData({ ...formData, playersNeeded: num })}
+                              className={`flex-1 py-4 rounded-xl font-bold text-xl transition-all ${
+                                formData.playersNeeded === num
+                                  ? 'bg-gradient-to-br from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/50'
+                                  : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700'
+                              }`}
+                            >
+                              {num}
+                            </motion.button>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="md:col-span-2 space-y-3"
+                      >
+                        <label className="text-lg font-bold text-right block flex items-center gap-2 justify-end">
+                          <span className="text-cyan-400">*</span>
+                          عنوان الطلب
+                          <Star className="w-5 h-5 text-cyan-400" />
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.title}
+                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                          placeholder="مثال: أبحث عن فريق تنافسي للتصنيف"
+                          className="w-full bg-slate-800/80 border-2 border-slate-700 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-cyan-500 transition-all text-right"
+                        />
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="md:col-span-2 space-y-3"
+                      >
+                        <label className="text-lg font-bold text-right block flex items-center gap-2 justify-end">
+                          <span className="text-cyan-400">*</span>
+                          الوصف
+                          <MessageCircle className="w-5 h-5 text-cyan-400" />
+                        </label>
+                        <textarea
+                          value={formData.description}
+                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                          placeholder="اكتب وصفاً تفصيلياً عن نوع اللاعبين الذين تبحث عنهم، أسلوب اللعب، المتطلبات..."
+                          rows={6}
+                          className="w-full bg-slate-800/80 border-2 border-slate-700 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-cyan-500 transition-all text-right resize-none"
+                        />
+                      </motion.div>
+                    </div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="mt-8 flex gap-4"
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setShowCreateForm(false)}
+                        className="px-8 py-4 bg-slate-800/50 hover:bg-slate-700/50 rounded-xl font-semibold text-lg transition-all border border-slate-700"
+                      >
+                        إلغاء
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(34, 211, 238, 0.6)' }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleCreateRequest}
+                        disabled={isSubmitting || !formData.gameId || !formData.title || !formData.description}
+                        className={`flex-1 py-4 rounded-xl font-bold text-xl flex items-center justify-center gap-3 transition-all ${
+                          isSubmitting || !formData.gameId || !formData.title || !formData.description
+                            ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 text-white shadow-lg shadow-cyan-500/50'
+                        }`}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            >
+                              <Target className="w-6 h-6" />
+                            </motion.div>
+                            جاري النشر...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-6 h-6" />
+                            نشر الطلب
+                            <Sparkles className="w-5 h-5" />
+                          </>
+                        )}
+                      </motion.button>
+                    </motion.div>
+                  </div>
+                </GamingCard>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

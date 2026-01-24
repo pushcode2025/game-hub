@@ -94,7 +94,7 @@ if (gameId) {
     }
 
     // حفظ الملف
-    await writeFile(filePath, buffer);
+    await writeFile(filePath, new Uint8Array(buffer));
 
     // URL الملف
     const fileUrl = `/uploads/${type}/${fileName}`;
