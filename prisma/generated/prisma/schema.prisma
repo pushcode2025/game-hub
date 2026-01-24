@@ -17,6 +17,12 @@ datasource db {
 // Core Tables
 // ===============================
 
+enum PlayRequestStatus {
+  pending
+  accepted
+  rejected
+}
+
 model User {
   id        String   @id @default(uuid())
   username  String   @unique
@@ -27,11 +33,14 @@ model User {
   bio       String?  @db.Text
   createdAt DateTime @default(now())
 
-  news          News[]
-  reviews       Review[]
-  mediaItems    MediaItem[]
-  mediaLikes    MediaLike[]
-  mediaComments MediaComment[]
+  playRequests PlayRequest[]
+
+  playRequestParticipants PlayRequestParticipant[]
+  mediaItems              MediaItem[]
+  mediaLikes              MediaLike[]
+  mediaComments           MediaComment[]
+  news                    News[]
+  reviews                 Review[]
 
   @@map("users")
 }
@@ -46,6 +55,8 @@ model Game {
   developer   String?
   publisher   String?
   createdAt   DateTime  @default(now())
+
+  playRequests PlayRequest[]
 
   platforms  GamePlatform[]
   news       News[]
@@ -302,4 +313,47 @@ model ReviewPlatform {
 
   @@id([reviewId, platformId])
   @@map("review_platforms")
+}
+
+model PlayRequest {
+  id String @id @default(uuid())
+
+  title       String
+  description String? @db.Text
+
+  playersNeeded Int
+  isOpen        Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  participants PlayRequestParticipant[]
+
+  @@index([gameId])
+  @@index([isOpen])
+  @@map("play_requests")
+}
+
+model PlayRequestParticipant {
+  id String @id @default(uuid())
+
+  joinedAt DateTime @default(now())
+
+  status PlayRequestStatus @default(pending)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  requestId String
+  request   PlayRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, requestId])
+  @@index([requestId])
+  @@map("play_request_participants")
 }

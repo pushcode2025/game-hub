@@ -268,6 +268,26 @@ exports.Prisma.ReviewPlatformScalarFieldEnum = {
   platformId: 'platformId'
 };
 
+exports.Prisma.PlayRequestScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  playersNeeded: 'playersNeeded',
+  isOpen: 'isOpen',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  gameId: 'gameId'
+};
+
+exports.Prisma.PlayRequestParticipantScalarFieldEnum = {
+  id: 'id',
+  joinedAt: 'joinedAt',
+  status: 'status',
+  userId: 'userId',
+  requestId: 'requestId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -395,9 +415,29 @@ exports.Prisma.ReviewPlatformOrderByRelevanceFieldEnum = {
   reviewId: 'reviewId',
   platformId: 'platformId'
 };
+
+exports.Prisma.PlayRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  userId: 'userId',
+  gameId: 'gameId'
+};
+
+exports.Prisma.PlayRequestParticipantOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  requestId: 'requestId'
+};
 exports.MediaType = exports.$Enums.MediaType = {
   image: 'image',
   video: 'video'
+};
+
+exports.PlayRequestStatus = exports.$Enums.PlayRequestStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  rejected: 'rejected'
 };
 
 exports.Prisma.ModelName = {
@@ -416,7 +456,9 @@ exports.Prisma.ModelName = {
   Review: 'Review',
   NewsTag: 'NewsTag',
   ReviewGenre: 'ReviewGenre',
-  ReviewPlatform: 'ReviewPlatform'
+  ReviewPlatform: 'ReviewPlatform',
+  PlayRequest: 'PlayRequest',
+  PlayRequestParticipant: 'PlayRequestParticipant'
 };
 
 /**

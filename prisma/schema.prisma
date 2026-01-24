@@ -4,8 +4,8 @@
 // ===============================
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/prisma"
+  provider   = "prisma-client-js"
+  output     = "./generated/prisma"
   engineType = "binary"
 }
 
@@ -17,6 +17,12 @@ datasource db {
 // Core Tables
 // ===============================
 
+enum PlayRequestStatus {
+  pending
+  accepted
+  rejected
+}
+
 model User {
   id        String   @id @default(uuid())
   username  String   @unique
@@ -27,30 +33,35 @@ model User {
   bio       String?  @db.Text
   createdAt DateTime @default(now())
 
-  news      News[]
-  reviews   Review[]
-  mediaItems MediaItem[]
-  mediaLikes MediaLike[]
-  mediaComments MediaComment[]
+  playRequests PlayRequest[]
+
+  playRequestParticipants PlayRequestParticipant[]
+  mediaItems              MediaItem[]
+  mediaLikes              MediaLike[]
+  mediaComments           MediaComment[]
+  news                    News[]
+  reviews                 Review[]
 
   @@map("users")
 }
 
 model Game {
-  id            String   @id @default(uuid())
-  name          String
-  slug          String   @unique
-  description   String?  @db.Text
-  coverImage    String?
-  releaseDate   DateTime?
-  developer     String?
-  publisher     String?
-  createdAt     DateTime @default(now())
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?   @db.Text
+  coverImage  String?
+  releaseDate DateTime?
+  developer   String?
+  publisher   String?
+  createdAt   DateTime  @default(now())
 
-  platforms     GamePlatform[]
-  news          News[]
-  reviews       Review[]
-  mediaItems    MediaItem[]
+  playRequests PlayRequest[]
+
+  platforms  GamePlatform[]
+  news       News[]
+  reviews    Review[]
+  mediaItems MediaItem[]
 
   @@map("games")
 }
@@ -62,19 +73,19 @@ model Platform {
   icon      String?
   createdAt DateTime @default(now())
 
-  games     GamePlatform[]
-  reviews   ReviewPlatform[]
+  games   GamePlatform[]
+  reviews ReviewPlatform[]
 
   @@map("platforms")
 }
 
 model GamePlatform {
-  id          String   @id @default(uuid())
-  gameId      String
-  platformId  String
+  id         String @id @default(uuid())
+  gameId     String
+  platformId String
 
-  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  platform    Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  game     Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
 
   @@unique([gameId, platformId])
   @@map("game_platforms")
@@ -85,37 +96,37 @@ model GamePlatform {
 // ===============================
 
 model MediaItem {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
-  description String?  @db.Text
+  description String?   @db.Text
   type        MediaType // image or video
-  url         String   // رابط الملف الأساسي
-  thumbnail   String?  // رابط الصورة المصغرة
-  fileSize    Int?     // حجم الملف بالبايت
-  width       Int?     // عرض الصورة/الفيديو
-  height      Int?     // ارتفاع الصورة/الفيديو
-  duration    Int?     // مدة الفيديو بالثواني (للفيديو فقط)
-  
-  viewsCount  Int      @default(0)
-  likesCount  Int      @default(0)
-  commentsCount Int    @default(0)
-  
-  isFeatured  Boolean  @default(false)
-  isTrending  Boolean  @default(false)
-  published   Boolean  @default(true)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  url         String // رابط الملف الأساسي
+  thumbnail   String? // رابط الصورة المصغرة
+  fileSize    Int? // حجم الملف بالبايت
+  width       Int? // عرض الصورة/الفيديو
+  height      Int? // ارتفاع الصورة/الفيديو
+  duration    Int? // مدة الفيديو بالثواني (للفيديو فقط)
 
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  viewsCount    Int @default(0)
+  likesCount    Int @default(0)
+  commentsCount Int @default(0)
 
-  gameId      String?
-  game        Game?    @relation(fields: [gameId], references: [id], onDelete: SetNull)
+  isFeatured Boolean @default(false)
+  isTrending Boolean @default(false)
+  published  Boolean @default(true)
 
-  likes       MediaLike[]
-  comments    MediaComment[]
-  tags        MediaTag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  gameId String?
+  game   Game?   @relation(fields: [gameId], references: [id], onDelete: SetNull)
+
+  likes    MediaLike[]
+  comments MediaComment[]
+  tags     MediaTag[]
 
   @@index([authorId])
   @@index([gameId])
@@ -126,11 +137,11 @@ model MediaItem {
 }
 
 model MediaLike {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   mediaItemId String
   mediaItem   MediaItem @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
@@ -142,20 +153,20 @@ model MediaLike {
 }
 
 model MediaComment {
-  id          String   @id @default(uuid())
-  content     String   @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   mediaItemId String
   mediaItem   MediaItem @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
 
-  parentId    String?
-  parent      MediaComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies     MediaComment[] @relation("CommentReplies")
+  parentId String?
+  parent   MediaComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  MediaComment[] @relation("CommentReplies")
 
   @@index([userId])
   @@index([mediaItemId])
@@ -164,11 +175,11 @@ model MediaComment {
 }
 
 model MediaTagItem {
-  id      String @id @default(uuid())
-  name    String
-  slug    String @unique
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
 
-  media   MediaTag[]
+  media MediaTag[]
 
   @@map("media_tag_items")
 }
@@ -177,8 +188,8 @@ model MediaTag {
   mediaItemId String
   tagId       String
 
-  mediaItem   MediaItem     @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
-  tag         MediaTagItem  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  mediaItem MediaItem    @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+  tag       MediaTagItem @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([mediaItemId, tagId])
   @@map("media_tags")
@@ -194,9 +205,9 @@ enum MediaType {
 // ===============================
 
 model Genre {
-  id      String @id @default(uuid())
-  name    String
-  slug    String @unique
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
 
   reviews ReviewGenre[]
 
@@ -218,51 +229,51 @@ model Tag {
 // ===============================
 
 model News {
-  id            String   @id @default(uuid())
-  title         String
-  slug          String   @unique
-  excerpt       String   @db.Text
-  contentPath   String
-  contentType   String
-  category      String
-  isFeatured    Boolean  @default(false)
-  published     Boolean  @default(true)
-  viewsCount    Int      @default(0)
-  likesCount    Int      @default(0)
-  createdAt     DateTime @default(now())
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  excerpt     String   @db.Text
+  contentPath String
+  contentType String
+  category    String
+  isFeatured  Boolean  @default(false)
+  published   Boolean  @default(true)
+  viewsCount  Int      @default(0)
+  likesCount  Int      @default(0)
+  createdAt   DateTime @default(now())
 
-  authorId      String
-  author        User     @relation(fields: [authorId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 
-  gameId        String?
-  game          Game?    @relation(fields: [gameId], references: [id])
+  gameId String?
+  game   Game?   @relation(fields: [gameId], references: [id])
 
-  tags          NewsTag[]
+  tags NewsTag[]
 
   @@map("news")
 }
 
 model Review {
-  id            String   @id @default(uuid())
-  title         String
-  slug          String   @unique
-  excerpt       String   @db.Text
-  contentPath   String
-  contentType   String
-  rating        Float
-  published     Boolean  @default(true)
-  viewsCount    Int      @default(0)
-  likesCount    Int      @default(0)
-  createdAt     DateTime @default(now())
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  excerpt     String   @db.Text
+  contentPath String
+  contentType String
+  rating      Float
+  published   Boolean  @default(true)
+  viewsCount  Int      @default(0)
+  likesCount  Int      @default(0)
+  createdAt   DateTime @default(now())
 
-  authorId      String
-  author        User     @relation(fields: [authorId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 
-  gameId        String
-  game          Game     @relation(fields: [gameId], references: [id])
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
 
-  genres        ReviewGenre[]
-  platforms     ReviewPlatform[]
+  genres    ReviewGenre[]
+  platforms ReviewPlatform[]
 
   @@map("reviews")
 }
@@ -302,4 +313,47 @@ model ReviewPlatform {
 
   @@id([reviewId, platformId])
   @@map("review_platforms")
+}
+
+model PlayRequest {
+  id String @id @default(uuid())
+
+  title       String
+  description String? @db.Text
+
+  playersNeeded Int
+  isOpen        Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  participants PlayRequestParticipant[]
+
+  @@index([gameId])
+  @@index([isOpen])
+  @@map("play_requests")
+}
+
+model PlayRequestParticipant {
+  id String @id @default(uuid())
+
+  joinedAt DateTime @default(now())
+
+  status PlayRequestStatus @default(pending)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  requestId String
+  request   PlayRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, requestId])
+  @@index([requestId])
+  @@map("play_request_participants")
 }

@@ -215,6 +215,36 @@ CREATE TABLE `review_platforms` (
     PRIMARY KEY (`reviewId`, `platformId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `play_requests` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `description` TEXT NULL,
+    `playersNeeded` INTEGER NOT NULL,
+    `isOpen` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `gameId` VARCHAR(191) NOT NULL,
+
+    INDEX `play_requests_gameId_idx`(`gameId`),
+    INDEX `play_requests_isOpen_idx`(`isOpen`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `play_request_participants` (
+    `id` VARCHAR(191) NOT NULL,
+    `joinedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `status` ENUM('pending', 'accepted', 'rejected') NOT NULL DEFAULT 'pending',
+    `userId` VARCHAR(191) NOT NULL,
+    `requestId` VARCHAR(191) NOT NULL,
+
+    INDEX `play_request_participants_requestId_idx`(`requestId`),
+    UNIQUE INDEX `play_request_participants_userId_requestId_key`(`userId`, `requestId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `game_platforms` ADD CONSTRAINT `game_platforms_gameId_fkey` FOREIGN KEY (`gameId`) REFERENCES `games`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -277,3 +307,15 @@ ALTER TABLE `review_platforms` ADD CONSTRAINT `review_platforms_reviewId_fkey` F
 
 -- AddForeignKey
 ALTER TABLE `review_platforms` ADD CONSTRAINT `review_platforms_platformId_fkey` FOREIGN KEY (`platformId`) REFERENCES `platforms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `play_requests` ADD CONSTRAINT `play_requests_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `play_requests` ADD CONSTRAINT `play_requests_gameId_fkey` FOREIGN KEY (`gameId`) REFERENCES `games`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `play_request_participants` ADD CONSTRAINT `play_request_participants_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `play_request_participants` ADD CONSTRAINT `play_request_participants_requestId_fkey` FOREIGN KEY (`requestId`) REFERENCES `play_requests`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback ,useEffect} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useDropzone } from 'react-dropzone';
@@ -46,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import UploadMediaDialog from '@/components/media/UploadMediaDialog';
 
 interface UploadedFile {
   file: File;
@@ -54,151 +55,11 @@ interface UploadedFile {
   uploaded: boolean;
 }
 
-const MOCK_GAMES = [
-  'Call of Duty: Modern Warfare',
-  'Fortnite',
-  'League of Legends',
-  'Valorant',
-  'Apex Legends',
-  'Overwatch 2',
-  'Counter-Strike 2',
-  'Dota 2',
-  'Rocket League',
-  'Minecraft',
-];
 
-const MOCK_TAGS = [
-  'Epic Moment',
-  'Victory',
-  'Funny',
-  'Tutorial',
-  'Gameplay',
-  'Montage',
-  'Tips & Tricks',
-  'Fail',
-  'Clutch',
-  'Teamwork',
-];
 
-const galleryItems = [
-  {
-    id: 1,
-    type: 'image',
-    url: 'https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'لقطة ملحمية من المعركة الأخيرة',
-    author: 'أحمد المحترف',
-    likes: 1245,
-    comments: 89,
-    views: 15600,
-    game: 'The Last Guardian',
-    trending: true,
-  },
-  {
-    id: 2,
-    type: 'video',
-    url: 'https://images.pexels.com/photos/3945657/pexels-photo-3945657.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945657/pexels-photo-3945657.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'أفضل لحظات اللعب هذا الأسبوع',
-    author: 'فاطمة الجيمر',
-    likes: 2180,
-    comments: 156,
-    views: 28900,
-    game: 'Cyberpunk Dreams',
-    trending: true,
-  },
-  {
-    id: 3,
-    type: 'image',
-    url: 'https://images.pexels.com/photos/3945635/pexels-photo-3945635.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945635/pexels-photo-3945635.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'استكشاف العالم المفتوح',
-    author: 'محمد اللاعب',
-    likes: 890,
-    comments: 67,
-    views: 12400,
-    game: 'Shadow Legends',
-    trending: false,
-  },
-  {
-    id: 4,
-    type: 'video',
-    url: 'https://images.pexels.com/photos/3945668/pexels-photo-3945668.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945668/pexels-photo-3945668.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'استراتيجية الفوز بالجولة الأخيرة',
-    author: 'سارة القيمر',
-    likes: 1567,
-    comments: 203,
-    views: 19800,
-    game: 'Kingdom Rising',
-    trending: false,
-  },
-  {
-    id: 5,
-    type: 'image',
-    url: 'https://images.pexels.com/photos/1293261/pexels-photo-1293261.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/1293261/pexels-photo-1293261.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'سباق مثير على الطريق السريع',
-    author: 'خالد السائق',
-    likes: 2340,
-    comments: 178,
-    views: 34200,
-    game: 'Racing Thunder',
-    trending: true,
-  },
-  {
-    id: 6,
-    type: 'video',
-    url: 'https://images.pexels.com/photos/2653362/pexels-photo-2653362.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/2653362/pexels-photo-2653362.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'رحلة عبر الفضاء الخارجي',
-    author: 'ليلى الفضائية',
-    likes: 1890,
-    comments: 134,
-    views: 23500,
-    game: 'Space Odyssey',
-    trending: false,
-  },
-  {
-    id: 7,
-    type: 'image',
-    url: 'https://images.pexels.com/photos/3945625/pexels-photo-3945625.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945625/pexels-photo-3945625.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'مواجهة التنين الأسطوري',
-    author: 'يوسف المغامر',
-    likes: 3120,
-    comments: 245,
-    views: 41000,
-    game: 'Dragon Quest',
-    trending: true,
-  },
-  {
-    id: 8,
-    type: 'image',
-    url: 'https://images.pexels.com/photos/3945664/pexels-photo-3945664.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945664/pexels-photo-3945664.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'معركة العصور الوسطى',
-    author: 'نور المحاربة',
-    likes: 1678,
-    comments: 112,
-    views: 18900,
-    game: 'Medieval Warriors',
-    trending: false,
-  },
-  {
-    id: 9,
-    type: 'video',
-    url: 'https://images.pexels.com/photos/3945622/pexels-photo-3945622.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    thumbnail: 'https://images.pexels.com/photos/3945622/pexels-photo-3945622.jpeg?auto=compress&cs=tinysrgb&w=400',
-    title: 'أفضل الحركات الاحترافية',
-    author: 'عمر البطل',
-    likes: 2890,
-    comments: 189,
-    views: 37600,
-    game: 'Combat Masters',
-    trending: true,
-  },
-];
+
+
+
 
 const reactions = [
   { icon: ThumbsUp, label: 'إعجاب', color: 'text-blue-400' },
@@ -247,6 +108,10 @@ const mockComments = [
 ];
 
 export default function MediaGallery() {
+
+  const [galleryItems, setGalleryItems] = useState<any[]>([])
+const [trendingItems, setTrendingItems] = useState<any[]>([])
+const [loading, setLoading] = useState(true)
   const [selectedItem, setSelectedItem] = useState<typeof galleryItems[0] | null>(null);
   const [filter, setFilter] = useState<'all' | 'image' | 'video'>('all');
   const [liked, setLiked] = useState<Set<number>>(new Set());
@@ -264,12 +129,19 @@ export default function MediaGallery() {
   const [featured, setFeatured] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [expandedFile, setExpandedFile] = useState<string | null>(null);
-
+useEffect(() => {
+  fetch('/api/media')
+    .then(res => res.json())
+    .then(data => {
+      setGalleryItems(data.all)
+      setTrendingItems(data.trending)
+    })
+    .finally(() => setLoading(false))
+}, [])
   const filteredItems = galleryItems.filter(
     (item) => filter === 'all' || item.type === filter
   );
 
-  const trendingItems = galleryItems.filter((item) => item.trending).slice(0, 3);
 
   const toggleLike = (id: number) => {
     setLiked((prev) => {
@@ -567,14 +439,14 @@ export default function MediaGallery() {
                                 whileHover={{ scale: 1.1 }}
                               >
                                 <Heart className="w-4 h-4" />
-                                <span>{item.likes.toLocaleString('ar-SA')}</span>
+                                <span>{item.likesCount.toLocaleString('ar-SA')}</span>
                               </motion.div>
                               <motion.div
                                 className="flex items-center gap-1"
                                 whileHover={{ scale: 1.1 }}
                               >
                                 <Eye className="w-4 h-4" />
-                                <span>{item.views.toLocaleString('ar-SA')}</span>
+                                <span>{item.viewsCount.toLocaleString('ar-SA')}</span>
                               </motion.div>
                             </div>
                           </div>
@@ -585,8 +457,8 @@ export default function MediaGallery() {
                             {item.title}
                           </h3>
                           <div className="flex items-center justify-between text-sm text-slate-400">
-                            <span>{item.author}</span>
-                            <span>{item.game}</span>
+                            <span>{item.author?.name}</span>
+                            <span>{item.game?.name}</span>
                           </div>
                         </div>
                       </GamingCard>
@@ -718,7 +590,7 @@ export default function MediaGallery() {
                                   />
                                   <span>
                                     {(
-                                      item.likes + (liked.has(item.id) ? 1 : 0)
+                                      item.likesCount + (liked.has(item.id) ? 1 : 0)
                                     ).toLocaleString('ar-SA')}
                                   </span>
                                 </motion.button>
@@ -728,7 +600,7 @@ export default function MediaGallery() {
                                 >
                                   <MessageCircle className="w-4 h-4" />
                                   <span>
-                                    {item.comments.toLocaleString('ar-SA')}
+                                    {item.commentsCount.toLocaleString('ar-SA')}
                                   </span>
                                 </motion.div>
                               </div>
@@ -737,7 +609,7 @@ export default function MediaGallery() {
                                 whileHover={{ scale: 1.1 }}
                               >
                                 <Eye className="w-4 h-4" />
-                                <span>{item.views.toLocaleString('ar-SA')}</span>
+                                <span>{item.viewsCount.toLocaleString('ar-SA')}</span>
                               </motion.div>
                             </div>
                           </div>
@@ -748,9 +620,9 @@ export default function MediaGallery() {
                             {item.title}
                           </h3>
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-slate-400">{item.author}</span>
+                            <span className="text-slate-400">{item.author?.name}</span>
                             <Badge variant="info" className="text-xs">
-                              {item.game}
+                              {item.game?.name}
                             </Badge>
                           </div>
                         </div>
@@ -856,9 +728,9 @@ export default function MediaGallery() {
                             {selectedItem.title}
                           </h2>
                           <div className="flex items-center gap-4 text-slate-400">
-                            <span className="text-lg">{selectedItem.author}</span>
+                            <span className="text-lg">{selectedItem.author?.name}</span>
                             <span>•</span>
-                            <Badge variant="info">{selectedItem.game}</Badge>
+                            <Badge variant="info">{selectedItem.game?.name}</Badge>
                           </div>
                         </div>
                         <motion.button
@@ -909,19 +781,19 @@ export default function MediaGallery() {
                         {[
                           {
                             icon: Heart,
-                            value: selectedItem.likes,
+                            value: selectedItem.likesCount,
                             label: 'إعجاب',
                             color: 'red',
                           },
                           {
                             icon: MessageCircle,
-                            value: selectedItem.comments,
+                            value: selectedItem.commentsCount,
                             label: 'تعليق',
                             color: 'cyan',
                           },
                           {
                             icon: Eye,
-                            value: selectedItem.views,
+                            value: selectedItem.viewsCount,
                             label: 'مشاهدة',
                             color: 'green',
                           },
@@ -1069,7 +941,7 @@ export default function MediaGallery() {
         <Plus className="w-8 h-8" />
       </motion.button>
 
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {showUploadModal && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -1514,7 +1386,11 @@ export default function MediaGallery() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
+      <UploadMediaDialog
+      showUploadModal={showUploadModal}
+      setShowUploadModal={setShowUploadModal}
+      />
     </div>
   );
 }

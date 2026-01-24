@@ -93,12 +93,31 @@ export type ReviewGenre = $Result.DefaultSelection<Prisma.$ReviewGenrePayload>
  * 
  */
 export type ReviewPlatform = $Result.DefaultSelection<Prisma.$ReviewPlatformPayload>
+/**
+ * Model PlayRequest
+ * 
+ */
+export type PlayRequest = $Result.DefaultSelection<Prisma.$PlayRequestPayload>
+/**
+ * Model PlayRequestParticipant
+ * 
+ */
+export type PlayRequestParticipant = $Result.DefaultSelection<Prisma.$PlayRequestParticipantPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const MediaType: {
+  export const PlayRequestStatus: {
+  pending: 'pending',
+  accepted: 'accepted',
+  rejected: 'rejected'
+};
+
+export type PlayRequestStatus = (typeof PlayRequestStatus)[keyof typeof PlayRequestStatus]
+
+
+export const MediaType: {
   image: 'image',
   video: 'video'
 };
@@ -106,6 +125,10 @@ export namespace $Enums {
 export type MediaType = (typeof MediaType)[keyof typeof MediaType]
 
 }
+
+export type PlayRequestStatus = $Enums.PlayRequestStatus
+
+export const PlayRequestStatus: typeof $Enums.PlayRequestStatus
 
 export type MediaType = $Enums.MediaType
 
@@ -387,6 +410,26 @@ export class PrismaClient<
     * ```
     */
   get reviewPlatform(): Prisma.ReviewPlatformDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.playRequest`: Exposes CRUD operations for the **PlayRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlayRequests
+    * const playRequests = await prisma.playRequest.findMany()
+    * ```
+    */
+  get playRequest(): Prisma.PlayRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.playRequestParticipant`: Exposes CRUD operations for the **PlayRequestParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlayRequestParticipants
+    * const playRequestParticipants = await prisma.playRequestParticipant.findMany()
+    * ```
+    */
+  get playRequestParticipant(): Prisma.PlayRequestParticipantDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -836,7 +879,9 @@ export namespace Prisma {
     Review: 'Review',
     NewsTag: 'NewsTag',
     ReviewGenre: 'ReviewGenre',
-    ReviewPlatform: 'ReviewPlatform'
+    ReviewPlatform: 'ReviewPlatform',
+    PlayRequest: 'PlayRequest',
+    PlayRequestParticipant: 'PlayRequestParticipant'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -852,7 +897,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "game" | "platform" | "gamePlatform" | "mediaItem" | "mediaLike" | "mediaComment" | "mediaTagItem" | "mediaTag" | "genre" | "tag" | "news" | "review" | "newsTag" | "reviewGenre" | "reviewPlatform"
+      modelProps: "user" | "game" | "platform" | "gamePlatform" | "mediaItem" | "mediaLike" | "mediaComment" | "mediaTagItem" | "mediaTag" | "genre" | "tag" | "news" | "review" | "newsTag" | "reviewGenre" | "reviewPlatform" | "playRequest" | "playRequestParticipant"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1912,6 +1957,138 @@ export namespace Prisma {
           }
         }
       }
+      PlayRequest: {
+        payload: Prisma.$PlayRequestPayload<ExtArgs>
+        fields: Prisma.PlayRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlayRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlayRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.PlayRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlayRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>
+          }
+          findMany: {
+            args: Prisma.PlayRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>[]
+          }
+          create: {
+            args: Prisma.PlayRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>
+          }
+          createMany: {
+            args: Prisma.PlayRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PlayRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>
+          }
+          update: {
+            args: Prisma.PlayRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlayRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlayRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PlayRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.PlayRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlayRequest>
+          }
+          groupBy: {
+            args: Prisma.PlayRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlayRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlayRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<PlayRequestCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlayRequestParticipant: {
+        payload: Prisma.$PlayRequestParticipantPayload<ExtArgs>
+        fields: Prisma.PlayRequestParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlayRequestParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlayRequestParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.PlayRequestParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlayRequestParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.PlayRequestParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.PlayRequestParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.PlayRequestParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PlayRequestParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>
+          }
+          update: {
+            args: Prisma.PlayRequestParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlayRequestParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlayRequestParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PlayRequestParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlayRequestParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.PlayRequestParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlayRequestParticipant>
+          }
+          groupBy: {
+            args: Prisma.PlayRequestParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlayRequestParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlayRequestParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<PlayRequestParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2036,6 +2213,8 @@ export namespace Prisma {
     newsTag?: NewsTagOmit
     reviewGenre?: ReviewGenreOmit
     reviewPlatform?: ReviewPlatformOmit
+    playRequest?: PlayRequestOmit
+    playRequestParticipant?: PlayRequestParticipantOmit
   }
 
   /* Types for Logging */
@@ -2116,19 +2295,23 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    news: number
-    reviews: number
+    playRequests: number
+    playRequestParticipants: number
     mediaItems: number
     mediaLikes: number
     mediaComments: number
+    news: number
+    reviews: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    news?: boolean | UserCountOutputTypeCountNewsArgs
-    reviews?: boolean | UserCountOutputTypeCountReviewsArgs
+    playRequests?: boolean | UserCountOutputTypeCountPlayRequestsArgs
+    playRequestParticipants?: boolean | UserCountOutputTypeCountPlayRequestParticipantsArgs
     mediaItems?: boolean | UserCountOutputTypeCountMediaItemsArgs
     mediaLikes?: boolean | UserCountOutputTypeCountMediaLikesArgs
     mediaComments?: boolean | UserCountOutputTypeCountMediaCommentsArgs
+    news?: boolean | UserCountOutputTypeCountNewsArgs
+    reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -2145,15 +2328,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountNewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NewsWhereInput
+  export type UserCountOutputTypeCountPlayRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlayRequestWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReviewWhereInput
+  export type UserCountOutputTypeCountPlayRequestParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlayRequestParticipantWhereInput
   }
 
   /**
@@ -2177,12 +2360,27 @@ export namespace Prisma {
     where?: MediaCommentWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NewsWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
+  }
+
 
   /**
    * Count Type GameCountOutputType
    */
 
   export type GameCountOutputType = {
+    playRequests: number
     platforms: number
     news: number
     reviews: number
@@ -2190,6 +2388,7 @@ export namespace Prisma {
   }
 
   export type GameCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    playRequests?: boolean | GameCountOutputTypeCountPlayRequestsArgs
     platforms?: boolean | GameCountOutputTypeCountPlatformsArgs
     news?: boolean | GameCountOutputTypeCountNewsArgs
     reviews?: boolean | GameCountOutputTypeCountReviewsArgs
@@ -2205,6 +2404,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the GameCountOutputType
      */
     select?: GameCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GameCountOutputType without action
+   */
+  export type GameCountOutputTypeCountPlayRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlayRequestWhereInput
   }
 
   /**
@@ -2521,6 +2727,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type PlayRequestCountOutputType
+   */
+
+  export type PlayRequestCountOutputType = {
+    participants: number
+  }
+
+  export type PlayRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participants?: boolean | PlayRequestCountOutputTypeCountParticipantsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlayRequestCountOutputType without action
+   */
+  export type PlayRequestCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestCountOutputType
+     */
+    select?: PlayRequestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlayRequestCountOutputType without action
+   */
+  export type PlayRequestCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlayRequestParticipantWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -2712,11 +2949,13 @@ export namespace Prisma {
     avatar?: boolean
     bio?: boolean
     createdAt?: boolean
-    news?: boolean | User$newsArgs<ExtArgs>
-    reviews?: boolean | User$reviewsArgs<ExtArgs>
+    playRequests?: boolean | User$playRequestsArgs<ExtArgs>
+    playRequestParticipants?: boolean | User$playRequestParticipantsArgs<ExtArgs>
     mediaItems?: boolean | User$mediaItemsArgs<ExtArgs>
     mediaLikes?: boolean | User$mediaLikesArgs<ExtArgs>
     mediaComments?: boolean | User$mediaCommentsArgs<ExtArgs>
+    news?: boolean | User$newsArgs<ExtArgs>
+    reviews?: boolean | User$reviewsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2735,22 +2974,26 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "name" | "avatar" | "bio" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    news?: boolean | User$newsArgs<ExtArgs>
-    reviews?: boolean | User$reviewsArgs<ExtArgs>
+    playRequests?: boolean | User$playRequestsArgs<ExtArgs>
+    playRequestParticipants?: boolean | User$playRequestParticipantsArgs<ExtArgs>
     mediaItems?: boolean | User$mediaItemsArgs<ExtArgs>
     mediaLikes?: boolean | User$mediaLikesArgs<ExtArgs>
     mediaComments?: boolean | User$mediaCommentsArgs<ExtArgs>
+    news?: boolean | User$newsArgs<ExtArgs>
+    reviews?: boolean | User$reviewsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      news: Prisma.$NewsPayload<ExtArgs>[]
-      reviews: Prisma.$ReviewPayload<ExtArgs>[]
+      playRequests: Prisma.$PlayRequestPayload<ExtArgs>[]
+      playRequestParticipants: Prisma.$PlayRequestParticipantPayload<ExtArgs>[]
       mediaItems: Prisma.$MediaItemPayload<ExtArgs>[]
       mediaLikes: Prisma.$MediaLikePayload<ExtArgs>[]
       mediaComments: Prisma.$MediaCommentPayload<ExtArgs>[]
+      news: Prisma.$NewsPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3101,11 +3344,13 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    news<T extends User$newsArgs<ExtArgs> = {}>(args?: Subset<T, User$newsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    playRequests<T extends User$playRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$playRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    playRequestParticipants<T extends User$playRequestParticipantsArgs<ExtArgs> = {}>(args?: Subset<T, User$playRequestParticipantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mediaItems<T extends User$mediaItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$mediaItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MediaItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mediaLikes<T extends User$mediaLikesArgs<ExtArgs> = {}>(args?: Subset<T, User$mediaLikesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MediaLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mediaComments<T extends User$mediaCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$mediaCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MediaCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    news<T extends User$newsArgs<ExtArgs> = {}>(args?: Subset<T, User$newsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3486,51 +3731,51 @@ export namespace Prisma {
   }
 
   /**
-   * User.news
+   * User.playRequests
    */
-  export type User$newsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$playRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the News
+     * Select specific fields to fetch from the PlayRequest
      */
-    select?: NewsSelect<ExtArgs> | null
+    select?: PlayRequestSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the News
+     * Omit specific fields from the PlayRequest
      */
-    omit?: NewsOmit<ExtArgs> | null
+    omit?: PlayRequestOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: NewsInclude<ExtArgs> | null
-    where?: NewsWhereInput
-    orderBy?: NewsOrderByWithRelationInput | NewsOrderByWithRelationInput[]
-    cursor?: NewsWhereUniqueInput
+    include?: PlayRequestInclude<ExtArgs> | null
+    where?: PlayRequestWhereInput
+    orderBy?: PlayRequestOrderByWithRelationInput | PlayRequestOrderByWithRelationInput[]
+    cursor?: PlayRequestWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: NewsScalarFieldEnum | NewsScalarFieldEnum[]
+    distinct?: PlayRequestScalarFieldEnum | PlayRequestScalarFieldEnum[]
   }
 
   /**
-   * User.reviews
+   * User.playRequestParticipants
    */
-  export type User$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$playRequestParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Review
+     * Select specific fields to fetch from the PlayRequestParticipant
      */
-    select?: ReviewSelect<ExtArgs> | null
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Review
+     * Omit specific fields from the PlayRequestParticipant
      */
-    omit?: ReviewOmit<ExtArgs> | null
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReviewInclude<ExtArgs> | null
-    where?: ReviewWhereInput
-    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
-    cursor?: ReviewWhereUniqueInput
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    where?: PlayRequestParticipantWhereInput
+    orderBy?: PlayRequestParticipantOrderByWithRelationInput | PlayRequestParticipantOrderByWithRelationInput[]
+    cursor?: PlayRequestParticipantWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+    distinct?: PlayRequestParticipantScalarFieldEnum | PlayRequestParticipantScalarFieldEnum[]
   }
 
   /**
@@ -3603,6 +3848,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MediaCommentScalarFieldEnum | MediaCommentScalarFieldEnum[]
+  }
+
+  /**
+   * User.news
+   */
+  export type User$newsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the News
+     */
+    select?: NewsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the News
+     */
+    omit?: NewsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NewsInclude<ExtArgs> | null
+    where?: NewsWhereInput
+    orderBy?: NewsOrderByWithRelationInput | NewsOrderByWithRelationInput[]
+    cursor?: NewsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NewsScalarFieldEnum | NewsScalarFieldEnum[]
+  }
+
+  /**
+   * User.reviews
+   */
+  export type User$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
   }
 
   /**
@@ -3820,6 +4113,7 @@ export namespace Prisma {
     developer?: boolean
     publisher?: boolean
     createdAt?: boolean
+    playRequests?: boolean | Game$playRequestsArgs<ExtArgs>
     platforms?: boolean | Game$platformsArgs<ExtArgs>
     news?: boolean | Game$newsArgs<ExtArgs>
     reviews?: boolean | Game$reviewsArgs<ExtArgs>
@@ -3843,6 +4137,7 @@ export namespace Prisma {
 
   export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "coverImage" | "releaseDate" | "developer" | "publisher" | "createdAt", ExtArgs["result"]["game"]>
   export type GameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    playRequests?: boolean | Game$playRequestsArgs<ExtArgs>
     platforms?: boolean | Game$platformsArgs<ExtArgs>
     news?: boolean | Game$newsArgs<ExtArgs>
     reviews?: boolean | Game$reviewsArgs<ExtArgs>
@@ -3853,6 +4148,7 @@ export namespace Prisma {
   export type $GamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Game"
     objects: {
+      playRequests: Prisma.$PlayRequestPayload<ExtArgs>[]
       platforms: Prisma.$GamePlatformPayload<ExtArgs>[]
       news: Prisma.$NewsPayload<ExtArgs>[]
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
@@ -4208,6 +4504,7 @@ export namespace Prisma {
    */
   export interface Prisma__GameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    playRequests<T extends Game$playRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Game$playRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     platforms<T extends Game$platformsArgs<ExtArgs> = {}>(args?: Subset<T, Game$platformsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePlatformPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     news<T extends Game$newsArgs<ExtArgs> = {}>(args?: Subset<T, Game$newsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviews<T extends Game$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Game$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4590,6 +4887,30 @@ export namespace Prisma {
      * Limit how many Games to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Game.playRequests
+   */
+  export type Game$playRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    where?: PlayRequestWhereInput
+    orderBy?: PlayRequestOrderByWithRelationInput | PlayRequestOrderByWithRelationInput[]
+    cursor?: PlayRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlayRequestScalarFieldEnum | PlayRequestScalarFieldEnum[]
   }
 
   /**
@@ -18432,6 +18753,1980 @@ export namespace Prisma {
 
 
   /**
+   * Model PlayRequest
+   */
+
+  export type AggregatePlayRequest = {
+    _count: PlayRequestCountAggregateOutputType | null
+    _avg: PlayRequestAvgAggregateOutputType | null
+    _sum: PlayRequestSumAggregateOutputType | null
+    _min: PlayRequestMinAggregateOutputType | null
+    _max: PlayRequestMaxAggregateOutputType | null
+  }
+
+  export type PlayRequestAvgAggregateOutputType = {
+    playersNeeded: number | null
+  }
+
+  export type PlayRequestSumAggregateOutputType = {
+    playersNeeded: number | null
+  }
+
+  export type PlayRequestMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    playersNeeded: number | null
+    isOpen: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+    gameId: string | null
+  }
+
+  export type PlayRequestMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    playersNeeded: number | null
+    isOpen: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+    gameId: string | null
+  }
+
+  export type PlayRequestCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    playersNeeded: number
+    isOpen: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    gameId: number
+    _all: number
+  }
+
+
+  export type PlayRequestAvgAggregateInputType = {
+    playersNeeded?: true
+  }
+
+  export type PlayRequestSumAggregateInputType = {
+    playersNeeded?: true
+  }
+
+  export type PlayRequestMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    playersNeeded?: true
+    isOpen?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    gameId?: true
+  }
+
+  export type PlayRequestMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    playersNeeded?: true
+    isOpen?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    gameId?: true
+  }
+
+  export type PlayRequestCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    playersNeeded?: true
+    isOpen?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    gameId?: true
+    _all?: true
+  }
+
+  export type PlayRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlayRequest to aggregate.
+     */
+    where?: PlayRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequests to fetch.
+     */
+    orderBy?: PlayRequestOrderByWithRelationInput | PlayRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlayRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlayRequests
+    **/
+    _count?: true | PlayRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlayRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlayRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlayRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlayRequestMaxAggregateInputType
+  }
+
+  export type GetPlayRequestAggregateType<T extends PlayRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlayRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlayRequest[P]>
+      : GetScalarType<T[P], AggregatePlayRequest[P]>
+  }
+
+
+
+
+  export type PlayRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlayRequestWhereInput
+    orderBy?: PlayRequestOrderByWithAggregationInput | PlayRequestOrderByWithAggregationInput[]
+    by: PlayRequestScalarFieldEnum[] | PlayRequestScalarFieldEnum
+    having?: PlayRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlayRequestCountAggregateInputType | true
+    _avg?: PlayRequestAvgAggregateInputType
+    _sum?: PlayRequestSumAggregateInputType
+    _min?: PlayRequestMinAggregateInputType
+    _max?: PlayRequestMaxAggregateInputType
+  }
+
+  export type PlayRequestGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    playersNeeded: number
+    isOpen: boolean
+    createdAt: Date
+    updatedAt: Date
+    userId: string
+    gameId: string
+    _count: PlayRequestCountAggregateOutputType | null
+    _avg: PlayRequestAvgAggregateOutputType | null
+    _sum: PlayRequestSumAggregateOutputType | null
+    _min: PlayRequestMinAggregateOutputType | null
+    _max: PlayRequestMaxAggregateOutputType | null
+  }
+
+  type GetPlayRequestGroupByPayload<T extends PlayRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlayRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlayRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlayRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], PlayRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlayRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    playersNeeded?: boolean
+    isOpen?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    gameId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    participants?: boolean | PlayRequest$participantsArgs<ExtArgs>
+    _count?: boolean | PlayRequestCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["playRequest"]>
+
+
+
+  export type PlayRequestSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    playersNeeded?: boolean
+    isOpen?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    gameId?: boolean
+  }
+
+  export type PlayRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "playersNeeded" | "isOpen" | "createdAt" | "updatedAt" | "userId" | "gameId", ExtArgs["result"]["playRequest"]>
+  export type PlayRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    participants?: boolean | PlayRequest$participantsArgs<ExtArgs>
+    _count?: boolean | PlayRequestCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $PlayRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlayRequest"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      game: Prisma.$GamePayload<ExtArgs>
+      participants: Prisma.$PlayRequestParticipantPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      playersNeeded: number
+      isOpen: boolean
+      createdAt: Date
+      updatedAt: Date
+      userId: string
+      gameId: string
+    }, ExtArgs["result"]["playRequest"]>
+    composites: {}
+  }
+
+  type PlayRequestGetPayload<S extends boolean | null | undefined | PlayRequestDefaultArgs> = $Result.GetResult<Prisma.$PlayRequestPayload, S>
+
+  type PlayRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlayRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlayRequestCountAggregateInputType | true
+    }
+
+  export interface PlayRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlayRequest'], meta: { name: 'PlayRequest' } }
+    /**
+     * Find zero or one PlayRequest that matches the filter.
+     * @param {PlayRequestFindUniqueArgs} args - Arguments to find a PlayRequest
+     * @example
+     * // Get one PlayRequest
+     * const playRequest = await prisma.playRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlayRequestFindUniqueArgs>(args: SelectSubset<T, PlayRequestFindUniqueArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlayRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlayRequestFindUniqueOrThrowArgs} args - Arguments to find a PlayRequest
+     * @example
+     * // Get one PlayRequest
+     * const playRequest = await prisma.playRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlayRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, PlayRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlayRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestFindFirstArgs} args - Arguments to find a PlayRequest
+     * @example
+     * // Get one PlayRequest
+     * const playRequest = await prisma.playRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlayRequestFindFirstArgs>(args?: SelectSubset<T, PlayRequestFindFirstArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlayRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestFindFirstOrThrowArgs} args - Arguments to find a PlayRequest
+     * @example
+     * // Get one PlayRequest
+     * const playRequest = await prisma.playRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlayRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, PlayRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlayRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlayRequests
+     * const playRequests = await prisma.playRequest.findMany()
+     * 
+     * // Get first 10 PlayRequests
+     * const playRequests = await prisma.playRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const playRequestWithIdOnly = await prisma.playRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlayRequestFindManyArgs>(args?: SelectSubset<T, PlayRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlayRequest.
+     * @param {PlayRequestCreateArgs} args - Arguments to create a PlayRequest.
+     * @example
+     * // Create one PlayRequest
+     * const PlayRequest = await prisma.playRequest.create({
+     *   data: {
+     *     // ... data to create a PlayRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlayRequestCreateArgs>(args: SelectSubset<T, PlayRequestCreateArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlayRequests.
+     * @param {PlayRequestCreateManyArgs} args - Arguments to create many PlayRequests.
+     * @example
+     * // Create many PlayRequests
+     * const playRequest = await prisma.playRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlayRequestCreateManyArgs>(args?: SelectSubset<T, PlayRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PlayRequest.
+     * @param {PlayRequestDeleteArgs} args - Arguments to delete one PlayRequest.
+     * @example
+     * // Delete one PlayRequest
+     * const PlayRequest = await prisma.playRequest.delete({
+     *   where: {
+     *     // ... filter to delete one PlayRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlayRequestDeleteArgs>(args: SelectSubset<T, PlayRequestDeleteArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlayRequest.
+     * @param {PlayRequestUpdateArgs} args - Arguments to update one PlayRequest.
+     * @example
+     * // Update one PlayRequest
+     * const playRequest = await prisma.playRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlayRequestUpdateArgs>(args: SelectSubset<T, PlayRequestUpdateArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlayRequests.
+     * @param {PlayRequestDeleteManyArgs} args - Arguments to filter PlayRequests to delete.
+     * @example
+     * // Delete a few PlayRequests
+     * const { count } = await prisma.playRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlayRequestDeleteManyArgs>(args?: SelectSubset<T, PlayRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlayRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlayRequests
+     * const playRequest = await prisma.playRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlayRequestUpdateManyArgs>(args: SelectSubset<T, PlayRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PlayRequest.
+     * @param {PlayRequestUpsertArgs} args - Arguments to update or create a PlayRequest.
+     * @example
+     * // Update or create a PlayRequest
+     * const playRequest = await prisma.playRequest.upsert({
+     *   create: {
+     *     // ... data to create a PlayRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlayRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlayRequestUpsertArgs>(args: SelectSubset<T, PlayRequestUpsertArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlayRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestCountArgs} args - Arguments to filter PlayRequests to count.
+     * @example
+     * // Count the number of PlayRequests
+     * const count = await prisma.playRequest.count({
+     *   where: {
+     *     // ... the filter for the PlayRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlayRequestCountArgs>(
+      args?: Subset<T, PlayRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlayRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlayRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlayRequestAggregateArgs>(args: Subset<T, PlayRequestAggregateArgs>): Prisma.PrismaPromise<GetPlayRequestAggregateType<T>>
+
+    /**
+     * Group by PlayRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlayRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlayRequestGroupByArgs['orderBy'] }
+        : { orderBy?: PlayRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlayRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlayRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlayRequest model
+   */
+  readonly fields: PlayRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlayRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlayRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    game<T extends GameDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GameDefaultArgs<ExtArgs>>): Prisma__GameClient<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participants<T extends PlayRequest$participantsArgs<ExtArgs> = {}>(args?: Subset<T, PlayRequest$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlayRequest model
+   */
+  interface PlayRequestFieldRefs {
+    readonly id: FieldRef<"PlayRequest", 'String'>
+    readonly title: FieldRef<"PlayRequest", 'String'>
+    readonly description: FieldRef<"PlayRequest", 'String'>
+    readonly playersNeeded: FieldRef<"PlayRequest", 'Int'>
+    readonly isOpen: FieldRef<"PlayRequest", 'Boolean'>
+    readonly createdAt: FieldRef<"PlayRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlayRequest", 'DateTime'>
+    readonly userId: FieldRef<"PlayRequest", 'String'>
+    readonly gameId: FieldRef<"PlayRequest", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlayRequest findUnique
+   */
+  export type PlayRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequest to fetch.
+     */
+    where: PlayRequestWhereUniqueInput
+  }
+
+  /**
+   * PlayRequest findUniqueOrThrow
+   */
+  export type PlayRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequest to fetch.
+     */
+    where: PlayRequestWhereUniqueInput
+  }
+
+  /**
+   * PlayRequest findFirst
+   */
+  export type PlayRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequest to fetch.
+     */
+    where?: PlayRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequests to fetch.
+     */
+    orderBy?: PlayRequestOrderByWithRelationInput | PlayRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlayRequests.
+     */
+    cursor?: PlayRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlayRequests.
+     */
+    distinct?: PlayRequestScalarFieldEnum | PlayRequestScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequest findFirstOrThrow
+   */
+  export type PlayRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequest to fetch.
+     */
+    where?: PlayRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequests to fetch.
+     */
+    orderBy?: PlayRequestOrderByWithRelationInput | PlayRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlayRequests.
+     */
+    cursor?: PlayRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlayRequests.
+     */
+    distinct?: PlayRequestScalarFieldEnum | PlayRequestScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequest findMany
+   */
+  export type PlayRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequests to fetch.
+     */
+    where?: PlayRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequests to fetch.
+     */
+    orderBy?: PlayRequestOrderByWithRelationInput | PlayRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlayRequests.
+     */
+    cursor?: PlayRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequests.
+     */
+    skip?: number
+    distinct?: PlayRequestScalarFieldEnum | PlayRequestScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequest create
+   */
+  export type PlayRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlayRequest.
+     */
+    data: XOR<PlayRequestCreateInput, PlayRequestUncheckedCreateInput>
+  }
+
+  /**
+   * PlayRequest createMany
+   */
+  export type PlayRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlayRequests.
+     */
+    data: PlayRequestCreateManyInput | PlayRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlayRequest update
+   */
+  export type PlayRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlayRequest.
+     */
+    data: XOR<PlayRequestUpdateInput, PlayRequestUncheckedUpdateInput>
+    /**
+     * Choose, which PlayRequest to update.
+     */
+    where: PlayRequestWhereUniqueInput
+  }
+
+  /**
+   * PlayRequest updateMany
+   */
+  export type PlayRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlayRequests.
+     */
+    data: XOR<PlayRequestUpdateManyMutationInput, PlayRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which PlayRequests to update
+     */
+    where?: PlayRequestWhereInput
+    /**
+     * Limit how many PlayRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlayRequest upsert
+   */
+  export type PlayRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlayRequest to update in case it exists.
+     */
+    where: PlayRequestWhereUniqueInput
+    /**
+     * In case the PlayRequest found by the `where` argument doesn't exist, create a new PlayRequest with this data.
+     */
+    create: XOR<PlayRequestCreateInput, PlayRequestUncheckedCreateInput>
+    /**
+     * In case the PlayRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlayRequestUpdateInput, PlayRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * PlayRequest delete
+   */
+  export type PlayRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+    /**
+     * Filter which PlayRequest to delete.
+     */
+    where: PlayRequestWhereUniqueInput
+  }
+
+  /**
+   * PlayRequest deleteMany
+   */
+  export type PlayRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlayRequests to delete
+     */
+    where?: PlayRequestWhereInput
+    /**
+     * Limit how many PlayRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlayRequest.participants
+   */
+  export type PlayRequest$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    where?: PlayRequestParticipantWhereInput
+    orderBy?: PlayRequestParticipantOrderByWithRelationInput | PlayRequestParticipantOrderByWithRelationInput[]
+    cursor?: PlayRequestParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlayRequestParticipantScalarFieldEnum | PlayRequestParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequest without action
+   */
+  export type PlayRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequest
+     */
+    select?: PlayRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequest
+     */
+    omit?: PlayRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlayRequestParticipant
+   */
+
+  export type AggregatePlayRequestParticipant = {
+    _count: PlayRequestParticipantCountAggregateOutputType | null
+    _min: PlayRequestParticipantMinAggregateOutputType | null
+    _max: PlayRequestParticipantMaxAggregateOutputType | null
+  }
+
+  export type PlayRequestParticipantMinAggregateOutputType = {
+    id: string | null
+    joinedAt: Date | null
+    status: $Enums.PlayRequestStatus | null
+    userId: string | null
+    requestId: string | null
+  }
+
+  export type PlayRequestParticipantMaxAggregateOutputType = {
+    id: string | null
+    joinedAt: Date | null
+    status: $Enums.PlayRequestStatus | null
+    userId: string | null
+    requestId: string | null
+  }
+
+  export type PlayRequestParticipantCountAggregateOutputType = {
+    id: number
+    joinedAt: number
+    status: number
+    userId: number
+    requestId: number
+    _all: number
+  }
+
+
+  export type PlayRequestParticipantMinAggregateInputType = {
+    id?: true
+    joinedAt?: true
+    status?: true
+    userId?: true
+    requestId?: true
+  }
+
+  export type PlayRequestParticipantMaxAggregateInputType = {
+    id?: true
+    joinedAt?: true
+    status?: true
+    userId?: true
+    requestId?: true
+  }
+
+  export type PlayRequestParticipantCountAggregateInputType = {
+    id?: true
+    joinedAt?: true
+    status?: true
+    userId?: true
+    requestId?: true
+    _all?: true
+  }
+
+  export type PlayRequestParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlayRequestParticipant to aggregate.
+     */
+    where?: PlayRequestParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequestParticipants to fetch.
+     */
+    orderBy?: PlayRequestParticipantOrderByWithRelationInput | PlayRequestParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlayRequestParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequestParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequestParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlayRequestParticipants
+    **/
+    _count?: true | PlayRequestParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlayRequestParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlayRequestParticipantMaxAggregateInputType
+  }
+
+  export type GetPlayRequestParticipantAggregateType<T extends PlayRequestParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlayRequestParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlayRequestParticipant[P]>
+      : GetScalarType<T[P], AggregatePlayRequestParticipant[P]>
+  }
+
+
+
+
+  export type PlayRequestParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlayRequestParticipantWhereInput
+    orderBy?: PlayRequestParticipantOrderByWithAggregationInput | PlayRequestParticipantOrderByWithAggregationInput[]
+    by: PlayRequestParticipantScalarFieldEnum[] | PlayRequestParticipantScalarFieldEnum
+    having?: PlayRequestParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlayRequestParticipantCountAggregateInputType | true
+    _min?: PlayRequestParticipantMinAggregateInputType
+    _max?: PlayRequestParticipantMaxAggregateInputType
+  }
+
+  export type PlayRequestParticipantGroupByOutputType = {
+    id: string
+    joinedAt: Date
+    status: $Enums.PlayRequestStatus
+    userId: string
+    requestId: string
+    _count: PlayRequestParticipantCountAggregateOutputType | null
+    _min: PlayRequestParticipantMinAggregateOutputType | null
+    _max: PlayRequestParticipantMaxAggregateOutputType | null
+  }
+
+  type GetPlayRequestParticipantGroupByPayload<T extends PlayRequestParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlayRequestParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlayRequestParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlayRequestParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], PlayRequestParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlayRequestParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    joinedAt?: boolean
+    status?: boolean
+    userId?: boolean
+    requestId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    request?: boolean | PlayRequestDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["playRequestParticipant"]>
+
+
+
+  export type PlayRequestParticipantSelectScalar = {
+    id?: boolean
+    joinedAt?: boolean
+    status?: boolean
+    userId?: boolean
+    requestId?: boolean
+  }
+
+  export type PlayRequestParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "joinedAt" | "status" | "userId" | "requestId", ExtArgs["result"]["playRequestParticipant"]>
+  export type PlayRequestParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    request?: boolean | PlayRequestDefaultArgs<ExtArgs>
+  }
+
+  export type $PlayRequestParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlayRequestParticipant"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      request: Prisma.$PlayRequestPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      joinedAt: Date
+      status: $Enums.PlayRequestStatus
+      userId: string
+      requestId: string
+    }, ExtArgs["result"]["playRequestParticipant"]>
+    composites: {}
+  }
+
+  type PlayRequestParticipantGetPayload<S extends boolean | null | undefined | PlayRequestParticipantDefaultArgs> = $Result.GetResult<Prisma.$PlayRequestParticipantPayload, S>
+
+  type PlayRequestParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlayRequestParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlayRequestParticipantCountAggregateInputType | true
+    }
+
+  export interface PlayRequestParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlayRequestParticipant'], meta: { name: 'PlayRequestParticipant' } }
+    /**
+     * Find zero or one PlayRequestParticipant that matches the filter.
+     * @param {PlayRequestParticipantFindUniqueArgs} args - Arguments to find a PlayRequestParticipant
+     * @example
+     * // Get one PlayRequestParticipant
+     * const playRequestParticipant = await prisma.playRequestParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlayRequestParticipantFindUniqueArgs>(args: SelectSubset<T, PlayRequestParticipantFindUniqueArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlayRequestParticipant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlayRequestParticipantFindUniqueOrThrowArgs} args - Arguments to find a PlayRequestParticipant
+     * @example
+     * // Get one PlayRequestParticipant
+     * const playRequestParticipant = await prisma.playRequestParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlayRequestParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, PlayRequestParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlayRequestParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantFindFirstArgs} args - Arguments to find a PlayRequestParticipant
+     * @example
+     * // Get one PlayRequestParticipant
+     * const playRequestParticipant = await prisma.playRequestParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlayRequestParticipantFindFirstArgs>(args?: SelectSubset<T, PlayRequestParticipantFindFirstArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlayRequestParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantFindFirstOrThrowArgs} args - Arguments to find a PlayRequestParticipant
+     * @example
+     * // Get one PlayRequestParticipant
+     * const playRequestParticipant = await prisma.playRequestParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlayRequestParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, PlayRequestParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlayRequestParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlayRequestParticipants
+     * const playRequestParticipants = await prisma.playRequestParticipant.findMany()
+     * 
+     * // Get first 10 PlayRequestParticipants
+     * const playRequestParticipants = await prisma.playRequestParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const playRequestParticipantWithIdOnly = await prisma.playRequestParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlayRequestParticipantFindManyArgs>(args?: SelectSubset<T, PlayRequestParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlayRequestParticipant.
+     * @param {PlayRequestParticipantCreateArgs} args - Arguments to create a PlayRequestParticipant.
+     * @example
+     * // Create one PlayRequestParticipant
+     * const PlayRequestParticipant = await prisma.playRequestParticipant.create({
+     *   data: {
+     *     // ... data to create a PlayRequestParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlayRequestParticipantCreateArgs>(args: SelectSubset<T, PlayRequestParticipantCreateArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlayRequestParticipants.
+     * @param {PlayRequestParticipantCreateManyArgs} args - Arguments to create many PlayRequestParticipants.
+     * @example
+     * // Create many PlayRequestParticipants
+     * const playRequestParticipant = await prisma.playRequestParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlayRequestParticipantCreateManyArgs>(args?: SelectSubset<T, PlayRequestParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PlayRequestParticipant.
+     * @param {PlayRequestParticipantDeleteArgs} args - Arguments to delete one PlayRequestParticipant.
+     * @example
+     * // Delete one PlayRequestParticipant
+     * const PlayRequestParticipant = await prisma.playRequestParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one PlayRequestParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlayRequestParticipantDeleteArgs>(args: SelectSubset<T, PlayRequestParticipantDeleteArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlayRequestParticipant.
+     * @param {PlayRequestParticipantUpdateArgs} args - Arguments to update one PlayRequestParticipant.
+     * @example
+     * // Update one PlayRequestParticipant
+     * const playRequestParticipant = await prisma.playRequestParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlayRequestParticipantUpdateArgs>(args: SelectSubset<T, PlayRequestParticipantUpdateArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlayRequestParticipants.
+     * @param {PlayRequestParticipantDeleteManyArgs} args - Arguments to filter PlayRequestParticipants to delete.
+     * @example
+     * // Delete a few PlayRequestParticipants
+     * const { count } = await prisma.playRequestParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlayRequestParticipantDeleteManyArgs>(args?: SelectSubset<T, PlayRequestParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlayRequestParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlayRequestParticipants
+     * const playRequestParticipant = await prisma.playRequestParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlayRequestParticipantUpdateManyArgs>(args: SelectSubset<T, PlayRequestParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PlayRequestParticipant.
+     * @param {PlayRequestParticipantUpsertArgs} args - Arguments to update or create a PlayRequestParticipant.
+     * @example
+     * // Update or create a PlayRequestParticipant
+     * const playRequestParticipant = await prisma.playRequestParticipant.upsert({
+     *   create: {
+     *     // ... data to create a PlayRequestParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlayRequestParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlayRequestParticipantUpsertArgs>(args: SelectSubset<T, PlayRequestParticipantUpsertArgs<ExtArgs>>): Prisma__PlayRequestParticipantClient<$Result.GetResult<Prisma.$PlayRequestParticipantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlayRequestParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantCountArgs} args - Arguments to filter PlayRequestParticipants to count.
+     * @example
+     * // Count the number of PlayRequestParticipants
+     * const count = await prisma.playRequestParticipant.count({
+     *   where: {
+     *     // ... the filter for the PlayRequestParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlayRequestParticipantCountArgs>(
+      args?: Subset<T, PlayRequestParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlayRequestParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlayRequestParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlayRequestParticipantAggregateArgs>(args: Subset<T, PlayRequestParticipantAggregateArgs>): Prisma.PrismaPromise<GetPlayRequestParticipantAggregateType<T>>
+
+    /**
+     * Group by PlayRequestParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlayRequestParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlayRequestParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlayRequestParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: PlayRequestParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlayRequestParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlayRequestParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlayRequestParticipant model
+   */
+  readonly fields: PlayRequestParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlayRequestParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlayRequestParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    request<T extends PlayRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlayRequestDefaultArgs<ExtArgs>>): Prisma__PlayRequestClient<$Result.GetResult<Prisma.$PlayRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlayRequestParticipant model
+   */
+  interface PlayRequestParticipantFieldRefs {
+    readonly id: FieldRef<"PlayRequestParticipant", 'String'>
+    readonly joinedAt: FieldRef<"PlayRequestParticipant", 'DateTime'>
+    readonly status: FieldRef<"PlayRequestParticipant", 'PlayRequestStatus'>
+    readonly userId: FieldRef<"PlayRequestParticipant", 'String'>
+    readonly requestId: FieldRef<"PlayRequestParticipant", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlayRequestParticipant findUnique
+   */
+  export type PlayRequestParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequestParticipant to fetch.
+     */
+    where: PlayRequestParticipantWhereUniqueInput
+  }
+
+  /**
+   * PlayRequestParticipant findUniqueOrThrow
+   */
+  export type PlayRequestParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequestParticipant to fetch.
+     */
+    where: PlayRequestParticipantWhereUniqueInput
+  }
+
+  /**
+   * PlayRequestParticipant findFirst
+   */
+  export type PlayRequestParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequestParticipant to fetch.
+     */
+    where?: PlayRequestParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequestParticipants to fetch.
+     */
+    orderBy?: PlayRequestParticipantOrderByWithRelationInput | PlayRequestParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlayRequestParticipants.
+     */
+    cursor?: PlayRequestParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequestParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequestParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlayRequestParticipants.
+     */
+    distinct?: PlayRequestParticipantScalarFieldEnum | PlayRequestParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequestParticipant findFirstOrThrow
+   */
+  export type PlayRequestParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequestParticipant to fetch.
+     */
+    where?: PlayRequestParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequestParticipants to fetch.
+     */
+    orderBy?: PlayRequestParticipantOrderByWithRelationInput | PlayRequestParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlayRequestParticipants.
+     */
+    cursor?: PlayRequestParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequestParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequestParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlayRequestParticipants.
+     */
+    distinct?: PlayRequestParticipantScalarFieldEnum | PlayRequestParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequestParticipant findMany
+   */
+  export type PlayRequestParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which PlayRequestParticipants to fetch.
+     */
+    where?: PlayRequestParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlayRequestParticipants to fetch.
+     */
+    orderBy?: PlayRequestParticipantOrderByWithRelationInput | PlayRequestParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlayRequestParticipants.
+     */
+    cursor?: PlayRequestParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlayRequestParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlayRequestParticipants.
+     */
+    skip?: number
+    distinct?: PlayRequestParticipantScalarFieldEnum | PlayRequestParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * PlayRequestParticipant create
+   */
+  export type PlayRequestParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlayRequestParticipant.
+     */
+    data: XOR<PlayRequestParticipantCreateInput, PlayRequestParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * PlayRequestParticipant createMany
+   */
+  export type PlayRequestParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlayRequestParticipants.
+     */
+    data: PlayRequestParticipantCreateManyInput | PlayRequestParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlayRequestParticipant update
+   */
+  export type PlayRequestParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlayRequestParticipant.
+     */
+    data: XOR<PlayRequestParticipantUpdateInput, PlayRequestParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which PlayRequestParticipant to update.
+     */
+    where: PlayRequestParticipantWhereUniqueInput
+  }
+
+  /**
+   * PlayRequestParticipant updateMany
+   */
+  export type PlayRequestParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlayRequestParticipants.
+     */
+    data: XOR<PlayRequestParticipantUpdateManyMutationInput, PlayRequestParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which PlayRequestParticipants to update
+     */
+    where?: PlayRequestParticipantWhereInput
+    /**
+     * Limit how many PlayRequestParticipants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlayRequestParticipant upsert
+   */
+  export type PlayRequestParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlayRequestParticipant to update in case it exists.
+     */
+    where: PlayRequestParticipantWhereUniqueInput
+    /**
+     * In case the PlayRequestParticipant found by the `where` argument doesn't exist, create a new PlayRequestParticipant with this data.
+     */
+    create: XOR<PlayRequestParticipantCreateInput, PlayRequestParticipantUncheckedCreateInput>
+    /**
+     * In case the PlayRequestParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlayRequestParticipantUpdateInput, PlayRequestParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * PlayRequestParticipant delete
+   */
+  export type PlayRequestParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which PlayRequestParticipant to delete.
+     */
+    where: PlayRequestParticipantWhereUniqueInput
+  }
+
+  /**
+   * PlayRequestParticipant deleteMany
+   */
+  export type PlayRequestParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlayRequestParticipants to delete
+     */
+    where?: PlayRequestParticipantWhereInput
+    /**
+     * Limit how many PlayRequestParticipants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlayRequestParticipant without action
+   */
+  export type PlayRequestParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlayRequestParticipant
+     */
+    select?: PlayRequestParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlayRequestParticipant
+     */
+    omit?: PlayRequestParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlayRequestParticipantInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18641,6 +20936,32 @@ export namespace Prisma {
   export type ReviewPlatformScalarFieldEnum = (typeof ReviewPlatformScalarFieldEnum)[keyof typeof ReviewPlatformScalarFieldEnum]
 
 
+  export const PlayRequestScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    playersNeeded: 'playersNeeded',
+    isOpen: 'isOpen',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId',
+    gameId: 'gameId'
+  };
+
+  export type PlayRequestScalarFieldEnum = (typeof PlayRequestScalarFieldEnum)[keyof typeof PlayRequestScalarFieldEnum]
+
+
+  export const PlayRequestParticipantScalarFieldEnum: {
+    id: 'id',
+    joinedAt: 'joinedAt',
+    status: 'status',
+    userId: 'userId',
+    requestId: 'requestId'
+  };
+
+  export type PlayRequestParticipantScalarFieldEnum = (typeof PlayRequestParticipantScalarFieldEnum)[keyof typeof PlayRequestParticipantScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18823,6 +21144,26 @@ export namespace Prisma {
   export type ReviewPlatformOrderByRelevanceFieldEnum = (typeof ReviewPlatformOrderByRelevanceFieldEnum)[keyof typeof ReviewPlatformOrderByRelevanceFieldEnum]
 
 
+  export const PlayRequestOrderByRelevanceFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    userId: 'userId',
+    gameId: 'gameId'
+  };
+
+  export type PlayRequestOrderByRelevanceFieldEnum = (typeof PlayRequestOrderByRelevanceFieldEnum)[keyof typeof PlayRequestOrderByRelevanceFieldEnum]
+
+
+  export const PlayRequestParticipantOrderByRelevanceFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    requestId: 'requestId'
+  };
+
+  export type PlayRequestParticipantOrderByRelevanceFieldEnum = (typeof PlayRequestParticipantOrderByRelevanceFieldEnum)[keyof typeof PlayRequestParticipantOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -18868,6 +21209,13 @@ export namespace Prisma {
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
+
+
+  /**
+   * Reference to a field of type 'PlayRequestStatus'
+   */
+  export type EnumPlayRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlayRequestStatus'>
+    
   /**
    * Deep Input Types
    */
@@ -18885,11 +21233,13 @@ export namespace Prisma {
     avatar?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
-    news?: NewsListRelationFilter
-    reviews?: ReviewListRelationFilter
+    playRequests?: PlayRequestListRelationFilter
+    playRequestParticipants?: PlayRequestParticipantListRelationFilter
     mediaItems?: MediaItemListRelationFilter
     mediaLikes?: MediaLikeListRelationFilter
     mediaComments?: MediaCommentListRelationFilter
+    news?: NewsListRelationFilter
+    reviews?: ReviewListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18901,11 +21251,13 @@ export namespace Prisma {
     avatar?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    news?: NewsOrderByRelationAggregateInput
-    reviews?: ReviewOrderByRelationAggregateInput
+    playRequests?: PlayRequestOrderByRelationAggregateInput
+    playRequestParticipants?: PlayRequestParticipantOrderByRelationAggregateInput
     mediaItems?: MediaItemOrderByRelationAggregateInput
     mediaLikes?: MediaLikeOrderByRelationAggregateInput
     mediaComments?: MediaCommentOrderByRelationAggregateInput
+    news?: NewsOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -18921,11 +21273,13 @@ export namespace Prisma {
     avatar?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
-    news?: NewsListRelationFilter
-    reviews?: ReviewListRelationFilter
+    playRequests?: PlayRequestListRelationFilter
+    playRequestParticipants?: PlayRequestParticipantListRelationFilter
     mediaItems?: MediaItemListRelationFilter
     mediaLikes?: MediaLikeListRelationFilter
     mediaComments?: MediaCommentListRelationFilter
+    news?: NewsListRelationFilter
+    reviews?: ReviewListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -18969,6 +21323,7 @@ export namespace Prisma {
     developer?: StringNullableFilter<"Game"> | string | null
     publisher?: StringNullableFilter<"Game"> | string | null
     createdAt?: DateTimeFilter<"Game"> | Date | string
+    playRequests?: PlayRequestListRelationFilter
     platforms?: GamePlatformListRelationFilter
     news?: NewsListRelationFilter
     reviews?: ReviewListRelationFilter
@@ -18985,6 +21340,7 @@ export namespace Prisma {
     developer?: SortOrderInput | SortOrder
     publisher?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    playRequests?: PlayRequestOrderByRelationAggregateInput
     platforms?: GamePlatformOrderByRelationAggregateInput
     news?: NewsOrderByRelationAggregateInput
     reviews?: ReviewOrderByRelationAggregateInput
@@ -19005,6 +21361,7 @@ export namespace Prisma {
     developer?: StringNullableFilter<"Game"> | string | null
     publisher?: StringNullableFilter<"Game"> | string | null
     createdAt?: DateTimeFilter<"Game"> | Date | string
+    playRequests?: PlayRequestListRelationFilter
     platforms?: GamePlatformListRelationFilter
     news?: NewsListRelationFilter
     reviews?: ReviewListRelationFilter
@@ -19959,6 +22316,150 @@ export namespace Prisma {
     platformId?: StringWithAggregatesFilter<"ReviewPlatform"> | string
   }
 
+  export type PlayRequestWhereInput = {
+    AND?: PlayRequestWhereInput | PlayRequestWhereInput[]
+    OR?: PlayRequestWhereInput[]
+    NOT?: PlayRequestWhereInput | PlayRequestWhereInput[]
+    id?: StringFilter<"PlayRequest"> | string
+    title?: StringFilter<"PlayRequest"> | string
+    description?: StringNullableFilter<"PlayRequest"> | string | null
+    playersNeeded?: IntFilter<"PlayRequest"> | number
+    isOpen?: BoolFilter<"PlayRequest"> | boolean
+    createdAt?: DateTimeFilter<"PlayRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"PlayRequest"> | Date | string
+    userId?: StringFilter<"PlayRequest"> | string
+    gameId?: StringFilter<"PlayRequest"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    game?: XOR<GameScalarRelationFilter, GameWhereInput>
+    participants?: PlayRequestParticipantListRelationFilter
+  }
+
+  export type PlayRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    playersNeeded?: SortOrder
+    isOpen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    gameId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    game?: GameOrderByWithRelationInput
+    participants?: PlayRequestParticipantOrderByRelationAggregateInput
+    _relevance?: PlayRequestOrderByRelevanceInput
+  }
+
+  export type PlayRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PlayRequestWhereInput | PlayRequestWhereInput[]
+    OR?: PlayRequestWhereInput[]
+    NOT?: PlayRequestWhereInput | PlayRequestWhereInput[]
+    title?: StringFilter<"PlayRequest"> | string
+    description?: StringNullableFilter<"PlayRequest"> | string | null
+    playersNeeded?: IntFilter<"PlayRequest"> | number
+    isOpen?: BoolFilter<"PlayRequest"> | boolean
+    createdAt?: DateTimeFilter<"PlayRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"PlayRequest"> | Date | string
+    userId?: StringFilter<"PlayRequest"> | string
+    gameId?: StringFilter<"PlayRequest"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    game?: XOR<GameScalarRelationFilter, GameWhereInput>
+    participants?: PlayRequestParticipantListRelationFilter
+  }, "id">
+
+  export type PlayRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    playersNeeded?: SortOrder
+    isOpen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    gameId?: SortOrder
+    _count?: PlayRequestCountOrderByAggregateInput
+    _avg?: PlayRequestAvgOrderByAggregateInput
+    _max?: PlayRequestMaxOrderByAggregateInput
+    _min?: PlayRequestMinOrderByAggregateInput
+    _sum?: PlayRequestSumOrderByAggregateInput
+  }
+
+  export type PlayRequestScalarWhereWithAggregatesInput = {
+    AND?: PlayRequestScalarWhereWithAggregatesInput | PlayRequestScalarWhereWithAggregatesInput[]
+    OR?: PlayRequestScalarWhereWithAggregatesInput[]
+    NOT?: PlayRequestScalarWhereWithAggregatesInput | PlayRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlayRequest"> | string
+    title?: StringWithAggregatesFilter<"PlayRequest"> | string
+    description?: StringNullableWithAggregatesFilter<"PlayRequest"> | string | null
+    playersNeeded?: IntWithAggregatesFilter<"PlayRequest"> | number
+    isOpen?: BoolWithAggregatesFilter<"PlayRequest"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PlayRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlayRequest"> | Date | string
+    userId?: StringWithAggregatesFilter<"PlayRequest"> | string
+    gameId?: StringWithAggregatesFilter<"PlayRequest"> | string
+  }
+
+  export type PlayRequestParticipantWhereInput = {
+    AND?: PlayRequestParticipantWhereInput | PlayRequestParticipantWhereInput[]
+    OR?: PlayRequestParticipantWhereInput[]
+    NOT?: PlayRequestParticipantWhereInput | PlayRequestParticipantWhereInput[]
+    id?: StringFilter<"PlayRequestParticipant"> | string
+    joinedAt?: DateTimeFilter<"PlayRequestParticipant"> | Date | string
+    status?: EnumPlayRequestStatusFilter<"PlayRequestParticipant"> | $Enums.PlayRequestStatus
+    userId?: StringFilter<"PlayRequestParticipant"> | string
+    requestId?: StringFilter<"PlayRequestParticipant"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    request?: XOR<PlayRequestScalarRelationFilter, PlayRequestWhereInput>
+  }
+
+  export type PlayRequestParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    joinedAt?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    requestId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    request?: PlayRequestOrderByWithRelationInput
+    _relevance?: PlayRequestParticipantOrderByRelevanceInput
+  }
+
+  export type PlayRequestParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_requestId?: PlayRequestParticipantUserIdRequestIdCompoundUniqueInput
+    AND?: PlayRequestParticipantWhereInput | PlayRequestParticipantWhereInput[]
+    OR?: PlayRequestParticipantWhereInput[]
+    NOT?: PlayRequestParticipantWhereInput | PlayRequestParticipantWhereInput[]
+    joinedAt?: DateTimeFilter<"PlayRequestParticipant"> | Date | string
+    status?: EnumPlayRequestStatusFilter<"PlayRequestParticipant"> | $Enums.PlayRequestStatus
+    userId?: StringFilter<"PlayRequestParticipant"> | string
+    requestId?: StringFilter<"PlayRequestParticipant"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    request?: XOR<PlayRequestScalarRelationFilter, PlayRequestWhereInput>
+  }, "id" | "userId_requestId">
+
+  export type PlayRequestParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    joinedAt?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    requestId?: SortOrder
+    _count?: PlayRequestParticipantCountOrderByAggregateInput
+    _max?: PlayRequestParticipantMaxOrderByAggregateInput
+    _min?: PlayRequestParticipantMinOrderByAggregateInput
+  }
+
+  export type PlayRequestParticipantScalarWhereWithAggregatesInput = {
+    AND?: PlayRequestParticipantScalarWhereWithAggregatesInput | PlayRequestParticipantScalarWhereWithAggregatesInput[]
+    OR?: PlayRequestParticipantScalarWhereWithAggregatesInput[]
+    NOT?: PlayRequestParticipantScalarWhereWithAggregatesInput | PlayRequestParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlayRequestParticipant"> | string
+    joinedAt?: DateTimeWithAggregatesFilter<"PlayRequestParticipant"> | Date | string
+    status?: EnumPlayRequestStatusWithAggregatesFilter<"PlayRequestParticipant"> | $Enums.PlayRequestStatus
+    userId?: StringWithAggregatesFilter<"PlayRequestParticipant"> | string
+    requestId?: StringWithAggregatesFilter<"PlayRequestParticipant"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -19968,11 +22469,13 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -19984,11 +22487,13 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUpdateInput = {
@@ -20000,11 +22505,13 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -20016,11 +22523,13 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -20066,6 +22575,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestCreateNestedManyWithoutGameInput
     platforms?: GamePlatformCreateNestedManyWithoutGameInput
     news?: NewsCreateNestedManyWithoutGameInput
     reviews?: ReviewCreateNestedManyWithoutGameInput
@@ -20082,6 +22592,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutGameInput
     platforms?: GamePlatformUncheckedCreateNestedManyWithoutGameInput
     news?: NewsUncheckedCreateNestedManyWithoutGameInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutGameInput
@@ -20098,6 +22609,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUpdateManyWithoutGameNestedInput
     news?: NewsUpdateManyWithoutGameNestedInput
     reviews?: ReviewUpdateManyWithoutGameNestedInput
@@ -20114,6 +22626,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUncheckedUpdateManyWithoutGameNestedInput
     news?: NewsUncheckedUpdateManyWithoutGameNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutGameNestedInput
@@ -21062,6 +23575,146 @@ export namespace Prisma {
     platformId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type PlayRequestCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlayRequestsInput
+    game: GameCreateNestedOneWithoutPlayRequestsInput
+    participants?: PlayRequestParticipantCreateNestedManyWithoutRequestInput
+  }
+
+  export type PlayRequestUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    gameId: string
+    participants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutRequestInput
+  }
+
+  export type PlayRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlayRequestsNestedInput
+    game?: GameUpdateOneRequiredWithoutPlayRequestsNestedInput
+    participants?: PlayRequestParticipantUpdateManyWithoutRequestNestedInput
+  }
+
+  export type PlayRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    participants?: PlayRequestParticipantUncheckedUpdateManyWithoutRequestNestedInput
+  }
+
+  export type PlayRequestCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    gameId: string
+  }
+
+  export type PlayRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlayRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestParticipantCreateInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    user: UserCreateNestedOneWithoutPlayRequestParticipantsInput
+    request: PlayRequestCreateNestedOneWithoutParticipantsInput
+  }
+
+  export type PlayRequestParticipantUncheckedCreateInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    userId: string
+    requestId: string
+  }
+
+  export type PlayRequestParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    user?: UserUpdateOneRequiredWithoutPlayRequestParticipantsNestedInput
+    request?: PlayRequestUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    userId?: StringFieldUpdateOperationsInput | string
+    requestId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestParticipantCreateManyInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    userId: string
+    requestId: string
+  }
+
+  export type PlayRequestParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    userId?: StringFieldUpdateOperationsInput | string
+    requestId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -21103,16 +23756,16 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NewsListRelationFilter = {
-    every?: NewsWhereInput
-    some?: NewsWhereInput
-    none?: NewsWhereInput
+  export type PlayRequestListRelationFilter = {
+    every?: PlayRequestWhereInput
+    some?: PlayRequestWhereInput
+    none?: PlayRequestWhereInput
   }
 
-  export type ReviewListRelationFilter = {
-    every?: ReviewWhereInput
-    some?: ReviewWhereInput
-    none?: ReviewWhereInput
+  export type PlayRequestParticipantListRelationFilter = {
+    every?: PlayRequestParticipantWhereInput
+    some?: PlayRequestParticipantWhereInput
+    none?: PlayRequestParticipantWhereInput
   }
 
   export type MediaItemListRelationFilter = {
@@ -21133,16 +23786,28 @@ export namespace Prisma {
     none?: MediaCommentWhereInput
   }
 
+  export type NewsListRelationFilter = {
+    every?: NewsWhereInput
+    some?: NewsWhereInput
+    none?: NewsWhereInput
+  }
+
+  export type ReviewListRelationFilter = {
+    every?: ReviewWhereInput
+    some?: ReviewWhereInput
+    none?: ReviewWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type NewsOrderByRelationAggregateInput = {
+  export type PlayRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type ReviewOrderByRelationAggregateInput = {
+  export type PlayRequestParticipantOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21155,6 +23820,14 @@ export namespace Prisma {
   }
 
   export type MediaCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NewsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22061,18 +24734,125 @@ export namespace Prisma {
     platformId?: SortOrder
   }
 
-  export type NewsCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput> | NewsCreateWithoutAuthorInput[] | NewsUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: NewsCreateOrConnectWithoutAuthorInput | NewsCreateOrConnectWithoutAuthorInput[]
-    createMany?: NewsCreateManyAuthorInputEnvelope
-    connect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
+  export type PlayRequestOrderByRelevanceInput = {
+    fields: PlayRequestOrderByRelevanceFieldEnum | PlayRequestOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
   }
 
-  export type ReviewCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput> | ReviewCreateWithoutAuthorInput[] | ReviewUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutAuthorInput | ReviewCreateOrConnectWithoutAuthorInput[]
-    createMany?: ReviewCreateManyAuthorInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  export type PlayRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    playersNeeded?: SortOrder
+    isOpen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    gameId?: SortOrder
+  }
+
+  export type PlayRequestAvgOrderByAggregateInput = {
+    playersNeeded?: SortOrder
+  }
+
+  export type PlayRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    playersNeeded?: SortOrder
+    isOpen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    gameId?: SortOrder
+  }
+
+  export type PlayRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    playersNeeded?: SortOrder
+    isOpen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    gameId?: SortOrder
+  }
+
+  export type PlayRequestSumOrderByAggregateInput = {
+    playersNeeded?: SortOrder
+  }
+
+  export type EnumPlayRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlayRequestStatus | EnumPlayRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlayRequestStatus[]
+    notIn?: $Enums.PlayRequestStatus[]
+    not?: NestedEnumPlayRequestStatusFilter<$PrismaModel> | $Enums.PlayRequestStatus
+  }
+
+  export type PlayRequestScalarRelationFilter = {
+    is?: PlayRequestWhereInput
+    isNot?: PlayRequestWhereInput
+  }
+
+  export type PlayRequestParticipantOrderByRelevanceInput = {
+    fields: PlayRequestParticipantOrderByRelevanceFieldEnum | PlayRequestParticipantOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PlayRequestParticipantUserIdRequestIdCompoundUniqueInput = {
+    userId: string
+    requestId: string
+  }
+
+  export type PlayRequestParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    joinedAt?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    requestId?: SortOrder
+  }
+
+  export type PlayRequestParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    joinedAt?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    requestId?: SortOrder
+  }
+
+  export type PlayRequestParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    joinedAt?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    requestId?: SortOrder
+  }
+
+  export type EnumPlayRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlayRequestStatus | EnumPlayRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlayRequestStatus[]
+    notIn?: $Enums.PlayRequestStatus[]
+    not?: NestedEnumPlayRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlayRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlayRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlayRequestStatusFilter<$PrismaModel>
+  }
+
+  export type PlayRequestCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlayRequestCreateWithoutUserInput, PlayRequestUncheckedCreateWithoutUserInput> | PlayRequestCreateWithoutUserInput[] | PlayRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutUserInput | PlayRequestCreateOrConnectWithoutUserInput[]
+    createMany?: PlayRequestCreateManyUserInputEnvelope
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+  }
+
+  export type PlayRequestParticipantCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutUserInput, PlayRequestParticipantUncheckedCreateWithoutUserInput> | PlayRequestParticipantCreateWithoutUserInput[] | PlayRequestParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutUserInput | PlayRequestParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: PlayRequestParticipantCreateManyUserInputEnvelope
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
   }
 
   export type MediaItemCreateNestedManyWithoutAuthorInput = {
@@ -22096,18 +24876,32 @@ export namespace Prisma {
     connect?: MediaCommentWhereUniqueInput | MediaCommentWhereUniqueInput[]
   }
 
-  export type NewsUncheckedCreateNestedManyWithoutAuthorInput = {
+  export type NewsCreateNestedManyWithoutAuthorInput = {
     create?: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput> | NewsCreateWithoutAuthorInput[] | NewsUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: NewsCreateOrConnectWithoutAuthorInput | NewsCreateOrConnectWithoutAuthorInput[]
     createMany?: NewsCreateManyAuthorInputEnvelope
     connect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
   }
 
-  export type ReviewUncheckedCreateNestedManyWithoutAuthorInput = {
+  export type ReviewCreateNestedManyWithoutAuthorInput = {
     create?: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput> | ReviewCreateWithoutAuthorInput[] | ReviewUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: ReviewCreateOrConnectWithoutAuthorInput | ReviewCreateOrConnectWithoutAuthorInput[]
     createMany?: ReviewCreateManyAuthorInputEnvelope
     connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
+  export type PlayRequestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlayRequestCreateWithoutUserInput, PlayRequestUncheckedCreateWithoutUserInput> | PlayRequestCreateWithoutUserInput[] | PlayRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutUserInput | PlayRequestCreateOrConnectWithoutUserInput[]
+    createMany?: PlayRequestCreateManyUserInputEnvelope
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+  }
+
+  export type PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutUserInput, PlayRequestParticipantUncheckedCreateWithoutUserInput> | PlayRequestParticipantCreateWithoutUserInput[] | PlayRequestParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutUserInput | PlayRequestParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: PlayRequestParticipantCreateManyUserInputEnvelope
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
   }
 
   export type MediaItemUncheckedCreateNestedManyWithoutAuthorInput = {
@@ -22131,6 +24925,20 @@ export namespace Prisma {
     connect?: MediaCommentWhereUniqueInput | MediaCommentWhereUniqueInput[]
   }
 
+  export type NewsUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput> | NewsCreateWithoutAuthorInput[] | NewsUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: NewsCreateOrConnectWithoutAuthorInput | NewsCreateOrConnectWithoutAuthorInput[]
+    createMany?: NewsCreateManyAuthorInputEnvelope
+    connect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
+  }
+
+  export type ReviewUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput> | ReviewCreateWithoutAuthorInput[] | ReviewUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutAuthorInput | ReviewCreateOrConnectWithoutAuthorInput[]
+    createMany?: ReviewCreateManyAuthorInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -22143,32 +24951,32 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type NewsUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput> | NewsCreateWithoutAuthorInput[] | NewsUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: NewsCreateOrConnectWithoutAuthorInput | NewsCreateOrConnectWithoutAuthorInput[]
-    upsert?: NewsUpsertWithWhereUniqueWithoutAuthorInput | NewsUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: NewsCreateManyAuthorInputEnvelope
-    set?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
-    disconnect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
-    delete?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
-    connect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
-    update?: NewsUpdateWithWhereUniqueWithoutAuthorInput | NewsUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: NewsUpdateManyWithWhereWithoutAuthorInput | NewsUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: NewsScalarWhereInput | NewsScalarWhereInput[]
+  export type PlayRequestUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlayRequestCreateWithoutUserInput, PlayRequestUncheckedCreateWithoutUserInput> | PlayRequestCreateWithoutUserInput[] | PlayRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutUserInput | PlayRequestCreateOrConnectWithoutUserInput[]
+    upsert?: PlayRequestUpsertWithWhereUniqueWithoutUserInput | PlayRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlayRequestCreateManyUserInputEnvelope
+    set?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    disconnect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    delete?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    update?: PlayRequestUpdateWithWhereUniqueWithoutUserInput | PlayRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlayRequestUpdateManyWithWhereWithoutUserInput | PlayRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlayRequestScalarWhereInput | PlayRequestScalarWhereInput[]
   }
 
-  export type ReviewUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput> | ReviewCreateWithoutAuthorInput[] | ReviewUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutAuthorInput | ReviewCreateOrConnectWithoutAuthorInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutAuthorInput | ReviewUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: ReviewCreateManyAuthorInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutAuthorInput | ReviewUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutAuthorInput | ReviewUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  export type PlayRequestParticipantUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutUserInput, PlayRequestParticipantUncheckedCreateWithoutUserInput> | PlayRequestParticipantCreateWithoutUserInput[] | PlayRequestParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutUserInput | PlayRequestParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: PlayRequestParticipantUpsertWithWhereUniqueWithoutUserInput | PlayRequestParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlayRequestParticipantCreateManyUserInputEnvelope
+    set?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    disconnect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    delete?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    update?: PlayRequestParticipantUpdateWithWhereUniqueWithoutUserInput | PlayRequestParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlayRequestParticipantUpdateManyWithWhereWithoutUserInput | PlayRequestParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlayRequestParticipantScalarWhereInput | PlayRequestParticipantScalarWhereInput[]
   }
 
   export type MediaItemUpdateManyWithoutAuthorNestedInput = {
@@ -22213,7 +25021,7 @@ export namespace Prisma {
     deleteMany?: MediaCommentScalarWhereInput | MediaCommentScalarWhereInput[]
   }
 
-  export type NewsUncheckedUpdateManyWithoutAuthorNestedInput = {
+  export type NewsUpdateManyWithoutAuthorNestedInput = {
     create?: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput> | NewsCreateWithoutAuthorInput[] | NewsUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: NewsCreateOrConnectWithoutAuthorInput | NewsCreateOrConnectWithoutAuthorInput[]
     upsert?: NewsUpsertWithWhereUniqueWithoutAuthorInput | NewsUpsertWithWhereUniqueWithoutAuthorInput[]
@@ -22227,7 +25035,7 @@ export namespace Prisma {
     deleteMany?: NewsScalarWhereInput | NewsScalarWhereInput[]
   }
 
-  export type ReviewUncheckedUpdateManyWithoutAuthorNestedInput = {
+  export type ReviewUpdateManyWithoutAuthorNestedInput = {
     create?: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput> | ReviewCreateWithoutAuthorInput[] | ReviewUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: ReviewCreateOrConnectWithoutAuthorInput | ReviewCreateOrConnectWithoutAuthorInput[]
     upsert?: ReviewUpsertWithWhereUniqueWithoutAuthorInput | ReviewUpsertWithWhereUniqueWithoutAuthorInput[]
@@ -22239,6 +25047,34 @@ export namespace Prisma {
     update?: ReviewUpdateWithWhereUniqueWithoutAuthorInput | ReviewUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: ReviewUpdateManyWithWhereWithoutAuthorInput | ReviewUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
+  export type PlayRequestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlayRequestCreateWithoutUserInput, PlayRequestUncheckedCreateWithoutUserInput> | PlayRequestCreateWithoutUserInput[] | PlayRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutUserInput | PlayRequestCreateOrConnectWithoutUserInput[]
+    upsert?: PlayRequestUpsertWithWhereUniqueWithoutUserInput | PlayRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlayRequestCreateManyUserInputEnvelope
+    set?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    disconnect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    delete?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    update?: PlayRequestUpdateWithWhereUniqueWithoutUserInput | PlayRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlayRequestUpdateManyWithWhereWithoutUserInput | PlayRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlayRequestScalarWhereInput | PlayRequestScalarWhereInput[]
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutUserInput, PlayRequestParticipantUncheckedCreateWithoutUserInput> | PlayRequestParticipantCreateWithoutUserInput[] | PlayRequestParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutUserInput | PlayRequestParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: PlayRequestParticipantUpsertWithWhereUniqueWithoutUserInput | PlayRequestParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PlayRequestParticipantCreateManyUserInputEnvelope
+    set?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    disconnect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    delete?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    update?: PlayRequestParticipantUpdateWithWhereUniqueWithoutUserInput | PlayRequestParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PlayRequestParticipantUpdateManyWithWhereWithoutUserInput | PlayRequestParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PlayRequestParticipantScalarWhereInput | PlayRequestParticipantScalarWhereInput[]
   }
 
   export type MediaItemUncheckedUpdateManyWithoutAuthorNestedInput = {
@@ -22283,6 +25119,41 @@ export namespace Prisma {
     deleteMany?: MediaCommentScalarWhereInput | MediaCommentScalarWhereInput[]
   }
 
+  export type NewsUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput> | NewsCreateWithoutAuthorInput[] | NewsUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: NewsCreateOrConnectWithoutAuthorInput | NewsCreateOrConnectWithoutAuthorInput[]
+    upsert?: NewsUpsertWithWhereUniqueWithoutAuthorInput | NewsUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: NewsCreateManyAuthorInputEnvelope
+    set?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
+    disconnect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
+    delete?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
+    connect?: NewsWhereUniqueInput | NewsWhereUniqueInput[]
+    update?: NewsUpdateWithWhereUniqueWithoutAuthorInput | NewsUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: NewsUpdateManyWithWhereWithoutAuthorInput | NewsUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: NewsScalarWhereInput | NewsScalarWhereInput[]
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput> | ReviewCreateWithoutAuthorInput[] | ReviewUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutAuthorInput | ReviewCreateOrConnectWithoutAuthorInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutAuthorInput | ReviewUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: ReviewCreateManyAuthorInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutAuthorInput | ReviewUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutAuthorInput | ReviewUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
+  export type PlayRequestCreateNestedManyWithoutGameInput = {
+    create?: XOR<PlayRequestCreateWithoutGameInput, PlayRequestUncheckedCreateWithoutGameInput> | PlayRequestCreateWithoutGameInput[] | PlayRequestUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutGameInput | PlayRequestCreateOrConnectWithoutGameInput[]
+    createMany?: PlayRequestCreateManyGameInputEnvelope
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+  }
+
   export type GamePlatformCreateNestedManyWithoutGameInput = {
     create?: XOR<GamePlatformCreateWithoutGameInput, GamePlatformUncheckedCreateWithoutGameInput> | GamePlatformCreateWithoutGameInput[] | GamePlatformUncheckedCreateWithoutGameInput[]
     connectOrCreate?: GamePlatformCreateOrConnectWithoutGameInput | GamePlatformCreateOrConnectWithoutGameInput[]
@@ -22309,6 +25180,13 @@ export namespace Prisma {
     connectOrCreate?: MediaItemCreateOrConnectWithoutGameInput | MediaItemCreateOrConnectWithoutGameInput[]
     createMany?: MediaItemCreateManyGameInputEnvelope
     connect?: MediaItemWhereUniqueInput | MediaItemWhereUniqueInput[]
+  }
+
+  export type PlayRequestUncheckedCreateNestedManyWithoutGameInput = {
+    create?: XOR<PlayRequestCreateWithoutGameInput, PlayRequestUncheckedCreateWithoutGameInput> | PlayRequestCreateWithoutGameInput[] | PlayRequestUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutGameInput | PlayRequestCreateOrConnectWithoutGameInput[]
+    createMany?: PlayRequestCreateManyGameInputEnvelope
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
   }
 
   export type GamePlatformUncheckedCreateNestedManyWithoutGameInput = {
@@ -22341,6 +25219,20 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type PlayRequestUpdateManyWithoutGameNestedInput = {
+    create?: XOR<PlayRequestCreateWithoutGameInput, PlayRequestUncheckedCreateWithoutGameInput> | PlayRequestCreateWithoutGameInput[] | PlayRequestUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutGameInput | PlayRequestCreateOrConnectWithoutGameInput[]
+    upsert?: PlayRequestUpsertWithWhereUniqueWithoutGameInput | PlayRequestUpsertWithWhereUniqueWithoutGameInput[]
+    createMany?: PlayRequestCreateManyGameInputEnvelope
+    set?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    disconnect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    delete?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    update?: PlayRequestUpdateWithWhereUniqueWithoutGameInput | PlayRequestUpdateWithWhereUniqueWithoutGameInput[]
+    updateMany?: PlayRequestUpdateManyWithWhereWithoutGameInput | PlayRequestUpdateManyWithWhereWithoutGameInput[]
+    deleteMany?: PlayRequestScalarWhereInput | PlayRequestScalarWhereInput[]
   }
 
   export type GamePlatformUpdateManyWithoutGameNestedInput = {
@@ -22397,6 +25289,20 @@ export namespace Prisma {
     update?: MediaItemUpdateWithWhereUniqueWithoutGameInput | MediaItemUpdateWithWhereUniqueWithoutGameInput[]
     updateMany?: MediaItemUpdateManyWithWhereWithoutGameInput | MediaItemUpdateManyWithWhereWithoutGameInput[]
     deleteMany?: MediaItemScalarWhereInput | MediaItemScalarWhereInput[]
+  }
+
+  export type PlayRequestUncheckedUpdateManyWithoutGameNestedInput = {
+    create?: XOR<PlayRequestCreateWithoutGameInput, PlayRequestUncheckedCreateWithoutGameInput> | PlayRequestCreateWithoutGameInput[] | PlayRequestUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutGameInput | PlayRequestCreateOrConnectWithoutGameInput[]
+    upsert?: PlayRequestUpsertWithWhereUniqueWithoutGameInput | PlayRequestUpsertWithWhereUniqueWithoutGameInput[]
+    createMany?: PlayRequestCreateManyGameInputEnvelope
+    set?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    disconnect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    delete?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    connect?: PlayRequestWhereUniqueInput | PlayRequestWhereUniqueInput[]
+    update?: PlayRequestUpdateWithWhereUniqueWithoutGameInput | PlayRequestUpdateWithWhereUniqueWithoutGameInput[]
+    updateMany?: PlayRequestUpdateManyWithWhereWithoutGameInput | PlayRequestUpdateManyWithWhereWithoutGameInput[]
+    deleteMany?: PlayRequestScalarWhereInput | PlayRequestScalarWhereInput[]
   }
 
   export type GamePlatformUncheckedUpdateManyWithoutGameNestedInput = {
@@ -23291,6 +26197,108 @@ export namespace Prisma {
     update?: XOR<XOR<PlatformUpdateToOneWithWhereWithoutReviewsInput, PlatformUpdateWithoutReviewsInput>, PlatformUncheckedUpdateWithoutReviewsInput>
   }
 
+  export type UserCreateNestedOneWithoutPlayRequestsInput = {
+    create?: XOR<UserCreateWithoutPlayRequestsInput, UserUncheckedCreateWithoutPlayRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlayRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type GameCreateNestedOneWithoutPlayRequestsInput = {
+    create?: XOR<GameCreateWithoutPlayRequestsInput, GameUncheckedCreateWithoutPlayRequestsInput>
+    connectOrCreate?: GameCreateOrConnectWithoutPlayRequestsInput
+    connect?: GameWhereUniqueInput
+  }
+
+  export type PlayRequestParticipantCreateNestedManyWithoutRequestInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutRequestInput, PlayRequestParticipantUncheckedCreateWithoutRequestInput> | PlayRequestParticipantCreateWithoutRequestInput[] | PlayRequestParticipantUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutRequestInput | PlayRequestParticipantCreateOrConnectWithoutRequestInput[]
+    createMany?: PlayRequestParticipantCreateManyRequestInputEnvelope
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+  }
+
+  export type PlayRequestParticipantUncheckedCreateNestedManyWithoutRequestInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutRequestInput, PlayRequestParticipantUncheckedCreateWithoutRequestInput> | PlayRequestParticipantCreateWithoutRequestInput[] | PlayRequestParticipantUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutRequestInput | PlayRequestParticipantCreateOrConnectWithoutRequestInput[]
+    createMany?: PlayRequestParticipantCreateManyRequestInputEnvelope
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutPlayRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutPlayRequestsInput, UserUncheckedCreateWithoutPlayRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlayRequestsInput
+    upsert?: UserUpsertWithoutPlayRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPlayRequestsInput, UserUpdateWithoutPlayRequestsInput>, UserUncheckedUpdateWithoutPlayRequestsInput>
+  }
+
+  export type GameUpdateOneRequiredWithoutPlayRequestsNestedInput = {
+    create?: XOR<GameCreateWithoutPlayRequestsInput, GameUncheckedCreateWithoutPlayRequestsInput>
+    connectOrCreate?: GameCreateOrConnectWithoutPlayRequestsInput
+    upsert?: GameUpsertWithoutPlayRequestsInput
+    connect?: GameWhereUniqueInput
+    update?: XOR<XOR<GameUpdateToOneWithWhereWithoutPlayRequestsInput, GameUpdateWithoutPlayRequestsInput>, GameUncheckedUpdateWithoutPlayRequestsInput>
+  }
+
+  export type PlayRequestParticipantUpdateManyWithoutRequestNestedInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutRequestInput, PlayRequestParticipantUncheckedCreateWithoutRequestInput> | PlayRequestParticipantCreateWithoutRequestInput[] | PlayRequestParticipantUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutRequestInput | PlayRequestParticipantCreateOrConnectWithoutRequestInput[]
+    upsert?: PlayRequestParticipantUpsertWithWhereUniqueWithoutRequestInput | PlayRequestParticipantUpsertWithWhereUniqueWithoutRequestInput[]
+    createMany?: PlayRequestParticipantCreateManyRequestInputEnvelope
+    set?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    disconnect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    delete?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    update?: PlayRequestParticipantUpdateWithWhereUniqueWithoutRequestInput | PlayRequestParticipantUpdateWithWhereUniqueWithoutRequestInput[]
+    updateMany?: PlayRequestParticipantUpdateManyWithWhereWithoutRequestInput | PlayRequestParticipantUpdateManyWithWhereWithoutRequestInput[]
+    deleteMany?: PlayRequestParticipantScalarWhereInput | PlayRequestParticipantScalarWhereInput[]
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateManyWithoutRequestNestedInput = {
+    create?: XOR<PlayRequestParticipantCreateWithoutRequestInput, PlayRequestParticipantUncheckedCreateWithoutRequestInput> | PlayRequestParticipantCreateWithoutRequestInput[] | PlayRequestParticipantUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: PlayRequestParticipantCreateOrConnectWithoutRequestInput | PlayRequestParticipantCreateOrConnectWithoutRequestInput[]
+    upsert?: PlayRequestParticipantUpsertWithWhereUniqueWithoutRequestInput | PlayRequestParticipantUpsertWithWhereUniqueWithoutRequestInput[]
+    createMany?: PlayRequestParticipantCreateManyRequestInputEnvelope
+    set?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    disconnect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    delete?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    connect?: PlayRequestParticipantWhereUniqueInput | PlayRequestParticipantWhereUniqueInput[]
+    update?: PlayRequestParticipantUpdateWithWhereUniqueWithoutRequestInput | PlayRequestParticipantUpdateWithWhereUniqueWithoutRequestInput[]
+    updateMany?: PlayRequestParticipantUpdateManyWithWhereWithoutRequestInput | PlayRequestParticipantUpdateManyWithWhereWithoutRequestInput[]
+    deleteMany?: PlayRequestParticipantScalarWhereInput | PlayRequestParticipantScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutPlayRequestParticipantsInput = {
+    create?: XOR<UserCreateWithoutPlayRequestParticipantsInput, UserUncheckedCreateWithoutPlayRequestParticipantsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlayRequestParticipantsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PlayRequestCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<PlayRequestCreateWithoutParticipantsInput, PlayRequestUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutParticipantsInput
+    connect?: PlayRequestWhereUniqueInput
+  }
+
+  export type EnumPlayRequestStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PlayRequestStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutPlayRequestParticipantsNestedInput = {
+    create?: XOR<UserCreateWithoutPlayRequestParticipantsInput, UserUncheckedCreateWithoutPlayRequestParticipantsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlayRequestParticipantsInput
+    upsert?: UserUpsertWithoutPlayRequestParticipantsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPlayRequestParticipantsInput, UserUpdateWithoutPlayRequestParticipantsInput>, UserUncheckedUpdateWithoutPlayRequestParticipantsInput>
+  }
+
+  export type PlayRequestUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<PlayRequestCreateWithoutParticipantsInput, PlayRequestUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: PlayRequestCreateOrConnectWithoutParticipantsInput
+    upsert?: PlayRequestUpsertWithoutParticipantsInput
+    connect?: PlayRequestWhereUniqueInput
+    update?: XOR<XOR<PlayRequestUpdateToOneWithWhereWithoutParticipantsInput, PlayRequestUpdateWithoutParticipantsInput>, PlayRequestUncheckedUpdateWithoutParticipantsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -23529,91 +26537,78 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NewsCreateWithoutAuthorInput = {
+  export type NestedEnumPlayRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlayRequestStatus | EnumPlayRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlayRequestStatus[]
+    notIn?: $Enums.PlayRequestStatus[]
+    not?: NestedEnumPlayRequestStatusFilter<$PrismaModel> | $Enums.PlayRequestStatus
+  }
+
+  export type NestedEnumPlayRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlayRequestStatus | EnumPlayRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlayRequestStatus[]
+    notIn?: $Enums.PlayRequestStatus[]
+    not?: NestedEnumPlayRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlayRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlayRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlayRequestStatusFilter<$PrismaModel>
+  }
+
+  export type PlayRequestCreateWithoutUserInput = {
     id?: string
     title: string
-    slug: string
-    excerpt: string
-    contentPath: string
-    contentType: string
-    category: string
-    isFeatured?: boolean
-    published?: boolean
-    viewsCount?: number
-    likesCount?: number
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
     createdAt?: Date | string
-    game?: GameCreateNestedOneWithoutNewsInput
-    tags?: NewsTagCreateNestedManyWithoutNewsInput
+    updatedAt?: Date | string
+    game: GameCreateNestedOneWithoutPlayRequestsInput
+    participants?: PlayRequestParticipantCreateNestedManyWithoutRequestInput
   }
 
-  export type NewsUncheckedCreateWithoutAuthorInput = {
+  export type PlayRequestUncheckedCreateWithoutUserInput = {
     id?: string
     title: string
-    slug: string
-    excerpt: string
-    contentPath: string
-    contentType: string
-    category: string
-    isFeatured?: boolean
-    published?: boolean
-    viewsCount?: number
-    likesCount?: number
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
     createdAt?: Date | string
-    gameId?: string | null
-    tags?: NewsTagUncheckedCreateNestedManyWithoutNewsInput
+    updatedAt?: Date | string
+    gameId: string
+    participants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutRequestInput
   }
 
-  export type NewsCreateOrConnectWithoutAuthorInput = {
-    where: NewsWhereUniqueInput
-    create: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput>
+  export type PlayRequestCreateOrConnectWithoutUserInput = {
+    where: PlayRequestWhereUniqueInput
+    create: XOR<PlayRequestCreateWithoutUserInput, PlayRequestUncheckedCreateWithoutUserInput>
   }
 
-  export type NewsCreateManyAuthorInputEnvelope = {
-    data: NewsCreateManyAuthorInput | NewsCreateManyAuthorInput[]
+  export type PlayRequestCreateManyUserInputEnvelope = {
+    data: PlayRequestCreateManyUserInput | PlayRequestCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
-  export type ReviewCreateWithoutAuthorInput = {
+  export type PlayRequestParticipantCreateWithoutUserInput = {
     id?: string
-    title: string
-    slug: string
-    excerpt: string
-    contentPath: string
-    contentType: string
-    rating: number
-    published?: boolean
-    viewsCount?: number
-    likesCount?: number
-    createdAt?: Date | string
-    game: GameCreateNestedOneWithoutReviewsInput
-    genres?: ReviewGenreCreateNestedManyWithoutReviewInput
-    platforms?: ReviewPlatformCreateNestedManyWithoutReviewInput
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    request: PlayRequestCreateNestedOneWithoutParticipantsInput
   }
 
-  export type ReviewUncheckedCreateWithoutAuthorInput = {
+  export type PlayRequestParticipantUncheckedCreateWithoutUserInput = {
     id?: string
-    title: string
-    slug: string
-    excerpt: string
-    contentPath: string
-    contentType: string
-    rating: number
-    published?: boolean
-    viewsCount?: number
-    likesCount?: number
-    createdAt?: Date | string
-    gameId: string
-    genres?: ReviewGenreUncheckedCreateNestedManyWithoutReviewInput
-    platforms?: ReviewPlatformUncheckedCreateNestedManyWithoutReviewInput
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    requestId: string
   }
 
-  export type ReviewCreateOrConnectWithoutAuthorInput = {
-    where: ReviewWhereUniqueInput
-    create: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput>
+  export type PlayRequestParticipantCreateOrConnectWithoutUserInput = {
+    where: PlayRequestParticipantWhereUniqueInput
+    create: XOR<PlayRequestParticipantCreateWithoutUserInput, PlayRequestParticipantUncheckedCreateWithoutUserInput>
   }
 
-  export type ReviewCreateManyAuthorInputEnvelope = {
-    data: ReviewCreateManyAuthorInput | ReviewCreateManyAuthorInput[]
+  export type PlayRequestParticipantCreateManyUserInputEnvelope = {
+    data: PlayRequestParticipantCreateManyUserInput | PlayRequestParticipantCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -23729,75 +26724,150 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NewsUpsertWithWhereUniqueWithoutAuthorInput = {
+  export type NewsCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    slug: string
+    excerpt: string
+    contentPath: string
+    contentType: string
+    category: string
+    isFeatured?: boolean
+    published?: boolean
+    viewsCount?: number
+    likesCount?: number
+    createdAt?: Date | string
+    game?: GameCreateNestedOneWithoutNewsInput
+    tags?: NewsTagCreateNestedManyWithoutNewsInput
+  }
+
+  export type NewsUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    slug: string
+    excerpt: string
+    contentPath: string
+    contentType: string
+    category: string
+    isFeatured?: boolean
+    published?: boolean
+    viewsCount?: number
+    likesCount?: number
+    createdAt?: Date | string
+    gameId?: string | null
+    tags?: NewsTagUncheckedCreateNestedManyWithoutNewsInput
+  }
+
+  export type NewsCreateOrConnectWithoutAuthorInput = {
     where: NewsWhereUniqueInput
-    update: XOR<NewsUpdateWithoutAuthorInput, NewsUncheckedUpdateWithoutAuthorInput>
     create: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput>
   }
 
-  export type NewsUpdateWithWhereUniqueWithoutAuthorInput = {
-    where: NewsWhereUniqueInput
-    data: XOR<NewsUpdateWithoutAuthorInput, NewsUncheckedUpdateWithoutAuthorInput>
+  export type NewsCreateManyAuthorInputEnvelope = {
+    data: NewsCreateManyAuthorInput | NewsCreateManyAuthorInput[]
+    skipDuplicates?: boolean
   }
 
-  export type NewsUpdateManyWithWhereWithoutAuthorInput = {
-    where: NewsScalarWhereInput
-    data: XOR<NewsUpdateManyMutationInput, NewsUncheckedUpdateManyWithoutAuthorInput>
+  export type ReviewCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    slug: string
+    excerpt: string
+    contentPath: string
+    contentType: string
+    rating: number
+    published?: boolean
+    viewsCount?: number
+    likesCount?: number
+    createdAt?: Date | string
+    game: GameCreateNestedOneWithoutReviewsInput
+    genres?: ReviewGenreCreateNestedManyWithoutReviewInput
+    platforms?: ReviewPlatformCreateNestedManyWithoutReviewInput
   }
 
-  export type NewsScalarWhereInput = {
-    AND?: NewsScalarWhereInput | NewsScalarWhereInput[]
-    OR?: NewsScalarWhereInput[]
-    NOT?: NewsScalarWhereInput | NewsScalarWhereInput[]
-    id?: StringFilter<"News"> | string
-    title?: StringFilter<"News"> | string
-    slug?: StringFilter<"News"> | string
-    excerpt?: StringFilter<"News"> | string
-    contentPath?: StringFilter<"News"> | string
-    contentType?: StringFilter<"News"> | string
-    category?: StringFilter<"News"> | string
-    isFeatured?: BoolFilter<"News"> | boolean
-    published?: BoolFilter<"News"> | boolean
-    viewsCount?: IntFilter<"News"> | number
-    likesCount?: IntFilter<"News"> | number
-    createdAt?: DateTimeFilter<"News"> | Date | string
-    authorId?: StringFilter<"News"> | string
-    gameId?: StringNullableFilter<"News"> | string | null
+  export type ReviewUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    slug: string
+    excerpt: string
+    contentPath: string
+    contentType: string
+    rating: number
+    published?: boolean
+    viewsCount?: number
+    likesCount?: number
+    createdAt?: Date | string
+    gameId: string
+    genres?: ReviewGenreUncheckedCreateNestedManyWithoutReviewInput
+    platforms?: ReviewPlatformUncheckedCreateNestedManyWithoutReviewInput
   }
 
-  export type ReviewUpsertWithWhereUniqueWithoutAuthorInput = {
+  export type ReviewCreateOrConnectWithoutAuthorInput = {
     where: ReviewWhereUniqueInput
-    update: XOR<ReviewUpdateWithoutAuthorInput, ReviewUncheckedUpdateWithoutAuthorInput>
     create: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput>
   }
 
-  export type ReviewUpdateWithWhereUniqueWithoutAuthorInput = {
-    where: ReviewWhereUniqueInput
-    data: XOR<ReviewUpdateWithoutAuthorInput, ReviewUncheckedUpdateWithoutAuthorInput>
+  export type ReviewCreateManyAuthorInputEnvelope = {
+    data: ReviewCreateManyAuthorInput | ReviewCreateManyAuthorInput[]
+    skipDuplicates?: boolean
   }
 
-  export type ReviewUpdateManyWithWhereWithoutAuthorInput = {
-    where: ReviewScalarWhereInput
-    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutAuthorInput>
+  export type PlayRequestUpsertWithWhereUniqueWithoutUserInput = {
+    where: PlayRequestWhereUniqueInput
+    update: XOR<PlayRequestUpdateWithoutUserInput, PlayRequestUncheckedUpdateWithoutUserInput>
+    create: XOR<PlayRequestCreateWithoutUserInput, PlayRequestUncheckedCreateWithoutUserInput>
   }
 
-  export type ReviewScalarWhereInput = {
-    AND?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-    OR?: ReviewScalarWhereInput[]
-    NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-    id?: StringFilter<"Review"> | string
-    title?: StringFilter<"Review"> | string
-    slug?: StringFilter<"Review"> | string
-    excerpt?: StringFilter<"Review"> | string
-    contentPath?: StringFilter<"Review"> | string
-    contentType?: StringFilter<"Review"> | string
-    rating?: FloatFilter<"Review"> | number
-    published?: BoolFilter<"Review"> | boolean
-    viewsCount?: IntFilter<"Review"> | number
-    likesCount?: IntFilter<"Review"> | number
-    createdAt?: DateTimeFilter<"Review"> | Date | string
-    authorId?: StringFilter<"Review"> | string
-    gameId?: StringFilter<"Review"> | string
+  export type PlayRequestUpdateWithWhereUniqueWithoutUserInput = {
+    where: PlayRequestWhereUniqueInput
+    data: XOR<PlayRequestUpdateWithoutUserInput, PlayRequestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PlayRequestUpdateManyWithWhereWithoutUserInput = {
+    where: PlayRequestScalarWhereInput
+    data: XOR<PlayRequestUpdateManyMutationInput, PlayRequestUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PlayRequestScalarWhereInput = {
+    AND?: PlayRequestScalarWhereInput | PlayRequestScalarWhereInput[]
+    OR?: PlayRequestScalarWhereInput[]
+    NOT?: PlayRequestScalarWhereInput | PlayRequestScalarWhereInput[]
+    id?: StringFilter<"PlayRequest"> | string
+    title?: StringFilter<"PlayRequest"> | string
+    description?: StringNullableFilter<"PlayRequest"> | string | null
+    playersNeeded?: IntFilter<"PlayRequest"> | number
+    isOpen?: BoolFilter<"PlayRequest"> | boolean
+    createdAt?: DateTimeFilter<"PlayRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"PlayRequest"> | Date | string
+    userId?: StringFilter<"PlayRequest"> | string
+    gameId?: StringFilter<"PlayRequest"> | string
+  }
+
+  export type PlayRequestParticipantUpsertWithWhereUniqueWithoutUserInput = {
+    where: PlayRequestParticipantWhereUniqueInput
+    update: XOR<PlayRequestParticipantUpdateWithoutUserInput, PlayRequestParticipantUncheckedUpdateWithoutUserInput>
+    create: XOR<PlayRequestParticipantCreateWithoutUserInput, PlayRequestParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type PlayRequestParticipantUpdateWithWhereUniqueWithoutUserInput = {
+    where: PlayRequestParticipantWhereUniqueInput
+    data: XOR<PlayRequestParticipantUpdateWithoutUserInput, PlayRequestParticipantUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PlayRequestParticipantUpdateManyWithWhereWithoutUserInput = {
+    where: PlayRequestParticipantScalarWhereInput
+    data: XOR<PlayRequestParticipantUpdateManyMutationInput, PlayRequestParticipantUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PlayRequestParticipantScalarWhereInput = {
+    AND?: PlayRequestParticipantScalarWhereInput | PlayRequestParticipantScalarWhereInput[]
+    OR?: PlayRequestParticipantScalarWhereInput[]
+    NOT?: PlayRequestParticipantScalarWhereInput | PlayRequestParticipantScalarWhereInput[]
+    id?: StringFilter<"PlayRequestParticipant"> | string
+    joinedAt?: DateTimeFilter<"PlayRequestParticipant"> | Date | string
+    status?: EnumPlayRequestStatusFilter<"PlayRequestParticipant"> | $Enums.PlayRequestStatus
+    userId?: StringFilter<"PlayRequestParticipant"> | string
+    requestId?: StringFilter<"PlayRequestParticipant"> | string
   }
 
   export type MediaItemUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -23895,6 +26965,111 @@ export namespace Prisma {
     userId?: StringFilter<"MediaComment"> | string
     mediaItemId?: StringFilter<"MediaComment"> | string
     parentId?: StringNullableFilter<"MediaComment"> | string | null
+  }
+
+  export type NewsUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: NewsWhereUniqueInput
+    update: XOR<NewsUpdateWithoutAuthorInput, NewsUncheckedUpdateWithoutAuthorInput>
+    create: XOR<NewsCreateWithoutAuthorInput, NewsUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type NewsUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: NewsWhereUniqueInput
+    data: XOR<NewsUpdateWithoutAuthorInput, NewsUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type NewsUpdateManyWithWhereWithoutAuthorInput = {
+    where: NewsScalarWhereInput
+    data: XOR<NewsUpdateManyMutationInput, NewsUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type NewsScalarWhereInput = {
+    AND?: NewsScalarWhereInput | NewsScalarWhereInput[]
+    OR?: NewsScalarWhereInput[]
+    NOT?: NewsScalarWhereInput | NewsScalarWhereInput[]
+    id?: StringFilter<"News"> | string
+    title?: StringFilter<"News"> | string
+    slug?: StringFilter<"News"> | string
+    excerpt?: StringFilter<"News"> | string
+    contentPath?: StringFilter<"News"> | string
+    contentType?: StringFilter<"News"> | string
+    category?: StringFilter<"News"> | string
+    isFeatured?: BoolFilter<"News"> | boolean
+    published?: BoolFilter<"News"> | boolean
+    viewsCount?: IntFilter<"News"> | number
+    likesCount?: IntFilter<"News"> | number
+    createdAt?: DateTimeFilter<"News"> | Date | string
+    authorId?: StringFilter<"News"> | string
+    gameId?: StringNullableFilter<"News"> | string | null
+  }
+
+  export type ReviewUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutAuthorInput, ReviewUncheckedUpdateWithoutAuthorInput>
+    create: XOR<ReviewCreateWithoutAuthorInput, ReviewUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutAuthorInput, ReviewUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutAuthorInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type ReviewScalarWhereInput = {
+    AND?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+    OR?: ReviewScalarWhereInput[]
+    NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+    id?: StringFilter<"Review"> | string
+    title?: StringFilter<"Review"> | string
+    slug?: StringFilter<"Review"> | string
+    excerpt?: StringFilter<"Review"> | string
+    contentPath?: StringFilter<"Review"> | string
+    contentType?: StringFilter<"Review"> | string
+    rating?: FloatFilter<"Review"> | number
+    published?: BoolFilter<"Review"> | boolean
+    viewsCount?: IntFilter<"Review"> | number
+    likesCount?: IntFilter<"Review"> | number
+    createdAt?: DateTimeFilter<"Review"> | Date | string
+    authorId?: StringFilter<"Review"> | string
+    gameId?: StringFilter<"Review"> | string
+  }
+
+  export type PlayRequestCreateWithoutGameInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlayRequestsInput
+    participants?: PlayRequestParticipantCreateNestedManyWithoutRequestInput
+  }
+
+  export type PlayRequestUncheckedCreateWithoutGameInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    participants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutRequestInput
+  }
+
+  export type PlayRequestCreateOrConnectWithoutGameInput = {
+    where: PlayRequestWhereUniqueInput
+    create: XOR<PlayRequestCreateWithoutGameInput, PlayRequestUncheckedCreateWithoutGameInput>
+  }
+
+  export type PlayRequestCreateManyGameInputEnvelope = {
+    data: PlayRequestCreateManyGameInput | PlayRequestCreateManyGameInput[]
+    skipDuplicates?: boolean
   }
 
   export type GamePlatformCreateWithoutGameInput = {
@@ -24065,6 +27240,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PlayRequestUpsertWithWhereUniqueWithoutGameInput = {
+    where: PlayRequestWhereUniqueInput
+    update: XOR<PlayRequestUpdateWithoutGameInput, PlayRequestUncheckedUpdateWithoutGameInput>
+    create: XOR<PlayRequestCreateWithoutGameInput, PlayRequestUncheckedCreateWithoutGameInput>
+  }
+
+  export type PlayRequestUpdateWithWhereUniqueWithoutGameInput = {
+    where: PlayRequestWhereUniqueInput
+    data: XOR<PlayRequestUpdateWithoutGameInput, PlayRequestUncheckedUpdateWithoutGameInput>
+  }
+
+  export type PlayRequestUpdateManyWithWhereWithoutGameInput = {
+    where: PlayRequestScalarWhereInput
+    data: XOR<PlayRequestUpdateManyMutationInput, PlayRequestUncheckedUpdateManyWithoutGameInput>
+  }
+
   export type GamePlatformUpsertWithWhereUniqueWithoutGameInput = {
     where: GamePlatformWhereUniqueInput
     update: XOR<GamePlatformUpdateWithoutGameInput, GamePlatformUncheckedUpdateWithoutGameInput>
@@ -24226,6 +27417,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestCreateNestedManyWithoutGameInput
     news?: NewsCreateNestedManyWithoutGameInput
     reviews?: ReviewCreateNestedManyWithoutGameInput
     mediaItems?: MediaItemCreateNestedManyWithoutGameInput
@@ -24241,6 +27433,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutGameInput
     news?: NewsUncheckedCreateNestedManyWithoutGameInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutGameInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutGameInput
@@ -24295,6 +27488,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUpdateManyWithoutGameNestedInput
     news?: NewsUpdateManyWithoutGameNestedInput
     reviews?: ReviewUpdateManyWithoutGameNestedInput
     mediaItems?: MediaItemUpdateManyWithoutGameNestedInput
@@ -24310,6 +27504,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutGameNestedInput
     news?: NewsUncheckedUpdateManyWithoutGameNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutGameNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutGameNestedInput
@@ -24353,10 +27548,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
     mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMediaItemsInput = {
@@ -24368,10 +27565,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
     mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMediaItemsInput = {
@@ -24389,6 +27588,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestCreateNestedManyWithoutGameInput
     platforms?: GamePlatformCreateNestedManyWithoutGameInput
     news?: NewsCreateNestedManyWithoutGameInput
     reviews?: ReviewCreateNestedManyWithoutGameInput
@@ -24404,6 +27604,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutGameInput
     platforms?: GamePlatformUncheckedCreateNestedManyWithoutGameInput
     news?: NewsUncheckedCreateNestedManyWithoutGameInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutGameInput
@@ -24504,10 +27705,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
     mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMediaItemsInput = {
@@ -24519,10 +27722,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
     mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type GameUpsertWithoutMediaItemsInput = {
@@ -24546,6 +27751,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUpdateManyWithoutGameNestedInput
     news?: NewsUpdateManyWithoutGameNestedInput
     reviews?: ReviewUpdateManyWithoutGameNestedInput
@@ -24561,6 +27767,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUncheckedUpdateManyWithoutGameNestedInput
     news?: NewsUncheckedUpdateManyWithoutGameNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutGameNestedInput
@@ -24631,10 +27838,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
     mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMediaLikesInput = {
@@ -24646,10 +27855,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
     mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMediaLikesInput = {
@@ -24732,10 +27943,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
     mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMediaLikesInput = {
@@ -24747,10 +27960,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
     mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type MediaItemUpsertWithoutLikesInput = {
@@ -24823,10 +28038,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMediaCommentsInput = {
@@ -24838,10 +28055,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMediaCommentsInput = {
@@ -24979,10 +28198,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMediaCommentsInput = {
@@ -24994,10 +28215,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type MediaItemUpsertWithoutCommentsInput = {
@@ -25391,10 +28614,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    reviews?: ReviewCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutNewsInput = {
@@ -25406,10 +28631,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutNewsInput = {
@@ -25427,6 +28654,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestCreateNestedManyWithoutGameInput
     platforms?: GamePlatformCreateNestedManyWithoutGameInput
     reviews?: ReviewCreateNestedManyWithoutGameInput
     mediaItems?: MediaItemCreateNestedManyWithoutGameInput
@@ -25442,6 +28670,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutGameInput
     platforms?: GamePlatformUncheckedCreateNestedManyWithoutGameInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutGameInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutGameInput
@@ -25490,10 +28719,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNewsInput = {
@@ -25505,10 +28736,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type GameUpsertWithoutNewsInput = {
@@ -25532,6 +28765,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUpdateManyWithoutGameNestedInput
     reviews?: ReviewUpdateManyWithoutGameNestedInput
     mediaItems?: MediaItemUpdateManyWithoutGameNestedInput
@@ -25547,6 +28781,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUncheckedUpdateManyWithoutGameNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutGameNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutGameNestedInput
@@ -25577,10 +28812,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -25592,10 +28829,12 @@ export namespace Prisma {
     avatar?: string | null
     bio?: string | null
     createdAt?: Date | string
-    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
     mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
     mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -25613,6 +28852,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestCreateNestedManyWithoutGameInput
     platforms?: GamePlatformCreateNestedManyWithoutGameInput
     news?: NewsCreateNestedManyWithoutGameInput
     mediaItems?: MediaItemCreateNestedManyWithoutGameInput
@@ -25628,6 +28868,7 @@ export namespace Prisma {
     developer?: string | null
     publisher?: string | null
     createdAt?: Date | string
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutGameInput
     platforms?: GamePlatformUncheckedCreateNestedManyWithoutGameInput
     news?: NewsUncheckedCreateNestedManyWithoutGameInput
     mediaItems?: MediaItemUncheckedCreateNestedManyWithoutGameInput
@@ -25694,10 +28935,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -25709,10 +28952,12 @@ export namespace Prisma {
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
     mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
     mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type GameUpsertWithoutReviewsInput = {
@@ -25736,6 +28981,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUpdateManyWithoutGameNestedInput
     news?: NewsUpdateManyWithoutGameNestedInput
     mediaItems?: MediaItemUpdateManyWithoutGameNestedInput
@@ -25751,6 +28997,7 @@ export namespace Prisma {
     developer?: NullableStringFieldUpdateOperationsInput | string | null
     publisher?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutGameNestedInput
     platforms?: GamePlatformUncheckedUpdateManyWithoutGameNestedInput
     news?: NewsUncheckedUpdateManyWithoutGameNestedInput
     mediaItems?: MediaItemUncheckedUpdateManyWithoutGameNestedInput
@@ -26172,35 +29419,374 @@ export namespace Prisma {
     games?: GamePlatformUncheckedUpdateManyWithoutPlatformNestedInput
   }
 
-  export type NewsCreateManyAuthorInput = {
+  export type UserCreateWithoutPlayRequestsInput = {
     id?: string
-    title: string
-    slug: string
-    excerpt: string
-    contentPath: string
-    contentType: string
-    category: string
-    isFeatured?: boolean
-    published?: boolean
-    viewsCount?: number
-    likesCount?: number
+    username: string
+    email: string
+    password: string
+    name: string
+    avatar?: string | null
+    bio?: string | null
     createdAt?: Date | string
-    gameId?: string | null
+    playRequestParticipants?: PlayRequestParticipantCreateNestedManyWithoutUserInput
+    mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
+    mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
+    mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
   }
 
-  export type ReviewCreateManyAuthorInput = {
+  export type UserUncheckedCreateWithoutPlayRequestsInput = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    name: string
+    avatar?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    playRequestParticipants?: PlayRequestParticipantUncheckedCreateNestedManyWithoutUserInput
+    mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
+    mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
+    mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutPlayRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPlayRequestsInput, UserUncheckedCreateWithoutPlayRequestsInput>
+  }
+
+  export type GameCreateWithoutPlayRequestsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    coverImage?: string | null
+    releaseDate?: Date | string | null
+    developer?: string | null
+    publisher?: string | null
+    createdAt?: Date | string
+    platforms?: GamePlatformCreateNestedManyWithoutGameInput
+    news?: NewsCreateNestedManyWithoutGameInput
+    reviews?: ReviewCreateNestedManyWithoutGameInput
+    mediaItems?: MediaItemCreateNestedManyWithoutGameInput
+  }
+
+  export type GameUncheckedCreateWithoutPlayRequestsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    coverImage?: string | null
+    releaseDate?: Date | string | null
+    developer?: string | null
+    publisher?: string | null
+    createdAt?: Date | string
+    platforms?: GamePlatformUncheckedCreateNestedManyWithoutGameInput
+    news?: NewsUncheckedCreateNestedManyWithoutGameInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutGameInput
+    mediaItems?: MediaItemUncheckedCreateNestedManyWithoutGameInput
+  }
+
+  export type GameCreateOrConnectWithoutPlayRequestsInput = {
+    where: GameWhereUniqueInput
+    create: XOR<GameCreateWithoutPlayRequestsInput, GameUncheckedCreateWithoutPlayRequestsInput>
+  }
+
+  export type PlayRequestParticipantCreateWithoutRequestInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    user: UserCreateNestedOneWithoutPlayRequestParticipantsInput
+  }
+
+  export type PlayRequestParticipantUncheckedCreateWithoutRequestInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    userId: string
+  }
+
+  export type PlayRequestParticipantCreateOrConnectWithoutRequestInput = {
+    where: PlayRequestParticipantWhereUniqueInput
+    create: XOR<PlayRequestParticipantCreateWithoutRequestInput, PlayRequestParticipantUncheckedCreateWithoutRequestInput>
+  }
+
+  export type PlayRequestParticipantCreateManyRequestInputEnvelope = {
+    data: PlayRequestParticipantCreateManyRequestInput | PlayRequestParticipantCreateManyRequestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutPlayRequestsInput = {
+    update: XOR<UserUpdateWithoutPlayRequestsInput, UserUncheckedUpdateWithoutPlayRequestsInput>
+    create: XOR<UserCreateWithoutPlayRequestsInput, UserUncheckedCreateWithoutPlayRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPlayRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPlayRequestsInput, UserUncheckedUpdateWithoutPlayRequestsInput>
+  }
+
+  export type UserUpdateWithoutPlayRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequestParticipants?: PlayRequestParticipantUpdateManyWithoutUserNestedInput
+    mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
+    mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
+    mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPlayRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequestParticipants?: PlayRequestParticipantUncheckedUpdateManyWithoutUserNestedInput
+    mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
+    mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
+    mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type GameUpsertWithoutPlayRequestsInput = {
+    update: XOR<GameUpdateWithoutPlayRequestsInput, GameUncheckedUpdateWithoutPlayRequestsInput>
+    create: XOR<GameCreateWithoutPlayRequestsInput, GameUncheckedCreateWithoutPlayRequestsInput>
+    where?: GameWhereInput
+  }
+
+  export type GameUpdateToOneWithWhereWithoutPlayRequestsInput = {
+    where?: GameWhereInput
+    data: XOR<GameUpdateWithoutPlayRequestsInput, GameUncheckedUpdateWithoutPlayRequestsInput>
+  }
+
+  export type GameUpdateWithoutPlayRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    releaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    developer?: NullableStringFieldUpdateOperationsInput | string | null
+    publisher?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    platforms?: GamePlatformUpdateManyWithoutGameNestedInput
+    news?: NewsUpdateManyWithoutGameNestedInput
+    reviews?: ReviewUpdateManyWithoutGameNestedInput
+    mediaItems?: MediaItemUpdateManyWithoutGameNestedInput
+  }
+
+  export type GameUncheckedUpdateWithoutPlayRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    releaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    developer?: NullableStringFieldUpdateOperationsInput | string | null
+    publisher?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    platforms?: GamePlatformUncheckedUpdateManyWithoutGameNestedInput
+    news?: NewsUncheckedUpdateManyWithoutGameNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutGameNestedInput
+    mediaItems?: MediaItemUncheckedUpdateManyWithoutGameNestedInput
+  }
+
+  export type PlayRequestParticipantUpsertWithWhereUniqueWithoutRequestInput = {
+    where: PlayRequestParticipantWhereUniqueInput
+    update: XOR<PlayRequestParticipantUpdateWithoutRequestInput, PlayRequestParticipantUncheckedUpdateWithoutRequestInput>
+    create: XOR<PlayRequestParticipantCreateWithoutRequestInput, PlayRequestParticipantUncheckedCreateWithoutRequestInput>
+  }
+
+  export type PlayRequestParticipantUpdateWithWhereUniqueWithoutRequestInput = {
+    where: PlayRequestParticipantWhereUniqueInput
+    data: XOR<PlayRequestParticipantUpdateWithoutRequestInput, PlayRequestParticipantUncheckedUpdateWithoutRequestInput>
+  }
+
+  export type PlayRequestParticipantUpdateManyWithWhereWithoutRequestInput = {
+    where: PlayRequestParticipantScalarWhereInput
+    data: XOR<PlayRequestParticipantUpdateManyMutationInput, PlayRequestParticipantUncheckedUpdateManyWithoutRequestInput>
+  }
+
+  export type UserCreateWithoutPlayRequestParticipantsInput = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    name: string
+    avatar?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    playRequests?: PlayRequestCreateNestedManyWithoutUserInput
+    mediaItems?: MediaItemCreateNestedManyWithoutAuthorInput
+    mediaLikes?: MediaLikeCreateNestedManyWithoutUserInput
+    mediaComments?: MediaCommentCreateNestedManyWithoutUserInput
+    news?: NewsCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutPlayRequestParticipantsInput = {
+    id?: string
+    username: string
+    email: string
+    password: string
+    name: string
+    avatar?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    playRequests?: PlayRequestUncheckedCreateNestedManyWithoutUserInput
+    mediaItems?: MediaItemUncheckedCreateNestedManyWithoutAuthorInput
+    mediaLikes?: MediaLikeUncheckedCreateNestedManyWithoutUserInput
+    mediaComments?: MediaCommentUncheckedCreateNestedManyWithoutUserInput
+    news?: NewsUncheckedCreateNestedManyWithoutAuthorInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutPlayRequestParticipantsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPlayRequestParticipantsInput, UserUncheckedCreateWithoutPlayRequestParticipantsInput>
+  }
+
+  export type PlayRequestCreateWithoutParticipantsInput = {
     id?: string
     title: string
-    slug: string
-    excerpt: string
-    contentPath: string
-    contentType: string
-    rating: number
-    published?: boolean
-    viewsCount?: number
-    likesCount?: number
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutPlayRequestsInput
+    game: GameCreateNestedOneWithoutPlayRequestsInput
+  }
+
+  export type PlayRequestUncheckedCreateWithoutParticipantsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
     gameId: string
+  }
+
+  export type PlayRequestCreateOrConnectWithoutParticipantsInput = {
+    where: PlayRequestWhereUniqueInput
+    create: XOR<PlayRequestCreateWithoutParticipantsInput, PlayRequestUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type UserUpsertWithoutPlayRequestParticipantsInput = {
+    update: XOR<UserUpdateWithoutPlayRequestParticipantsInput, UserUncheckedUpdateWithoutPlayRequestParticipantsInput>
+    create: XOR<UserCreateWithoutPlayRequestParticipantsInput, UserUncheckedCreateWithoutPlayRequestParticipantsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPlayRequestParticipantsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPlayRequestParticipantsInput, UserUncheckedUpdateWithoutPlayRequestParticipantsInput>
+  }
+
+  export type UserUpdateWithoutPlayRequestParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUpdateManyWithoutUserNestedInput
+    mediaItems?: MediaItemUpdateManyWithoutAuthorNestedInput
+    mediaLikes?: MediaLikeUpdateManyWithoutUserNestedInput
+    mediaComments?: MediaCommentUpdateManyWithoutUserNestedInput
+    news?: NewsUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPlayRequestParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    playRequests?: PlayRequestUncheckedUpdateManyWithoutUserNestedInput
+    mediaItems?: MediaItemUncheckedUpdateManyWithoutAuthorNestedInput
+    mediaLikes?: MediaLikeUncheckedUpdateManyWithoutUserNestedInput
+    mediaComments?: MediaCommentUncheckedUpdateManyWithoutUserNestedInput
+    news?: NewsUncheckedUpdateManyWithoutAuthorNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type PlayRequestUpsertWithoutParticipantsInput = {
+    update: XOR<PlayRequestUpdateWithoutParticipantsInput, PlayRequestUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<PlayRequestCreateWithoutParticipantsInput, PlayRequestUncheckedCreateWithoutParticipantsInput>
+    where?: PlayRequestWhereInput
+  }
+
+  export type PlayRequestUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: PlayRequestWhereInput
+    data: XOR<PlayRequestUpdateWithoutParticipantsInput, PlayRequestUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type PlayRequestUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlayRequestsNestedInput
+    game?: GameUpdateOneRequiredWithoutPlayRequestsNestedInput
+  }
+
+  export type PlayRequestUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    gameId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestCreateManyUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+  }
+
+  export type PlayRequestParticipantCreateManyUserInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    requestId: string
   }
 
   export type MediaItemCreateManyAuthorInput = {
@@ -26240,103 +29826,91 @@ export namespace Prisma {
     parentId?: string | null
   }
 
-  export type NewsUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    excerpt?: StringFieldUpdateOperationsInput | string
-    contentPath?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isFeatured?: BoolFieldUpdateOperationsInput | boolean
-    published?: BoolFieldUpdateOperationsInput | boolean
-    viewsCount?: IntFieldUpdateOperationsInput | number
-    likesCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    game?: GameUpdateOneWithoutNewsNestedInput
-    tags?: NewsTagUpdateManyWithoutNewsNestedInput
+  export type NewsCreateManyAuthorInput = {
+    id?: string
+    title: string
+    slug: string
+    excerpt: string
+    contentPath: string
+    contentType: string
+    category: string
+    isFeatured?: boolean
+    published?: boolean
+    viewsCount?: number
+    likesCount?: number
+    createdAt?: Date | string
+    gameId?: string | null
   }
 
-  export type NewsUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    excerpt?: StringFieldUpdateOperationsInput | string
-    contentPath?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isFeatured?: BoolFieldUpdateOperationsInput | boolean
-    published?: BoolFieldUpdateOperationsInput | boolean
-    viewsCount?: IntFieldUpdateOperationsInput | number
-    likesCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    gameId?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: NewsTagUncheckedUpdateManyWithoutNewsNestedInput
+  export type ReviewCreateManyAuthorInput = {
+    id?: string
+    title: string
+    slug: string
+    excerpt: string
+    contentPath: string
+    contentType: string
+    rating: number
+    published?: boolean
+    viewsCount?: number
+    likesCount?: number
+    createdAt?: Date | string
+    gameId: string
   }
 
-  export type NewsUncheckedUpdateManyWithoutAuthorInput = {
+  export type PlayRequestUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    excerpt?: StringFieldUpdateOperationsInput | string
-    contentPath?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isFeatured?: BoolFieldUpdateOperationsInput | boolean
-    published?: BoolFieldUpdateOperationsInput | boolean
-    viewsCount?: IntFieldUpdateOperationsInput | number
-    likesCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    gameId?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    game?: GameUpdateOneRequiredWithoutPlayRequestsNestedInput
+    participants?: PlayRequestParticipantUpdateManyWithoutRequestNestedInput
   }
 
-  export type ReviewUpdateWithoutAuthorInput = {
+  export type PlayRequestUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    excerpt?: StringFieldUpdateOperationsInput | string
-    contentPath?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    rating?: FloatFieldUpdateOperationsInput | number
-    published?: BoolFieldUpdateOperationsInput | boolean
-    viewsCount?: IntFieldUpdateOperationsInput | number
-    likesCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    game?: GameUpdateOneRequiredWithoutReviewsNestedInput
-    genres?: ReviewGenreUpdateManyWithoutReviewNestedInput
-    platforms?: ReviewPlatformUpdateManyWithoutReviewNestedInput
-  }
-
-  export type ReviewUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    excerpt?: StringFieldUpdateOperationsInput | string
-    contentPath?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    rating?: FloatFieldUpdateOperationsInput | number
-    published?: BoolFieldUpdateOperationsInput | boolean
-    viewsCount?: IntFieldUpdateOperationsInput | number
-    likesCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gameId?: StringFieldUpdateOperationsInput | string
-    genres?: ReviewGenreUncheckedUpdateManyWithoutReviewNestedInput
-    platforms?: ReviewPlatformUncheckedUpdateManyWithoutReviewNestedInput
+    participants?: PlayRequestParticipantUncheckedUpdateManyWithoutRequestNestedInput
   }
 
-  export type ReviewUncheckedUpdateManyWithoutAuthorInput = {
+  export type PlayRequestUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    excerpt?: StringFieldUpdateOperationsInput | string
-    contentPath?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    rating?: FloatFieldUpdateOperationsInput | number
-    published?: BoolFieldUpdateOperationsInput | boolean
-    viewsCount?: IntFieldUpdateOperationsInput | number
-    likesCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gameId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestParticipantUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    request?: PlayRequestUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    requestId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    requestId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MediaItemUpdateWithoutAuthorInput = {
@@ -26458,6 +30032,116 @@ export namespace Prisma {
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type NewsUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    excerpt?: StringFieldUpdateOperationsInput | string
+    contentPath?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    viewsCount?: IntFieldUpdateOperationsInput | number
+    likesCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    game?: GameUpdateOneWithoutNewsNestedInput
+    tags?: NewsTagUpdateManyWithoutNewsNestedInput
+  }
+
+  export type NewsUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    excerpt?: StringFieldUpdateOperationsInput | string
+    contentPath?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    viewsCount?: IntFieldUpdateOperationsInput | number
+    likesCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: NewsTagUncheckedUpdateManyWithoutNewsNestedInput
+  }
+
+  export type NewsUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    excerpt?: StringFieldUpdateOperationsInput | string
+    contentPath?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isFeatured?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    viewsCount?: IntFieldUpdateOperationsInput | number
+    likesCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ReviewUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    excerpt?: StringFieldUpdateOperationsInput | string
+    contentPath?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    published?: BoolFieldUpdateOperationsInput | boolean
+    viewsCount?: IntFieldUpdateOperationsInput | number
+    likesCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    game?: GameUpdateOneRequiredWithoutReviewsNestedInput
+    genres?: ReviewGenreUpdateManyWithoutReviewNestedInput
+    platforms?: ReviewPlatformUpdateManyWithoutReviewNestedInput
+  }
+
+  export type ReviewUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    excerpt?: StringFieldUpdateOperationsInput | string
+    contentPath?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    published?: BoolFieldUpdateOperationsInput | boolean
+    viewsCount?: IntFieldUpdateOperationsInput | number
+    likesCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    genres?: ReviewGenreUncheckedUpdateManyWithoutReviewNestedInput
+    platforms?: ReviewPlatformUncheckedUpdateManyWithoutReviewNestedInput
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    excerpt?: StringFieldUpdateOperationsInput | string
+    contentPath?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    published?: BoolFieldUpdateOperationsInput | boolean
+    viewsCount?: IntFieldUpdateOperationsInput | number
+    likesCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestCreateManyGameInput = {
+    id?: string
+    title: string
+    description?: string | null
+    playersNeeded: number
+    isOpen?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
   export type GamePlatformCreateManyGameInput = {
     id?: string
     platformId: string
@@ -26514,6 +30198,41 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
+  }
+
+  export type PlayRequestUpdateWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPlayRequestsNestedInput
+    participants?: PlayRequestParticipantUpdateManyWithoutRequestNestedInput
+  }
+
+  export type PlayRequestUncheckedUpdateWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    participants?: PlayRequestParticipantUncheckedUpdateManyWithoutRequestNestedInput
+  }
+
+  export type PlayRequestUncheckedUpdateManyWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    playersNeeded?: IntFieldUpdateOperationsInput | number
+    isOpen?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type GamePlatformUpdateWithoutGameInput = {
@@ -26948,6 +30667,34 @@ export namespace Prisma {
 
   export type ReviewPlatformUncheckedUpdateManyWithoutReviewInput = {
     platformId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestParticipantCreateManyRequestInput = {
+    id?: string
+    joinedAt?: Date | string
+    status?: $Enums.PlayRequestStatus
+    userId: string
+  }
+
+  export type PlayRequestParticipantUpdateWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    user?: UserUpdateOneRequiredWithoutPlayRequestParticipantsNestedInput
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PlayRequestParticipantUncheckedUpdateManyWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumPlayRequestStatusFieldUpdateOperationsInput | $Enums.PlayRequestStatus
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 
